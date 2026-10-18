@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "id": "linear-degeneration",
+  "title": "When division by a parameter stops working",
+  "tags": [
+    "Algebra",
+    "division by zero",
+    "parameter degeneration"
+  ],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+    "expression": {
+      "source": null,
+      "latex": "ax=1"
+    },
+    "goal": "Find every real solution x.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-a",
+        "description": "The value of a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "a",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": "WellFormed",
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "a*x",
+        "latex": "ax"
+      },
+      "right": {
+        "source": "1",
+        "latex": "1"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "a-nonzero",
+      "kind": "nonzero",
+      "description": "Division by a requires a to be nonzero.",
+      "condition_ids": [
+        "parameter-a"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "assumed_true",
+      "interval": null,
+      "check": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "divide-parameter",
+      "name": "Algebraic rearrangement",
+      "description": "Divide both sides by a, keeping the nonzero restriction.",
+      "assumption_ids": [
+        "a-nonzero"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "divide-by-a",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "ax=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=\\frac{1}{a}"
+      },
+      "method_id": "divide-parameter",
+      "assumption_ids": [
+        "a-nonzero"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "The equivalence holds only for a nonzero parameter. This restriction remains even if later expressions simplify."
+    },
+    {
+      "id": "substitute-a",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "x=\\frac{1}{a},\\quad a=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "method_id": "divide-parameter",
+      "assumption_ids": [
+        "a-nonzero"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Substitution gives the unique original solution x = 1."
+    }
+  ],
+  "conclusion": {
+    "source": "1",
+    "latex": "1"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "set-a-zero",
+      "condition_id": "parameter-a",
+      "type": "parameter_zero",
+      "description": "Replace the value of a with zero.",
+      "allowed_values": [
+        {
+          "source": "0",
+          "latex": "0"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "change-a",
+      "condition_id": "parameter-a",
+      "type": "parameter_value",
+      "description": "Replace the value of a with another listed real value.",
+      "allowed_values": [
+        {
+          "source": "2",
+          "latex": "2"
+        },
+        {
+          "source": "-1",
+          "latex": "-1"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "At a = 0, division by a is invalid; the equation becomes 0 = 1 and has no solution. At a = 2 the method remains valid but x changes to 1/2."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-a-nonzero",
+      "kind": "equation_transform",
+      "refs": [
+        {
+          "kind": "assumption",
+          "id": "a-nonzero"
+        },
+        {
+          "kind": "step",
+          "id": "divide-by-a"
+        }
+      ],
+      "description": "Evaluate the divisor and compare complete solution sets.",
+      "parameters": {
+        "operation": "equation_transform",
+        "before": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "a*x",
+            "latex": "ax"
+          },
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "after": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "1/a",
+            "latex": "1/a"
+          }
+        },
+        "divisor": {
+          "source": "a",
+          "latex": "a"
+        }
+      }
+    },
+    {
+      "id": "check-substitute-a",
+      "kind": "evaluate_expression",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "substitute-a"
+        }
+      ],
+      "description": "Recompute the numerical solution with the new parameter.",
+      "parameters": {
+        "operation": "evaluate_expression",
+        "expression": {
+          "source": "1/a",
+          "latex": "1/a"
+        },
+        "result_variable": "x"
+      }
+    },
+    {
+      "id": "check-linear-solutions",
+      "kind": "solution_set",
+      "refs": [
+        {
+          "kind": "condition",
+          "id": "parameter-a"
+        }
+      ],
+      "description": "At a = 0, check the original equation directly rather than evaluating 1/a.",
+      "parameters": null
+    }
+  ],
+  "explanation_fragments": [
+    {
+      "id": "zero-explanation",
+      "evidence_keys": [
+        "check-a-nonzero",
+        "check-linear-solutions"
+      ],
+      "text": "The divisor is zero. Returning to the original equation gives 0 = 1, so the new problem has no solution; this is distinct from simply evaluating an undefined quotient.",
+      "when": [
+        {
+          "rule_id": "check-a-nonzero",
+          "outcome": "zero_divisor"
+        },
+        {
+          "rule_id": "check-linear-solutions",
+          "outcome": "no_solution"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Mathematics approved; staged runtime candidate pending isolation/API acceptance."
+  }
+}

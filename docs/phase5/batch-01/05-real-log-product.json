@@ -1,0 +1,359 @@
+{
+  "draft_version": 1,
+  "matrix_number": 5,
+  "id": "real-log-product",
+  "topic": "Functions",
+  "title": "An invalid logarithm split can preserve the final value",
+  "difficulty": "introductory",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Formal independent mathematical and typed-contract review approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  },
+  "original_problem": {
+    "statement": "Evaluate the real expression log(t^2), initially t=1.",
+    "expression": {
+      "latex": "\\log(t^2)"
+    },
+    "goal": "Evaluate the original real expression independently of the proposed split.",
+    "variables": {},
+    "parameters": [
+      {
+        "name": "t",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-t",
+        "parameter_name": "t",
+        "description": "The value of t",
+        "predicate": {
+          "left": {
+            "source": "t",
+            "latex": "t"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": null
+  },
+  "assumptions": [
+    {
+      "id": "positive-log-argument",
+      "kind": "log_argument",
+      "description": "Splitting log(t*t) into two real logarithms requires t>0.",
+      "condition_ids": [
+        "parameter-t"
+      ],
+      "predicate": {
+        "left": {
+          "source": "t",
+          "latex": "t"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "real-log-split",
+      "name": "Real logarithm product rule",
+      "description": "Split only after checking each factor is a positive real.",
+      "assumption_ids": [
+        "positive-log-argument"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "split-real-log",
+      "number": 1,
+      "input": {
+        "latex": "\\log(t^2)"
+      },
+      "output": {
+        "latex": "2\\log t"
+      },
+      "method_id": "real-log-split",
+      "assumption_ids": [
+        "positive-log-argument"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "The real product rule needs both factors positive; t*t>0 alone is insufficient."
+    },
+    {
+      "id": "evaluate-split-log",
+      "number": 2,
+      "input": {
+        "latex": "2\\log t,\\ t=1"
+      },
+      "output": {
+        "latex": "0"
+      },
+      "method_id": "real-log-split",
+      "assumption_ids": [
+        "positive-log-argument"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Re-evaluate with the current parameter; never reuse the baseline displayed answer."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "negative-factor",
+      "condition_id": "parameter-t",
+      "type": "parameter_sign",
+      "description": "Set t=-1.",
+      "new_value": {
+        "source": "-1",
+        "latex": "-1"
+      },
+      "choice_id": null
+    },
+    {
+      "id": "positive-control",
+      "condition_id": "parameter-t",
+      "type": "parameter_value",
+      "description": "Set t=2.",
+      "new_value": {
+        "source": "2",
+        "latex": "2"
+      },
+      "choice_id": null
+    }
+  ],
+  "domain_condition": null,
+  "proposed_computation": {
+    "kind": "scalar_expression",
+    "expression": {
+      "source": "log(t*t)",
+      "latex": "\\log(t^2)"
+    },
+    "value_domain": "real"
+  },
+  "planned_checks": [
+    {
+      "id": "check-real-log-identity",
+      "step_id": "split-real-log",
+      "parameters": {
+        "operation": "expression_identity",
+        "left": {
+          "source": "log(t*t)",
+          "latex": "log(t*t)"
+        },
+        "right": {
+          "source": "2*log(t)",
+          "latex": "2*log(t)"
+        },
+        "value_domain": "real"
+      }
+    },
+    {
+      "id": "check-split-value",
+      "step_id": "evaluate-split-log",
+      "parameters": {
+        "operation": "evaluate_scalar",
+        "expression": {
+          "source": "2*log(t)",
+          "latex": "2*log(t)"
+        },
+        "value_domain": "real"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "t": "1"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "split-real-log": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-split-log": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": false
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "log(1*1)=0 and 2log(1)=0; both expressions are real and defined."
+      ]
+    },
+    {
+      "id": "negative-factor",
+      "change_id": "negative-factor",
+      "parameter_values": {
+        "t": "-1"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "derivation_claim": {
+        "status": "undefined",
+        "value": null
+      },
+      "expected_report": {
+        "step": {
+          "split-real-log": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "evaluate-split-log": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Evaluate log(t*t) directly, or use the real identity 2*log(abs(t)) for t!=0."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "first_invalid_step_id": "split-real-log",
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": false
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The original argument (-1)*(-1)=1 is positive, so log(t*t)=0. The split contains the undefined real expression log(-1).",
+        "A complex logarithm value i*pi is not a valid evaluation of the requested real logarithm. Unchanged original value does not repair the derivation."
+      ]
+    },
+    {
+      "id": "positive-control",
+      "change_id": "positive-control",
+      "parameter_values": {
+        "t": "2"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(4)",
+          "latex": "log(4)"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(4)",
+          "latex": "log(4)"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "split-real-log": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-split-log": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Both factors are positive, so log(4)=2log(2). The method stays valid while the original value changes."
+      ]
+    }
+  ],
+  "planned_assumption_checks": {}
+}

@@ -1,0 +1,41 @@
+{
+  "id": "practice-001",
+  "title": "Practice 01",
+  "mode": "A",
+  "prompt": "Replay the displayed original derivation under the stated single condition change. Select the first invalid step, its relevant premise and a reason.",
+  "template_id": "linear-degeneration",
+  "perturbation": {
+    "template_id": "linear-degeneration",
+    "rule_id": "set-a-zero",
+    "condition_id": "parameter-a",
+    "type": "parameter_zero",
+    "new_value": {
+      "source": "0",
+      "latex": "0"
+    }
+  },
+  "accepted_answers": [
+    {
+      "answer": {
+        "step_id": "divide-by-a",
+        "assumption_id": "a-nonzero",
+        "reason_category": "zero_divisor"
+      },
+      "evidence_matches": [
+        {
+          "rule_id": "check-a-nonzero",
+          "outcome": "zero_divisor"
+        },
+        {
+          "rule_id": "assumption-a-nonzero",
+          "outcome": "violated"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

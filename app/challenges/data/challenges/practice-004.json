@@ -1,0 +1,13 @@
+{
+  "id": "practice-004",
+  "title": "Practice 04",
+  "mode": "B",
+  "prompt": "Choose one declared change that makes the original proper-integral derivation invalid as written. A method that can be repaired may still meet this derivation goal.",
+  "template_id": "integral-endpoint",
+  "goal": "invalidate_original_derivation",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

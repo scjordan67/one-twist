@@ -1,0 +1,12 @@
+{
+  "id": "practice-008",
+  "title": "Practice 08",
+  "mode": "C",
+  "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
+  "sample_id": "sample-003",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

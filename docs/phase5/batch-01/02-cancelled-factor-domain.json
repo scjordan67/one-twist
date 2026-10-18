@@ -1,0 +1,586 @@
+{
+  "draft_version": 1,
+  "matrix_number": 2,
+  "id": "cancelled-factor-domain",
+  "topic": "Algebra",
+  "title": "A cancelled factor can hide an original root",
+  "difficulty": "introductory",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Formal independent mathematical and typed-contract review approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  },
+  "original_problem": {
+    "statement": "Solve (x-2)(x+1)=0 over the stated domain, initially excluding x=2.",
+    "expression": {
+      "latex": "(x-2)(x+1)=0"
+    },
+    "goal": "Find every admissible real solution.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [],
+    "conditions": [
+      {
+        "id": "admissible-domain",
+        "description": "The admissible real domain",
+        "predicate": {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "2",
+            "latex": "2"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "2",
+          "latex": "2"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "(x-2)*(x+1)",
+        "latex": "(x-2)*(x+1)"
+      },
+      "right": {
+        "source": "0",
+        "latex": "0"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "factor-nonzero",
+      "kind": "domain_predicate",
+      "description": "Every admitted x satisfies x-2 != 0.",
+      "condition_ids": [
+        "admissible-domain"
+      ],
+      "predicate": {
+        "left": {
+          "source": "x-2",
+          "latex": "x-2"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "cancel-factor",
+      "name": "Factor cancellation",
+      "description": "Cancel x-2 only on the permitted domain.",
+      "assumption_ids": [
+        "factor-nonzero"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "cancel-x-minus-two",
+      "number": 1,
+      "input": {
+        "latex": "(x-2)(x+1)=0"
+      },
+      "output": {
+        "latex": "x+1=0"
+      },
+      "method_id": "cancel-factor",
+      "assumption_ids": [
+        "factor-nonzero"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "2",
+            "latex": "2"
+          }
+        }
+      ],
+      "explanation": "Divide only where x!=2; an output restriction cannot remove an original solution retroactively."
+    },
+    {
+      "id": "solve-linear-factor",
+      "number": 2,
+      "input": {
+        "latex": "x+1=0"
+      },
+      "output": {
+        "latex": "x=-1"
+      },
+      "method_id": "cancel-factor",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "The reduced linear equation has one solution."
+    },
+    {
+      "id": "claim-complete-set",
+      "number": 3,
+      "input": {
+        "latex": "x=-1"
+      },
+      "output": {
+        "latex": "S_{\\mathrm{original}}=\\{-1\\}"
+      },
+      "method_id": "cancel-factor",
+      "assumption_ids": [
+        "factor-nonzero"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Claiming completeness is justified only if the cancelled zero-factor case was excluded by the problem."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "allow-all-real",
+      "condition_id": "admissible-domain",
+      "type": "domain",
+      "description": "Allow every real x.",
+      "new_value": null,
+      "choice_id": "all-real"
+    },
+    {
+      "id": "restrict-below-two",
+      "condition_id": "admissible-domain",
+      "type": "domain",
+      "description": "Restrict to x<2.",
+      "new_value": null,
+      "choice_id": "below-two"
+    }
+  ],
+  "domain_condition": {
+    "variable": "x",
+    "condition_id": "admissible-domain",
+    "baseline_choice_id": "exclude-two",
+    "choices": [
+      {
+        "id": "exclude-two",
+        "number_system": "real",
+        "constraints": [
+          {
+            "left": {
+              "source": "x",
+              "latex": "x"
+            },
+            "relation": "ne",
+            "right": {
+              "source": "2",
+              "latex": "2"
+            }
+          }
+        ]
+      },
+      {
+        "id": "all-real",
+        "number_system": "real",
+        "constraints": []
+      },
+      {
+        "id": "below-two",
+        "number_system": "real",
+        "constraints": [
+          {
+            "left": {
+              "source": "x",
+              "latex": "x"
+            },
+            "relation": "lt",
+            "right": {
+              "source": "2",
+              "latex": "2"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "proposed_computation": {
+    "kind": "equation",
+    "variable": "x",
+    "left": {
+      "source": "(x-2)*(x+1)",
+      "latex": "(x-2)*(x+1)"
+    },
+    "right": {
+      "source": "0",
+      "latex": "0"
+    }
+  },
+  "planned_checks": [
+    {
+      "id": "check-cancellation",
+      "step_id": "cancel-x-minus-two",
+      "parameters": {
+        "operation": "equation_transform",
+        "before": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "(x-2)*(x+1)",
+            "latex": "(x-2)*(x+1)"
+          },
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        },
+        "after": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x+1",
+            "latex": "x+1"
+          },
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        },
+        "divisor": {
+          "source": "x-2",
+          "latex": "x-2"
+        }
+      }
+    },
+    {
+      "id": "check-linear",
+      "step_id": "solve-linear-factor",
+      "parameters": {
+        "operation": "equation_transform",
+        "before": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x+1",
+            "latex": "x+1"
+          },
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        },
+        "after": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "-1",
+            "latex": "-1"
+          }
+        }
+      }
+    },
+    {
+      "id": "check-completeness",
+      "step_id": "claim-complete-set",
+      "parameters": {
+        "operation": "candidate_acceptance",
+        "candidates_from": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "-1",
+            "latex": "-1"
+          }
+        },
+        "original": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "(x-2)*(x+1)",
+            "latex": "(x-2)*(x+1)"
+          },
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {},
+      "domain_choice_id": "exclude-two",
+      "effective_domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "2",
+            "latex": "2"
+          }
+        }
+      ],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "cancel-x-minus-two": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "solve-linear-factor": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-complete-set": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": false
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Zero-product reasoning yields roots -1 and 2; the original domain excludes exactly 2."
+      ]
+    },
+    {
+      "id": "expanded",
+      "change_id": "allow-all-real",
+      "parameter_values": {},
+      "domain_choice_id": "all-real",
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          },
+          {
+            "source": "2",
+            "latex": "2"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "cancel-x-minus-two": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "solve-linear-factor": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-complete-set": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Split x=2 and x!=2 before cancelling; unite the two solution sets."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "first_invalid_step_id": "cancel-x-minus-two",
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "x=2 satisfies the original equation but not x+1=0. The local algebra in Step 2 remains correct, but the chain loses one original root."
+      ]
+    },
+    {
+      "id": "restricted-control",
+      "change_id": "restrict-below-two",
+      "parameter_values": {},
+      "domain_choice_id": "below-two",
+      "effective_domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "lt",
+          "right": {
+            "source": "2",
+            "latex": "2"
+          }
+        }
+      ],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "cancel-x-minus-two": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "solve-linear-factor": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-complete-set": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": false
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "For x<2 the cancelled factor is nonzero. Of the original roots only -1 is in the domain."
+      ]
+    }
+  ],
+  "planned_assumption_checks": {
+    "factor-nonzero": {
+      "operation": "domain_predicate",
+      "variable": "x",
+      "required": {
+        "left": {
+          "source": "x-2",
+          "latex": "x-2"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      }
+    }
+  }
+}

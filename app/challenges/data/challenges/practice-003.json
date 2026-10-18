@@ -1,0 +1,13 @@
+{
+  "id": "practice-003",
+  "title": "Practice 03",
+  "mode": "B",
+  "prompt": "Choose one declared change that makes at least one step of the original derivation invalid. A change of answer alone does not meet this goal.",
+  "template_id": "linear-degeneration",
+  "goal": "invalidate_original_derivation",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

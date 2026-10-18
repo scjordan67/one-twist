@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "id": "cosine-quadrant-sign",
+  "title": "A square root cannot choose the cosine quadrant",
+  "tags": [
+    "Trigonometry",
+    "cosine-quadrant-sign"
+  ],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Evaluate cos(theta), initially theta=pi/3.",
+    "expression": {
+      "source": null,
+      "latex": "\\cos\\theta"
+    },
+    "goal": "Evaluate cos(theta), initially theta=pi/3.",
+    "variables": {},
+    "parameters": [
+      {
+        "name": "theta",
+        "value": {
+          "source": "pi/3",
+          "latex": "\\frac{\\pi}{3}"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-theta",
+        "description": "The value of theta",
+        "predicate": {
+          "left": {
+            "source": "theta",
+            "latex": "\\theta"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "pi/3",
+            "latex": "\\frac{\\pi}{3}"
+          }
+        },
+        "parameter_name": "theta",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "scalar_expression",
+      "expression": {
+        "source": "cos(theta)",
+        "latex": "\\cos{\\left(\\theta \\right)}"
+      },
+      "value_domain": "real"
+    }
+  },
+  "assumptions": [
+    {
+      "id": "nonnegative-cosine",
+      "kind": "parameter_range",
+      "description": "Choosing the positive root requires cos(theta)>=0 at the selected angle.",
+      "condition_ids": [
+        "parameter-theta"
+      ],
+      "predicate": {
+        "left": {
+          "source": "cos(theta)",
+          "latex": "\\cos{\\left(\\theta \\right)}"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "A square root cannot choose the cosine quadrant",
+      "description": "Apply the stated original method with its exact hypotheses.",
+      "assumption_ids": [
+        "nonnegative-cosine"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "pythagorean-rearrangement",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\cos^2\\theta+\\sin^2\\theta=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\cos^2\\theta=1-\\sin^2\\theta"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "choose-positive-root",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\cos^2\\theta=1-\\sin^2\\theta"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\cos\\theta=\\sqrt{1-\\sin^2\\theta}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "nonnegative-cosine"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "evaluate-positive-root",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "\\sqrt{1-\\sin^2\\theta}"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\frac12"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    }
+  ],
+  "conclusion": {
+    "source": null,
+    "latex": "1 \\cdot \\frac{1}{2}"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "second-quadrant",
+      "condition_id": "parameter-theta",
+      "type": "parameter_value",
+      "description": "Set theta=2*pi/3.",
+      "allowed_values": [
+        {
+          "source": "2*pi/3",
+          "latex": "\\frac{2 \\pi}{3}"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "first-quadrant-control",
+      "condition_id": "parameter-theta",
+      "type": "parameter_value",
+      "description": "Set theta=pi/6.",
+      "allowed_values": [
+        {
+          "source": "pi/6",
+          "latex": "\\frac{\\pi}{6}"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "The exact cosine is the listed reference value. Taking the nonnegative square root returns abs(cos(theta)); evaluation of that root is locally correct even when it has the wrong sign for cosine."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-pythagorean-rearrangement",
+      "kind": "expression_identity",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "pythagorean-rearrangement"
+        }
+      ],
+      "description": "Independently verify expression_identity within its declared mathematical scope.",
+      "parameters": {
+        "operation": "expression_identity",
+        "left": {
+          "source": "cos(theta)**2",
+          "latex": "\\cos^{2}{\\left(\\theta \\right)}"
+        },
+        "right": {
+          "source": "1-sin(theta)**2",
+          "latex": "1 - \\sin^{2}{\\left(\\theta \\right)}"
+        },
+        "value_domain": "real"
+      }
+    },
+    {
+      "id": "check-choose-positive-root",
+      "kind": "expression_identity",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "choose-positive-root"
+        }
+      ],
+      "description": "Independently verify expression_identity within its declared mathematical scope.",
+      "parameters": {
+        "operation": "expression_identity",
+        "left": {
+          "source": "cos(theta)",
+          "latex": "\\cos{\\left(\\theta \\right)}"
+        },
+        "right": {
+          "source": "sqrt(1-sin(theta)**2)",
+          "latex": "\\sqrt{1 - \\sin^{2}{\\left(\\theta \\right)}}"
+        },
+        "value_domain": "real"
+      }
+    },
+    {
+      "id": "check-evaluate-positive-root",
+      "kind": "evaluate_scalar",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "evaluate-positive-root"
+        }
+      ],
+      "description": "Independently verify evaluate_scalar within its declared mathematical scope.",
+      "parameters": {
+        "operation": "evaluate_scalar",
+        "expression": {
+          "source": "sqrt(1-sin(theta)**2)",
+          "latex": "\\sqrt{1 - \\sin^{2}{\\left(\\theta \\right)}}"
+        },
+        "value_domain": "real"
+      }
+    }
+  ],
+  "explanation_fragments": [
+    {
+      "id": "boundary-explanation",
+      "evidence_keys": [
+        "check-choose-positive-root"
+      ],
+      "text": "Taking a positive square root recovers the absolute value, not the sign of cosine. Use the actual quadrant.",
+      "when": [
+        {
+          "rule_id": "check-choose-positive-root",
+          "outcome": "identity_false"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independent mathematical review of 06-10 approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  }
+}

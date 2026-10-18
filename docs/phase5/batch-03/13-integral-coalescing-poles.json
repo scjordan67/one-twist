@@ -1,0 +1,526 @@
+{
+  "draft_version": 1,
+  "matrix_number": 13,
+  "id": "integral-coalescing-poles",
+  "topic": "Integration",
+  "title": "A repeated pole needs a different partial-fraction form",
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Private detailed mathematics awaiting Claude Code review. No batch-03 checker, IVP model or publication is implemented."
+  },
+  "original_problem": {
+    "statement": "Evaluate the proper real integral on [2,3], initially a=1. The poles lie outside this interval in every declared case.",
+    "expression": {
+      "source": null,
+      "latex": "\\int_2^3\\frac{dx}{x(x-a)}"
+    },
+    "goal": "Evaluate the proper real integral on [2,3], initially a=1. The poles lie outside this interval in every declared case.",
+    "variables": {
+      "x": "real",
+      "alpha": "real",
+      "beta": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "pole-separation",
+        "parameter_name": "a",
+        "description": "The given real parameter a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "a",
+          "latex": "a"
+        }
+      }
+    ],
+    "computation": {
+      "kind": "integral",
+      "variable": "x",
+      "integrand": {
+        "source": "1/(x*(x-a))",
+        "latex": "\\frac{1}{x \\left(- a + x\\right)}"
+      },
+      "lower": {
+        "source": "2",
+        "latex": "2"
+      },
+      "upper": {
+        "source": "3",
+        "latex": "3"
+      }
+    },
+    "well_formedness": null
+  },
+  "proposed_computation": {
+    "kind": "integral",
+    "variable": "x",
+    "integrand": {
+      "source": "1/(x*(x-a))",
+      "latex": "\\frac{1}{x \\left(- a + x\\right)}"
+    },
+    "lower": {
+      "source": "2",
+      "latex": "2"
+    },
+    "upper": {
+      "source": "3",
+      "latex": "3"
+    }
+  },
+  "assumptions": [
+    {
+      "id": "distinct-poles",
+      "kind": "nonzero",
+      "description": "The distinct-simple-pole ansatz and its 1/a coefficients require a!=0.",
+      "condition_ids": [
+        "pole-separation"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "closed-interval-regularity",
+      "kind": "continuity_on_interval",
+      "description": "The actual integrand must be continuous on [2,3] for proper endpoint evaluation.",
+      "condition_ids": [
+        "pole-separation"
+      ],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Partial fractions",
+      "description": "The displayed derivation uses distinct simple poles. A verified repeated-pole ansatz can repair the same partial-fraction technique.",
+      "assumption_ids": [
+        "distinct-poles",
+        "closed-interval-regularity"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "choose-distinct-pole-form",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\frac1{x(x-a)}"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\frac{\\alpha}{x}+\\frac{\\beta}{x-a}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "solve-distinct-coefficients",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "1=\\alpha(x-a)+\\beta x"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\alpha=-\\frac1a,\\quad\\beta=\\frac1a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "integrate-distinct-terms",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "-\\frac1{ax}+\\frac1{a(x-a)}"
+      },
+      "output": {
+        "source": null,
+        "latex": "F_a(x)=\\frac{\\log|x-a|-\\log|x|}{a}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "evaluate-distinct-form",
+      "number": 4,
+      "input": {
+        "source": null,
+        "latex": "F_a(3)-F_a(2)"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\log\\frac43"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles",
+        "closed-interval-regularity"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "merge-poles",
+      "condition_id": "pole-separation",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "0",
+        "latex": "0"
+      },
+      "description": "Merge the simple poles at zero."
+    },
+    {
+      "id": "negative-separation",
+      "condition_id": "pole-separation",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "-1",
+        "latex": "-1"
+      },
+      "description": "Keep two distinct poles outside [2,3]."
+    }
+  ],
+  "planned_checks": [
+    {
+      "operation": "two_pole_ansatz",
+      "step_id": "choose-distinct-pole-form",
+      "variable": "x",
+      "coefficient_names": [
+        "alpha",
+        "beta"
+      ],
+      "ansatz": {
+        "source": "alpha/x+beta/(x-a)",
+        "latex": "\\frac{\\alpha}{x} + \\frac{\\beta}{- a + x}"
+      }
+    },
+    {
+      "operation": "two_pole_coefficients",
+      "step_id": "solve-distinct-coefficients",
+      "coefficient_values": {
+        "alpha": {
+          "source": "-1/a",
+          "latex": "- \\frac{1}{a}"
+        },
+        "beta": {
+          "source": "1/a",
+          "latex": "\\frac{1}{a}"
+        }
+      }
+    },
+    {
+      "operation": "two_pole_primitive",
+      "step_id": "integrate-distinct-terms",
+      "primitive": {
+        "source": "(log(abs(x-a))-log(abs(x)))/a",
+        "latex": "\\frac{- \\log{\\left(\\left|{x}\\right| \\right)} + \\log{\\left(\\left|{a - x}\\right| \\right)}}{a}"
+      }
+    },
+    {
+      "operation": "two_pole_endpoint_value",
+      "step_id": "evaluate-distinct-form",
+      "expression": {
+        "source": "(log(abs(3-a))-log(3)-log(abs(2-a))+log(2))/a",
+        "latex": "\\frac{\\log{\\left(\\left|{a - 3}\\right| \\right)} - \\log{\\left(\\left|{a - 2}\\right| \\right)} - \\log{\\left(3 \\right)} + \\log{\\left(2 \\right)}}{a}"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "a": "1"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(4/3)",
+          "latex": "\\log{\\left(\\frac{4}{3} \\right)}"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(4/3)",
+          "latex": "\\log{\\left(\\frac{4}{3} \\right)}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "choose-distinct-pole-form": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "solve-distinct-coefficients": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "integrate-distinct-terms": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-distinct-form": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Matching constant coefficients gives alpha+beta=0 and -a*alpha=1. At a=0 these are inconsistent; the actual integrand is 1/x^2, continuous on [2,3]. No integral divergence is present."
+      ]
+    },
+    {
+      "id": "coincident-poles",
+      "change_id": "merge-poles",
+      "parameter_values": {
+        "a": "0"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "1/6",
+          "latex": "\\frac{1}{6}"
+        }
+      },
+      "derivation_claim": {
+        "status": "undefined",
+        "value": {
+          "source": null,
+          "latex": "\\text{The distinct-pole formula divides by zero}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "choose-distinct-pole-form": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "solve-distinct-coefficients": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "integrate-distinct-terms": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "evaluate-distinct-form": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Needs Checking"
+          ],
+          "remediation": "Replace the collapsed distinct-pole ansatz by alpha/x+beta/x^2; verify alpha=0,beta=1 and integrate -1/x."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": "choose-distinct-pole-form",
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Matching constant coefficients gives alpha+beta=0 and -a*alpha=1. At a=0 these are inconsistent; the actual integrand is 1/x^2, continuous on [2,3]. No integral divergence is present."
+      ],
+      "verified_repair": {
+        "ansatz": {
+          "source": "alpha/x+beta/x**2",
+          "latex": "\\frac{\\alpha}{x} + \\frac{\\beta}{x^{2}}"
+        },
+        "coefficients": {
+          "alpha": "0",
+          "beta": "1"
+        },
+        "primitive": {
+          "source": "-1/x",
+          "latex": "- \\frac{1}{x}"
+        },
+        "value": {
+          "source": "1/6",
+          "latex": "\\frac{1}{6}"
+        }
+      }
+    },
+    {
+      "id": "distinct-control",
+      "change_id": "negative-separation",
+      "parameter_values": {
+        "a": "-1"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(9/8)",
+          "latex": "\\log{\\left(\\frac{9}{8} \\right)}"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(9/8)",
+          "latex": "\\log{\\left(\\frac{9}{8} \\right)}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "choose-distinct-pole-form": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "solve-distinct-coefficients": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "integrate-distinct-terms": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-distinct-form": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Matching constant coefficients gives alpha+beta=0 and -a*alpha=1. At a=0 these are inconsistent; the actual integrand is 1/x^2, continuous on [2,3]. No integral divergence is present."
+      ]
+    }
+  ],
+  "coefficient_scope": "alpha and beta are constants independent of x, not arbitrary functions.",
+  "planned_outcome_checks": [
+    {
+      "operation": "definite_integral",
+      "verify_repeated_pole_repair_from_actual_denominator": true
+    }
+  ]
+}

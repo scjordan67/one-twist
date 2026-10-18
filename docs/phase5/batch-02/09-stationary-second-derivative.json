@@ -1,0 +1,373 @@
+{
+  "draft_version": 1,
+  "matrix_number": 9,
+  "id": "stationary-second-derivative",
+  "topic": "Differentiation",
+  "title": "A zero second derivative needs another test",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independent mathematical review of 06-10 approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  },
+  "original_problem": {
+    "statement": "Classify the stationary point x=0 of f_a(x)=x^3+a*x*x, initially a=1.",
+    "expression": {
+      "latex": "f_a(x)=x^3+ax^2"
+    },
+    "goal": "Classify the stationary point x=0 of f_a(x)=x^3+a*x*x, initially a=1.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-a",
+        "parameter_name": "a",
+        "description": "The value of a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [],
+    "computation": null,
+    "well_formedness": null
+  },
+  "proposed_computation": {
+    "kind": "stationary_point",
+    "variable": "x",
+    "expression": {
+      "source": "x**3+a*x**2",
+      "latex": "x**3+a*x**2"
+    },
+    "point": {
+      "source": "0",
+      "latex": "0"
+    }
+  },
+  "assumptions": [
+    {
+      "id": "strict-positive-second",
+      "kind": "parameter_range",
+      "description": "The strict second-derivative minimum test requires f''(0)=2a>0.",
+      "condition_ids": [
+        "parameter-a"
+      ],
+      "predicate": {
+        "left": {
+          "source": "2*a",
+          "latex": "2*a"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "A zero second derivative needs another test",
+      "description": "Apply the stated original method with its exact hypotheses.",
+      "assumption_ids": [
+        "strict-positive-second"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "establish-stationary",
+      "number": 1,
+      "input": {
+        "latex": "f_a(x)=x^3+ax^2"
+      },
+      "output": {
+        "latex": "f'_a(0)=0"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "compute-second-derivative",
+      "number": 2,
+      "input": {
+        "latex": "f''_a(x)=6x+2a"
+      },
+      "output": {
+        "latex": "f''_a(0)=2a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "claim-local-minimum",
+      "number": 3,
+      "input": {
+        "latex": "f'_a(0)=0,\\quad f''_a(0)=2a"
+      },
+      "output": {
+        "latex": "x=0\\text{ is a strict local minimum}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "strict-positive-second"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "stationary-inflection",
+      "condition_id": "parameter-a",
+      "type": "parameter_zero",
+      "new_value": {
+        "source": "0",
+        "latex": "0"
+      },
+      "description": "Set a=0."
+    },
+    {
+      "id": "positive-control",
+      "condition_id": "parameter-a",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "2",
+        "latex": "2"
+      },
+      "description": "Set a=2."
+    }
+  ],
+  "planned_checks": [
+    {
+      "operation": "stationary_point_check",
+      "step_id": "establish-stationary",
+      "expression": {
+        "source": "x**3+a*x**2",
+        "latex": "x**3+a*x**2"
+      },
+      "variable": "x",
+      "point": {
+        "source": "0",
+        "latex": "0"
+      }
+    },
+    {
+      "operation": "second_derivative_value",
+      "step_id": "compute-second-derivative",
+      "expression": {
+        "source": "x**3+a*x**2",
+        "latex": "x**3+a*x**2"
+      },
+      "variable": "x",
+      "point": {
+        "source": "0",
+        "latex": "0"
+      }
+    },
+    {
+      "operation": "claim_stationary_classification",
+      "step_id": "claim-local-minimum",
+      "classification": "local_minimum",
+      "method": "strict_second_derivative"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "a": "1"
+      },
+      "reference_outcome": {
+        "status": "classification",
+        "classification": "local_minimum"
+      },
+      "derivation_claim": {
+        "status": "classification",
+        "classification": "local_minimum"
+      },
+      "expected_report": {
+        "step": {
+          "establish-stationary": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "compute-second-derivative": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-local-minimum": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "classification",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "f'(0)=0 and f''(0)=2a are exact in all scenarios. For a>0, f(x)-f(0)=x*x*(x+a)>0 whenever 0<abs(x)<a/2.",
+        "At a=0, f(h)=h^3>0 and f(-h)=-h^3<0 for every h>0, proving it is not an extremum. f''=0 alone is only inconclusive, not this proof."
+      ]
+    },
+    {
+      "id": "stationary-inflection",
+      "change_id": "stationary-inflection",
+      "parameter_values": {
+        "a": "0"
+      },
+      "reference_outcome": {
+        "status": "classification",
+        "classification": "stationary_non_extremum"
+      },
+      "derivation_claim": {
+        "status": "classification",
+        "classification": "local_minimum"
+      },
+      "expected_report": {
+        "step": {
+          "establish-stationary": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "compute-second-derivative": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-local-minimum": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Use a first-derivative sign or neighborhood-value test when the second derivative vanishes."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "classification",
+          "changed": true
+        },
+        "first_invalid_step_id": "claim-local-minimum",
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "f'(0)=0 and f''(0)=2a are exact in all scenarios. For a>0, f(x)-f(0)=x*x*(x+a)>0 whenever 0<abs(x)<a/2.",
+        "At a=0, f(h)=h^3>0 and f(-h)=-h^3<0 for every h>0, proving it is not an extremum. f''=0 alone is only inconclusive, not this proof."
+      ]
+    },
+    {
+      "id": "positive-control",
+      "change_id": "positive-control",
+      "parameter_values": {
+        "a": "2"
+      },
+      "reference_outcome": {
+        "status": "classification",
+        "classification": "local_minimum"
+      },
+      "derivation_claim": {
+        "status": "classification",
+        "classification": "local_minimum"
+      },
+      "expected_report": {
+        "step": {
+          "establish-stationary": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "compute-second-derivative": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-local-minimum": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "classification",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "f'(0)=0 and f''(0)=2a are exact in all scenarios. For a>0, f(x)-f(0)=x*x*(x+a)>0 whenever 0<abs(x)<a/2.",
+        "At a=0, f(h)=h^3>0 and f(-h)=-h^3<0 for every h>0, proving it is not an extremum. f''=0 alone is only inconclusive, not this proof."
+      ]
+    }
+  ]
+}

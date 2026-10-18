@@ -1,0 +1,207 @@
+{
+  "id": "sample-003",
+  "title": "Derivation 03",
+  "template_id": null,
+  "problem": {
+    "statement": "Simplify f(x) = sqrt(x squared) for every real x. The square root is the nonnegative real square root.",
+    "expression": {
+      "source": null,
+      "latex": "f(x)=\\sqrt{x^2},\\quad x\\in\\mathbb{R}"
+    },
+    "goal": "Judge the claimed identity on the entire stated domain.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "x may be any real number; no sign restriction is given."
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": null
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "predicate",
+      "description": "The original variable is nonnegative.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "predicate",
+      "description": "The original variable is nonzero.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-003",
+      "kind": "predicate",
+      "description": "The original variable is nonpositive.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "le",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Radical simplification",
+      "description": "Follow the displayed sequence over the stated real domain.",
+      "assumption_ids": [
+        "premise-001"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "f(x)=\\sqrt{x^2}"
+      },
+      "output": {
+        "source": null,
+        "latex": "f(x)=\\sqrt{x\\cdot x}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Expand the square inside the radical."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "f(x)=\\sqrt{x\\cdot x}"
+      },
+      "output": {
+        "source": null,
+        "latex": "f(x)=x"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Cancel the square root with the repeated factor."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "f(x)=x"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\forall x\\in\\mathbb{R},\\quad \\sqrt{x^2}=x"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "State the identity for the given real domain."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "\\forall x\\in\\mathbb{R},\\quad \\sqrt{x^2}=x"
+  },
+  "category": "missing_condition",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "x squared equals x*x over all real numbers."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "missing_condition",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "The principal square root of x*x is abs(x), not x unless x>=0. The given domain contains negative x."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "invalid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "The universal identity is false: at x=-1 the left side is 1 and the right side is -1."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "not_sound",
+        "conclusion": "incorrect",
+        "step_id": "step-002",
+        "assumption_id": "premise-001",
+        "reason_category": "missing_sign_condition"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "By definition, the principal real square root is nonnegative.",
+      "abs(x) is nonnegative and its square is x squared, so sqrt(x squared)=abs(x) for every real x.",
+      "The proposed identity equals x only when x>=0. The counterexample x=-1 disproves the claimed all-real conclusion.",
+      "x!=0 does not repair the identity: x=-1 remains allowed. x<=0 would require -x, not x, except at zero."
+    ],
+    "actual_conclusion": {
+      "source": "abs(x)",
+      "latex": "f(x)=|x|"
+    },
+    "remediation": "Retain the stated domain and write f(x)=abs(x), or explicitly restrict the claimed identity to x>=0."
+  },
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

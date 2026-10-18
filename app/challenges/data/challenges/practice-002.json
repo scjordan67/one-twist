@@ -1,0 +1,58 @@
+{
+  "id": "practice-002",
+  "title": "Practice 02",
+  "mode": "A",
+  "prompt": "Replay the displayed original derivation as a proper-integral argument after the condition change. Identify the first invalid step as written. This asks about that derivation, not whether substitution could be repaired using limits.",
+  "template_id": "integral-endpoint",
+  "perturbation": {
+    "template_id": "integral-endpoint",
+    "rule_id": "move-upper-endpoint",
+    "condition_id": "upper-endpoint",
+    "type": "interval_endpoint",
+    "new_value": {
+      "source": "1",
+      "latex": "1"
+    }
+  },
+  "accepted_answers": [
+    {
+      "answer": {
+        "step_id": "change-variable",
+        "assumption_id": "regular-upper-bound",
+        "reason_category": "improper_endpoint"
+      },
+      "evidence_matches": [
+        {
+          "rule_id": "check-regular-bound",
+          "outcome": "improper_required"
+        },
+        {
+          "rule_id": "assumption-regular-upper-bound",
+          "outcome": "violated"
+        }
+      ]
+    },
+    {
+      "answer": {
+        "step_id": "change-variable",
+        "assumption_id": "positive-u",
+        "reason_category": "improper_endpoint"
+      },
+      "evidence_matches": [
+        {
+          "rule_id": "check-regular-bound",
+          "outcome": "improper_required"
+        },
+        {
+          "rule_id": "assumption-positive-u",
+          "outcome": "violated"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

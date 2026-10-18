@@ -1,0 +1,294 @@
+{
+  "id": "sample-002",
+  "title": "Derivation 02",
+  "template_id": "integral-endpoint",
+  "problem": {
+    "statement": "Evaluate the real definite integral with b = 3/4, using u = 1 - x.",
+    "expression": {
+      "source": null,
+      "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+    },
+    "goal": "Evaluate the integral with its endpoint conditions.",
+    "variables": {
+      "x": "real",
+      "u": "real"
+    },
+    "parameters": [
+      {
+        "name": "b",
+        "value": {
+          "source": "3/4",
+          "latex": "\\frac34"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "The upper endpoint is three quarters.",
+        "parameter_name": "b",
+        "predicate": {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "3/4",
+            "latex": "\\frac34"
+          }
+        }
+      },
+      {
+        "id": "condition-002",
+        "description": "The lower endpoint is zero."
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "1",
+          "latex": "1"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "kind": "integral",
+      "variable": "x",
+      "integrand": {
+        "source": "1/(1-x)",
+        "latex": "\\frac{1}{1-x}"
+      },
+      "lower": {
+        "source": "0",
+        "latex": "0"
+      },
+      "upper": {
+        "source": "b",
+        "latex": "b"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "continuity_on_interval",
+      "description": "The original integrand is continuous on the closed integration interval.",
+      "condition_ids": [
+        "condition-001",
+        "condition-002"
+      ],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "log_argument",
+      "description": "The transformed logarithm argument is positive throughout the interval.",
+      "condition_ids": [
+        "condition-001"
+      ],
+      "predicate": {
+        "left": {
+          "source": "u",
+          "latex": "u"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": {
+        "variable": "u",
+        "lower": {
+          "source": "1/4",
+          "latex": "\\frac14"
+        },
+        "upper": {
+          "source": "1",
+          "latex": "1"
+        }
+      }
+    },
+    {
+      "id": "premise-003",
+      "kind": "predicate",
+      "description": "The upper endpoint is negative.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "b",
+          "latex": "b"
+        },
+        "relation": "lt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Substitution",
+      "description": "Follow the displayed sequence over the stated real domain.",
+      "assumption_ids": [
+        "premise-001",
+        "premise-002"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\int_0^{3/4}\\frac{1}{1-x}\\,\\mathrm{d}x"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\int_{1/4}^{1}\\frac{1}{u}\\,\\mathrm{d}u"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001",
+        "premise-002"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "u",
+            "latex": "u"
+          },
+          "relation": "gt",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Set u=1-x, use du=-dx, and reverse the transformed limits."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\int_{1/4}^{1}\\frac{1}{u}\\,\\mathrm{d}u"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\log 1-\\log\\left(\\frac14\\right)"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-002"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "u",
+            "latex": "u"
+          },
+          "relation": "gt",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Evaluate the logarithmic primitive at the positive endpoints."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "\\log 1-\\log\\left(\\frac14\\right)"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\log 4"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Simplify the real logarithms."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "\\log 4"
+  },
+  "category": "correct",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [
+        "premise-001",
+        "premise-002"
+      ],
+      "basis": "On [0,3/4], the denominator is at least 1/4; the affine substitution is bijective and the reversed bounds are 1/4 to 1."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "valid",
+      "assumption_ids": [
+        "premise-002"
+      ],
+      "basis": "For u in [1/4,1], log(u) is a real antiderivative of 1/u and both endpoint values are finite."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "log(1)=0 and -log(1/4)=log(4)."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "sound",
+        "conclusion": "correct",
+        "step_id": null,
+        "assumption_id": null,
+        "reason_category": "no_flaw"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "1-x >= 1/4 on [0,3/4], so this is a proper integral.",
+      "u=1-x gives du=-dx and maps x=0,3/4 to u=1,1/4, respectively.",
+      "The resulting integral of 1/u on [1/4,1] equals log(1)-log(1/4)=log(4)."
+    ],
+    "actual_conclusion": {
+      "source": "log(4)",
+      "latex": "\\log 4"
+    },
+    "remediation": null
+  },
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

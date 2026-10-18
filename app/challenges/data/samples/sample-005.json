@@ -1,0 +1,284 @@
+{
+  "id": "sample-005",
+  "title": "Derivation 05",
+  "template_id": null,
+  "problem": {
+    "statement": "Solve sqrt(x) = x - 2 over the real numbers. The square root is the nonnegative real square root, so x>=0 is required.",
+    "expression": {
+      "source": null,
+      "latex": "\\sqrt{x}=x-2"
+    },
+    "goal": "Find the complete real solution set of the original equation.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "The real square root requires x>=0.",
+        "predicate": {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "sqrt(x)",
+        "latex": "\\sqrt{x}"
+      },
+      "right": {
+        "source": "x-2",
+        "latex": "x-2"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "predicate",
+      "description": "Candidates from the squared equation must also satisfy the original equation, including x-2>=0.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "x-2",
+          "latex": "x-2"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "predicate",
+      "description": "The square-root input is nonnegative.",
+      "condition_ids": [
+        "condition-001"
+      ],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-003",
+      "kind": "predicate",
+      "description": "The candidate is nonzero.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Equation transformations",
+      "description": "Follow the displayed sequence over the stated real domain.",
+      "assumption_ids": [
+        "premise-001"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\sqrt{x}=x-2"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=(x-2)^2"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "OneWayImplication",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Square both sides to obtain a necessary condition only."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "x=(x-2)^2"
+      },
+      "output": {
+        "source": null,
+        "latex": "(x-1)(x-4)=0\\ \\Longleftrightarrow\\ x\\in\\{1,4\\}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Solve the squared equation for its real candidates."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "x\\in\\{1,4\\}"
+      },
+      "output": {
+        "source": null,
+        "latex": "S_{\\mathrm{original}}=\\{1,4\\}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Accept both candidates as the complete solution set of the original equation."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "S_{\\mathrm{original}}=\\{1,4\\}"
+  },
+  "category": "flawed",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "Squaring preserves this forward implication. The step explicitly does not claim equivalence."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "The squared equation is x squared-5x+4=0, with real candidates 1 and 4, both in the square-root domain."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "invalid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "At x=1, sqrt(1)=1 but 1-2=-1; at x=4 both sides are 2. The candidate 1 is extraneous."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "not_sound",
+        "conclusion": "incorrect",
+        "step_id": "step-003",
+        "assumption_id": "premise-001",
+        "reason_category": "extraneous_root"
+      },
+      {
+        "derivation": "not_sound",
+        "conclusion": "incorrect",
+        "step_id": "step-003",
+        "assumption_id": "premise-001",
+        "reason_category": "missing_sign_condition"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "The original real square root requires x>=0 and, since it is nonnegative, the equation also implies x-2>=0.",
+      "Squaring gives a necessary polynomial condition whose roots are 1 and 4. Step 1 is a valid one-way implication, not the first flaw.",
+      "The roots of the polynomial exhaust the possible original solutions, but accepting them requires the reverse check.",
+      "At x=1 the two original sides are 1 and -1. At x=4 they are both 2. Therefore the original solution set is exactly {4}, and the first invalid step is Step 3."
+    ],
+    "actual_conclusion": {
+      "source": null,
+      "latex": "\\{4\\}"
+    },
+    "remediation": "Retain x>=2 while solving the squared equation, or substitute every candidate into the original equation and reject x=1."
+  },
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

@@ -1,0 +1,603 @@
+{
+  "draft_version": 1,
+  "matrix_number": 3,
+  "id": "squared-candidates-sign",
+  "topic": "Algebra",
+  "title": "Squaring generates candidates, not automatic solutions",
+  "difficulty": "introductory",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Formal independent mathematical and typed-contract review approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  },
+  "original_problem": {
+    "statement": "Solve sqrt(x)=x-c over the reals, initially c=0.",
+    "expression": {
+      "latex": "\\sqrt{x}=x-c"
+    },
+    "goal": "Find every original real solution, not merely roots of the squared equation.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "c",
+        "value": {
+          "source": "0",
+          "latex": "0"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-c",
+        "parameter_name": "c",
+        "description": "The value of c",
+        "predicate": {
+          "left": {
+            "source": "c",
+            "latex": "c"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "sqrt(x)",
+        "latex": "sqrt(x)"
+      },
+      "right": {
+        "source": "x-c",
+        "latex": "x-c"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "rhs-nonnegative",
+      "kind": "candidate_sign",
+      "description": "Every accepted candidate must satisfy x-c>=0 as well as x>=0.",
+      "condition_ids": [
+        "parameter-c"
+      ],
+      "predicate": {
+        "left": {
+          "source": "x-c",
+          "latex": "x-c"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "square-and-accept",
+      "name": "Squaring and candidate solving",
+      "description": "Square forward, solve completely, then justify candidate acceptance.",
+      "assumption_ids": [
+        "rhs-nonnegative"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "square-forward",
+      "number": 1,
+      "input": {
+        "latex": "\\sqrt{x}=x-c"
+      },
+      "output": {
+        "latex": "x=(x-c)^2"
+      },
+      "method_id": "square-and-accept",
+      "assumption_ids": [],
+      "transformation_kind": "OneWayImplication",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "explanation": "Squaring supplies necessary candidates; no reverse implication or completeness is claimed."
+    },
+    {
+      "id": "solve-squared-equation",
+      "number": 2,
+      "input": {
+        "latex": "x=(x-c)^2"
+      },
+      "output": {
+        "latex": "C=\\{x\\ge0:x=(x-c)^2\\}"
+      },
+      "method_id": "square-and-accept",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "explanation": "Compute every nonnegative root of the polynomial candidate equation."
+    },
+    {
+      "id": "accept-all-candidates",
+      "number": 3,
+      "input": {
+        "latex": "x\\in C"
+      },
+      "output": {
+        "latex": "S_{\\mathrm{original}}=C"
+      },
+      "method_id": "square-and-accept",
+      "assumption_ids": [
+        "rhs-nonnegative"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "explanation": "The baseline candidates pass, but accepting candidates without a sign/substitution check is unsafe after a change."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "extraneous-root",
+      "condition_id": "parameter-c",
+      "type": "parameter_value",
+      "description": "Set c=6.",
+      "new_value": {
+        "source": "6",
+        "latex": "6"
+      },
+      "choice_id": null
+    },
+    {
+      "id": "valid-control",
+      "condition_id": "parameter-c",
+      "type": "parameter_value",
+      "description": "Set c=-1/4.",
+      "new_value": {
+        "source": "-1/4",
+        "latex": "-\\frac14"
+      },
+      "choice_id": null
+    }
+  ],
+  "domain_condition": null,
+  "proposed_computation": {
+    "kind": "equation",
+    "variable": "x",
+    "left": {
+      "source": "sqrt(x)",
+      "latex": "sqrt(x)"
+    },
+    "right": {
+      "source": "x-c",
+      "latex": "x-c"
+    }
+  },
+  "planned_checks": [
+    {
+      "id": "check-squaring",
+      "step_id": "square-forward",
+      "parameters": {
+        "operation": "equation_transform",
+        "before": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "sqrt(x)",
+            "latex": "sqrt(x)"
+          },
+          "right": {
+            "source": "x-c",
+            "latex": "x-c"
+          }
+        },
+        "after": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "(x-c)**2",
+            "latex": "(x-c)**2"
+          }
+        }
+      }
+    },
+    {
+      "id": "check-candidate-solving",
+      "step_id": "solve-squared-equation",
+      "parameters": {
+        "operation": "solve_candidates",
+        "equation": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "(x-c)**2",
+            "latex": "(x-c)**2"
+          }
+        }
+      }
+    },
+    {
+      "id": "check-original-acceptance",
+      "step_id": "accept-all-candidates",
+      "parameters": {
+        "operation": "candidate_acceptance",
+        "candidates_from": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "(x-c)**2",
+            "latex": "(x-c)**2"
+          }
+        },
+        "original": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "sqrt(x)",
+            "latex": "sqrt(x)"
+          },
+          "right": {
+            "source": "x-c",
+            "latex": "x-c"
+          }
+        }
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "c": "0"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "0",
+            "latex": "0"
+          },
+          {
+            "source": "1",
+            "latex": "1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "0",
+            "latex": "0"
+          },
+          {
+            "source": "1",
+            "latex": "1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "square-forward": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "solve-squared-equation": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "accept-all-candidates": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": false
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The squared equation x=x^2 has candidates 0,1. Both satisfy sqrt(x)=x."
+      ]
+    },
+    {
+      "id": "extraneous-root",
+      "change_id": "extraneous-root",
+      "parameter_values": {
+        "c": "6"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "9",
+            "latex": "9"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "4",
+            "latex": "4"
+          },
+          {
+            "source": "9",
+            "latex": "9"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "square-forward": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "solve-squared-equation": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "accept-all-candidates": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Check every candidate in the original equation, or retain x-c>=0 before the reverse implication."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "first_invalid_step_id": "accept-all-candidates",
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "x=(x-6)^2 factors as (x-4)(x-9)=0. At 4, sqrt(4)=2 but 4-6=-2; at 9 both sides equal 3.",
+        "Retaining x>=6 restores the reverse implication. Squaring and solving the polynomial remain valid; accepting 4 as an original solution is the first flaw."
+      ]
+    },
+    {
+      "id": "valid-control",
+      "change_id": "valid-control",
+      "parameter_values": {
+        "c": "-1/4"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "1/4",
+            "latex": "1/4"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "1/4",
+            "latex": "1/4"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "square-forward": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "solve-squared-equation": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "accept-all-candidates": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The squared polynomial is (x-1/4)^2. At x=1/4 both original sides equal 1/2; the repeated candidate is genuine."
+      ]
+    }
+  ],
+  "planned_assumption_checks": {
+    "rhs-nonnegative": {
+      "operation": "candidate_predicate",
+      "variable": "x",
+      "candidates_from": {
+        "kind": "equation",
+        "variable": "x",
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "right": {
+          "source": "(x-c)**2",
+          "latex": "(x-c)**2"
+        }
+      },
+      "required": {
+        "left": {
+          "source": "x-c",
+          "latex": "x-c"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      }
+    }
+  }
+}

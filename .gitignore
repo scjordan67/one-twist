@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+# Node
+node_modules/
+.vite/
+coverage/
+*.tsbuildinfo
+test-results/
+playwright-report/
+npm-debug.log*
+yarn-error.log*
+# Local configuration and tooling
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.claude/
+.codex/
+.agents/
+.npm-cache/
+.uv-cache/

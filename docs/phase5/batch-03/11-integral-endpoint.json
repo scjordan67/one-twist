@@ -1,0 +1,963 @@
+{
+  "draft_version": 1,
+  "matrix_number": 11,
+  "id": "integral-endpoint",
+  "topic": "Integration",
+  "title": "A substitution reaches a singular endpoint",
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Private detailed mathematics awaiting Claude Code review. No batch-03 checker, IVP model or publication is implemented."
+  },
+  "original_problem": {
+    "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+    "expression": {
+      "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+    },
+    "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+    "variables": {
+      "x": "real",
+      "u": "real"
+    },
+    "parameters": [
+      {
+        "name": "b",
+        "value": {
+          "source": "1/2",
+          "latex": "\\frac{1}{2}"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "upper-endpoint",
+        "parameter_name": "b",
+        "description": "The upper endpoint b",
+        "predicate": {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1/2",
+            "latex": "\\frac{1}{2}"
+          }
+        }
+      },
+      {
+        "id": "lower-endpoint",
+        "description": "The lower endpoint remains zero."
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "1",
+          "latex": "1"
+        }
+      }
+    ],
+    "well_formedness": "WellFormed",
+    "computation": {
+      "kind": "integral",
+      "variable": "x",
+      "integrand": {
+        "source": "1/(1-x)",
+        "latex": "1/(1-x)"
+      },
+      "lower": {
+        "source": "0",
+        "latex": "0"
+      },
+      "upper": {
+        "source": "b",
+        "latex": "b"
+      }
+    }
+  },
+  "proposed_computation": {
+    "kind": "integral",
+    "variable": "x",
+    "integrand": {
+      "source": "1/(1-x)",
+      "latex": "1/(1-x)"
+    },
+    "lower": {
+      "source": "0",
+      "latex": "0"
+    },
+    "upper": {
+      "source": "b",
+      "latex": "b"
+    }
+  },
+  "assumptions": [
+    {
+      "id": "regular-upper-bound",
+      "kind": "continuity_on_interval",
+      "description": "For the original positive upper bound below 1, the integrand is continuous on the closed interval.",
+      "condition_ids": [
+        "upper-endpoint",
+        "lower-endpoint"
+      ],
+      "predicate": {
+        "left": {
+          "source": "b",
+          "latex": "b"
+        },
+        "relation": "lt",
+        "right": {
+          "source": "1",
+          "latex": "1"
+        }
+      },
+      "state": "assumed_true"
+    },
+    {
+      "id": "positive-bound",
+      "kind": "parameter_range",
+      "description": "The listed examples have b > 0.",
+      "condition_ids": [
+        "upper-endpoint"
+      ],
+      "predicate": {
+        "left": {
+          "source": "b",
+          "latex": "b"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "assumed_true"
+    },
+    {
+      "id": "positive-u",
+      "kind": "log_argument",
+      "description": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined.",
+      "condition_ids": [
+        "upper-endpoint"
+      ],
+      "predicate": {
+        "left": {
+          "source": "u",
+          "latex": "u"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "interval": {
+        "variable": "u",
+        "lower": {
+          "source": "1-b",
+          "latex": "1-b"
+        },
+        "upper": {
+          "source": "1",
+          "latex": "1"
+        }
+      },
+      "state": "assumed_true"
+    }
+  ],
+  "methods": [
+    {
+      "id": "substitution",
+      "name": "Substitution",
+      "description": "Use u = 1 - x and transform both endpoints.",
+      "assumption_ids": [
+        "regular-upper-bound",
+        "positive-bound",
+        "positive-u"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "change-variable",
+      "number": 1,
+      "input": {
+        "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+      },
+      "output": {
+        "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+      },
+      "method_id": "substitution",
+      "assumption_ids": [
+        "regular-upper-bound",
+        "positive-bound",
+        "positive-u"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "u",
+            "latex": "u"
+          },
+          "relation": "gt",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "explanation": "Under the original bounds this is a proper-integral substitution with du = -dx."
+    },
+    {
+      "id": "evaluate-log",
+      "number": 2,
+      "input": {
+        "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+      },
+      "output": {
+        "source": "-log(1-b)",
+        "latex": "-\\log(1-b)"
+      },
+      "method_id": "substitution",
+      "assumption_ids": [
+        "regular-upper-bound",
+        "positive-u"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "lt",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      ],
+      "explanation": "The real logarithm may be evaluated at the positive endpoint 1-b. Direct evaluation at zero is not legitimate."
+    },
+    {
+      "id": "substitute-bound",
+      "number": 3,
+      "input": {
+        "latex": "-\\log(1-b),\\quad b=\\frac12"
+      },
+      "output": {
+        "source": "log(2)",
+        "latex": "\\log 2"
+      },
+      "method_id": "substitution",
+      "assumption_ids": [
+        "regular-upper-bound",
+        "positive-u"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "lt",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      ],
+      "explanation": "The original integral is log 2."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "endpoint-at-pole",
+      "condition_id": "upper-endpoint",
+      "type": "interval_endpoint",
+      "new_value": {
+        "source": "1",
+        "latex": "1"
+      },
+      "description": "Move only b to 1.",
+      "rule_id": "move-upper-endpoint"
+    },
+    {
+      "id": "regular-endpoint",
+      "condition_id": "upper-endpoint",
+      "type": "interval_endpoint",
+      "new_value": {
+        "source": "3/4",
+        "latex": "\\frac{3}{4}"
+      },
+      "description": "Move only b to 3/4.",
+      "rule_id": "move-upper-endpoint"
+    }
+  ],
+  "planned_checks": [
+    {
+      "id": "check-regular-bound",
+      "operation": "substitution",
+      "step_id": "change-variable",
+      "parameters": {
+        "operation": "substitution",
+        "mapping": {
+          "source": "1-x",
+          "latex": "1-x"
+        },
+        "transformed": {
+          "kind": "integral",
+          "variable": "u",
+          "integrand": {
+            "source": "-1/u",
+            "latex": "-1/u"
+          },
+          "lower": {
+            "source": "1",
+            "latex": "1"
+          },
+          "upper": {
+            "source": "1-b",
+            "latex": "1-b"
+          }
+        }
+      }
+    },
+    {
+      "id": "check-antiderivative",
+      "operation": "antiderivative",
+      "step_id": "evaluate-log",
+      "parameters": {
+        "operation": "antiderivative",
+        "primitive": {
+          "source": "-log(1-x)",
+          "latex": "-\\log(1-x)"
+        }
+      }
+    },
+    {
+      "id": "check-bound-value",
+      "operation": "evaluate_expression",
+      "step_id": "substitute-bound",
+      "parameters": {
+        "operation": "evaluate_expression",
+        "expression": {
+          "source": "-log(1-b)",
+          "latex": "-\\log(1-b)"
+        }
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "b": "1/2"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(2)",
+          "latex": "\\log{\\left(2 \\right)}"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(2)",
+          "latex": "\\log{\\left(2 \\right)}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "change-variable": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-log": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "substitute-bound": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The primitive is -log(1-x) on x<1. At b=1 the separate upper one-sided limit is +infinity; direct real logarithm evaluation at zero is undefined."
+      ]
+    },
+    {
+      "id": "singular-endpoint",
+      "change_id": "endpoint-at-pole",
+      "parameter_values": {
+        "b": "1"
+      },
+      "reference_outcome": {
+        "status": "divergent",
+        "value": {
+          "source": null,
+          "latex": "+\\infty"
+        },
+        "signed_direction": "positive"
+      },
+      "derivation_claim": {
+        "status": "undefined",
+        "value": {
+          "source": null,
+          "latex": "-\\log 0\\ \\text{is not a finite real endpoint value}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "change-variable": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "evaluate-log": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "substitute-bound": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Needs Checking"
+          ],
+          "remediation": "Use regular truncated substitution intervals and separately evaluate the one-sided improper-integral limit."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": "change-variable",
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "Divergent"
+      },
+      "mathematical_basis": [
+        "The primitive is -log(1-x) on x<1. At b=1 the separate upper one-sided limit is +infinity; direct real logarithm evaluation at zero is undefined."
+      ]
+    },
+    {
+      "id": "regular-control",
+      "change_id": "regular-endpoint",
+      "parameter_values": {
+        "b": "3/4"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(4)",
+          "latex": "\\log{\\left(4 \\right)}"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "log(4)",
+          "latex": "\\log{\\left(4 \\right)}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "change-variable": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-log": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "substitute-bound": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The primitive is -log(1-x) on x<1. At b=1 the separate upper one-sided limit is +infinity; direct real logarithm evaluation at zero is undefined."
+      ]
+    }
+  ],
+  "existing_template_snapshot": {
+    "schema_version": 1,
+    "id": "integral-endpoint",
+    "title": "A substitution reaches a singular endpoint",
+    "tags": [
+      "Integration",
+      "substitution",
+      "improper integrals"
+    ],
+    "difficulty": "intermediate",
+    "original_problem": {
+      "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+      "expression": {
+        "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+      },
+      "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+      "variables": {
+        "x": "real",
+        "u": "real"
+      },
+      "parameters": [
+        {
+          "name": "b",
+          "value": {
+            "source": "1/2",
+            "latex": "\\frac{1}{2}"
+          },
+          "domain": "real"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "upper-endpoint",
+          "parameter_name": "b",
+          "description": "The upper endpoint b",
+          "predicate": {
+            "left": {
+              "source": "b",
+              "latex": "b"
+            },
+            "relation": "eq",
+            "right": {
+              "source": "1/2",
+              "latex": "\\frac{1}{2}"
+            }
+          }
+        },
+        {
+          "id": "lower-endpoint",
+          "description": "The lower endpoint remains zero."
+        }
+      ],
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      ],
+      "well_formedness": "WellFormed",
+      "computation": {
+        "kind": "integral",
+        "variable": "x",
+        "integrand": {
+          "source": "1/(1-x)",
+          "latex": "1/(1-x)"
+        },
+        "lower": {
+          "source": "0",
+          "latex": "0"
+        },
+        "upper": {
+          "source": "b",
+          "latex": "b"
+        }
+      }
+    },
+    "assumptions": [
+      {
+        "id": "regular-upper-bound",
+        "kind": "continuity_on_interval",
+        "description": "For the original positive upper bound below 1, the integrand is continuous on the closed interval.",
+        "condition_ids": [
+          "upper-endpoint",
+          "lower-endpoint"
+        ],
+        "predicate": {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "lt",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "state": "assumed_true"
+      },
+      {
+        "id": "positive-bound",
+        "kind": "parameter_range",
+        "description": "The listed examples have b > 0.",
+        "condition_ids": [
+          "upper-endpoint"
+        ],
+        "predicate": {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "gt",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        },
+        "state": "assumed_true"
+      },
+      {
+        "id": "positive-u",
+        "kind": "log_argument",
+        "description": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined.",
+        "condition_ids": [
+          "upper-endpoint"
+        ],
+        "predicate": {
+          "left": {
+            "source": "u",
+            "latex": "u"
+          },
+          "relation": "gt",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        },
+        "interval": {
+          "variable": "u",
+          "lower": {
+            "source": "1-b",
+            "latex": "1-b"
+          },
+          "upper": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "state": "assumed_true"
+      }
+    ],
+    "methods": [
+      {
+        "id": "substitution",
+        "name": "Substitution",
+        "description": "Use u = 1 - x and transform both endpoints.",
+        "assumption_ids": [
+          "regular-upper-bound",
+          "positive-bound",
+          "positive-u"
+        ]
+      }
+    ],
+    "correct_steps": [
+      {
+        "id": "change-variable",
+        "number": 1,
+        "input": {
+          "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+        },
+        "output": {
+          "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+        },
+        "method_id": "substitution",
+        "assumption_ids": [
+          "regular-upper-bound",
+          "positive-bound",
+          "positive-u"
+        ],
+        "transformation_kind": "Equivalent",
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "u",
+              "latex": "u"
+            },
+            "relation": "gt",
+            "right": {
+              "source": "0",
+              "latex": "0"
+            }
+          }
+        ],
+        "explanation": "Under the original bounds this is a proper-integral substitution with du = -dx."
+      },
+      {
+        "id": "evaluate-log",
+        "number": 2,
+        "input": {
+          "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+        },
+        "output": {
+          "source": "-log(1-b)",
+          "latex": "-\\log(1-b)"
+        },
+        "method_id": "substitution",
+        "assumption_ids": [
+          "regular-upper-bound",
+          "positive-u"
+        ],
+        "transformation_kind": "Equivalent",
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "b",
+              "latex": "b"
+            },
+            "relation": "lt",
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        ],
+        "explanation": "The real logarithm may be evaluated at the positive endpoint 1-b. Direct evaluation at zero is not legitimate."
+      },
+      {
+        "id": "substitute-bound",
+        "number": 3,
+        "input": {
+          "latex": "-\\log(1-b),\\quad b=\\frac12"
+        },
+        "output": {
+          "source": "log(2)",
+          "latex": "\\log 2"
+        },
+        "method_id": "substitution",
+        "assumption_ids": [
+          "regular-upper-bound",
+          "positive-u"
+        ],
+        "transformation_kind": "Equivalent",
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "b",
+              "latex": "b"
+            },
+            "relation": "lt",
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        ],
+        "explanation": "The original integral is log 2."
+      }
+    ],
+    "conclusion": {
+      "source": "log(2)",
+      "latex": "\\log 2"
+    },
+    "allowed_perturbations": [
+      {
+        "id": "move-upper-endpoint",
+        "condition_id": "upper-endpoint",
+        "type": "interval_endpoint",
+        "description": "Replace only the upper endpoint b.",
+        "allowed_values": [
+          {
+            "source": "1",
+            "latex": "1"
+          },
+          {
+            "source": "3/4",
+            "latex": "\\frac34"
+          }
+        ]
+      }
+    ],
+    "expected_failure_mechanisms": [
+      "At b = 1, the original proper-integral argument no longer applies. Substitution can still be used with a one-sided improper-integral limit; the integral diverges to positive infinity. At b = 3/4 the method is still valid but the value is log 4."
+    ],
+    "verification_rules": [
+      {
+        "id": "check-regular-bound",
+        "kind": "substitution",
+        "refs": [
+          {
+            "kind": "assumption",
+            "id": "regular-upper-bound"
+          },
+          {
+            "kind": "step",
+            "id": "change-variable"
+          }
+        ],
+        "description": "Check the affine substitution, transformed bounds and closed-interval continuity.",
+        "parameters": {
+          "operation": "substitution",
+          "mapping": {
+            "source": "1-x",
+            "latex": "1-x"
+          },
+          "transformed": {
+            "kind": "integral",
+            "variable": "u",
+            "integrand": {
+              "source": "-1/u",
+              "latex": "-1/u"
+            },
+            "lower": {
+              "source": "1",
+              "latex": "1"
+            },
+            "upper": {
+              "source": "1-b",
+              "latex": "1-b"
+            }
+          }
+        }
+      },
+      {
+        "id": "check-antiderivative",
+        "kind": "antiderivative",
+        "refs": [
+          {
+            "kind": "step",
+            "id": "evaluate-log"
+          }
+        ],
+        "description": "Differentiate the primitive and check that direct endpoint evaluation is permitted.",
+        "parameters": {
+          "operation": "antiderivative",
+          "primitive": {
+            "source": "-log(1-x)",
+            "latex": "-\\log(1-x)"
+          }
+        }
+      },
+      {
+        "id": "check-bound-value",
+        "kind": "evaluate_expression",
+        "refs": [
+          {
+            "kind": "step",
+            "id": "substitute-bound"
+          }
+        ],
+        "description": "Recompute the finite logarithm value, retaining its real domain.",
+        "parameters": {
+          "operation": "evaluate_expression",
+          "expression": {
+            "source": "-log(1-b)",
+            "latex": "-\\log(1-b)"
+          }
+        }
+      },
+      {
+        "id": "check-improper-limit",
+        "kind": "one_sided_limit",
+        "refs": [
+          {
+            "kind": "condition",
+            "id": "upper-endpoint"
+          }
+        ],
+        "description": "Independently compute endpoint limits; never use a Cauchy principal value."
+      }
+    ],
+    "explanation_fragments": [
+      {
+        "id": "improper-explanation",
+        "evidence_keys": [
+          "check-regular-bound",
+          "check-improper-limit"
+        ],
+        "when": [
+          {
+            "rule_id": "check-regular-bound",
+            "outcome": "improper_required"
+          },
+          {
+            "rule_id": "check-improper-limit",
+            "outcome": "divergent"
+          }
+        ],
+        "text": "The singular endpoint requires an improper integral. The substitution itself can be retained after introducing the one-sided limit, which diverges to positive infinity."
+      }
+    ],
+    "review": {
+      "status": "draft",
+      "basis": "Phase 2 computational example. Regression checks verify log 2 at b = 1/2, log 4 at b = 3/4 and positive divergence by a separate one-sided limit at b = 1. Final Phase 5 content review is pending."
+    }
+  },
+  "planned_outcome_checks": [
+    {
+      "id": "check-improper-limit",
+      "kind": "one_sided_limit",
+      "refs": [
+        {
+          "kind": "condition",
+          "id": "upper-endpoint"
+        }
+      ],
+      "description": "Independently compute endpoint limits; never use a Cauchy principal value."
+    }
+  ],
+  "review_note": "Formal re-review only. Preserve all existing template/condition/step/rule IDs and the Phase 4 challenge bindings."
+}

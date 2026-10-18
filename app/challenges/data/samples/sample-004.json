@@ -1,0 +1,207 @@
+{
+  "id": "sample-004",
+  "title": "Derivation 04",
+  "template_id": null,
+  "problem": {
+    "statement": "Solve 2x = 2 over the real numbers. Every displayed Equivalent transformation claims equal solution sets over R; no extra sign constraint is retained.",
+    "expression": {
+      "source": null,
+      "latex": "2x=2"
+    },
+    "goal": "Judge each claimed equivalence and the final real solution set independently.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "The candidate domain is all real numbers throughout the displayed equivalences."
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "2*x",
+        "latex": "2x"
+      },
+      "right": {
+        "source": "2",
+        "latex": "2"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "reversible_transformation",
+      "description": "Squaring must preserve the reverse implication when equivalence is claimed over the stated domain.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "predicate",
+      "description": "The candidate variable is nonzero.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-003",
+      "kind": "integer_requirement",
+      "description": "The candidate variable is an integer.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Equation transformations",
+      "description": "Follow the displayed sequence over the stated real domain.",
+      "assumption_ids": [
+        "premise-001"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "2x=2"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Divide by two."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x^2=1"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Square both sides, claiming an equivalent equation over all reals."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "x^2=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Take the principal square root and claim equivalence over all reals."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "x=1"
+  },
+  "category": "wrong_derivation_right_answer",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "Division by the nonzero constant 2 is reversible."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "invalid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "x=1 has the solution set {1}, whereas x squared=1 has {-1,1}; the reverse implication fails at -1."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "invalid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "Over R, sqrt(x squared)=abs(x), so x squared=1 implies abs(x)=1, not x=1. This step drops -1."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "not_sound",
+        "conclusion": "correct",
+        "step_id": "step-002",
+        "assumption_id": "premise-001",
+        "reason_category": "irreversible_squaring"
+      },
+      {
+        "derivation": "not_sound",
+        "conclusion": "correct",
+        "step_id": "step-002",
+        "assumption_id": "premise-001",
+        "reason_category": "extraneous_root"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "The original equation 2x=2 has exactly the solution x=1.",
+      "The first transformation preserves {1}. Step 2 changes the solution set from {1} to {-1,1}; its asserted equivalence is false.",
+      "Step 3 changes {-1,1} back to {1}, again through a false equivalence. The two set errors happen to cancel in the displayed final answer.",
+      "Thus the final displayed x=1 is correct for the original problem, but the proof chain contains invalid steps; the first is Step 2."
+    ],
+    "actual_conclusion": {
+      "source": null,
+      "latex": "\\{1\\}"
+    },
+    "remediation": "After dividing by two, stop at x=1. If squaring is used, label only the forward implication and justify the reverse direction separately."
+  },
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

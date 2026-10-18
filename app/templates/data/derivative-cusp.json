@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "id": "derivative-cusp",
+  "title": "A defined function need not have a derivative",
+  "tags": [
+    "Differentiation",
+    "derivative-cusp"
+  ],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Determine the existence and value of f_t'(0) for f_t(x)=sqrt(x*x+t*t), initially t=1.",
+    "expression": {
+      "source": null,
+      "latex": "f_t(x)=\\sqrt{x^2+t^2}"
+    },
+    "goal": "Determine the existence and value of f_t'(0) for f_t(x)=sqrt(x*x+t*t), initially t=1.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "t",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-t",
+        "description": "The value of t",
+        "predicate": {
+          "left": {
+            "source": "t",
+            "latex": "t"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "t",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "derivative_at_point",
+      "variable": "x",
+      "expression": {
+        "source": "sqrt(x*x+t*t)",
+        "latex": "\\sqrt{t^{2} + x^{2}}"
+      },
+      "point": {
+        "source": "0",
+        "latex": "0"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "point-formula-defined",
+      "kind": "point_formula_defined",
+      "description": "The derivative formula may be evaluated at the requested point only if its denominator is nonzero there and the point derivative is independently justified.",
+      "condition_ids": [
+        "parameter-t"
+      ],
+      "predicate": null,
+      "state": "unchecked",
+      "interval": null,
+      "check": {
+        "operation": "point_formula_defined",
+        "variable": "x",
+        "point": {
+          "source": "0",
+          "latex": "0"
+        },
+        "formula": {
+          "source": "x/sqrt(x*x+t*t)",
+          "latex": "\\frac{x}{\\sqrt{t^{2} + x^{2}}}"
+        }
+      }
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "A defined function need not have a derivative",
+      "description": "Apply the stated original method with its exact hypotheses.",
+      "assumption_ids": [
+        "point-formula-defined"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "punctured-derivative",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "f_t(x)=\\sqrt{x^2+t^2},\\quad x\\ne0"
+      },
+      "output": {
+        "source": null,
+        "latex": "f'_t(x)=\\frac{x}{\\sqrt{x^2+t^2}},\\quad x\\ne0"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "substitute-at-zero",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "f'_t(x)=\\frac{x}{\\sqrt{x^2+t^2}}"
+      },
+      "output": {
+        "source": null,
+        "latex": "f'_t(0)=0"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "point-formula-defined"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    }
+  ],
+  "conclusion": {
+    "source": null,
+    "latex": "0"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "cusp",
+      "condition_id": "parameter-t",
+      "type": "parameter_zero",
+      "description": "Set t=0.",
+      "allowed_values": [
+        {
+          "source": "0",
+          "latex": "0"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "smooth-control",
+      "condition_id": "parameter-t",
+      "type": "parameter_value",
+      "description": "Set t=2.",
+      "allowed_values": [
+        {
+          "source": "2",
+          "latex": "2"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "For t>0 rationalization gives the quotient h/(sqrt(h*h+t*t)+t), whose two one-sided limits are zero. At t=0 the quotient is abs(h)/h, with left -1 and right 1.",
+    "The derivative formula is valid on x!=0 in every scenario; this does not authorize substitution at the excluded point. The function itself is defined everywhere."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-punctured-derivative",
+      "kind": "derivative_identity_on_domain",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "punctured-derivative"
+        }
+      ],
+      "description": "Independently verify derivative_identity_on_domain within its declared mathematical scope.",
+      "parameters": {
+        "operation": "derivative_identity_on_domain",
+        "expression": {
+          "source": "sqrt(x*x+t*t)",
+          "latex": "\\sqrt{t^{2} + x^{2}}"
+        },
+        "variable": "x",
+        "claimed_derivative": {
+          "source": "x/sqrt(x*x+t*t)",
+          "latex": "\\frac{x}{\\sqrt{t^{2} + x^{2}}}"
+        }
+      }
+    },
+    {
+      "id": "check-substitute-at-zero",
+      "kind": "derivative_point_substitution",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "substitute-at-zero"
+        }
+      ],
+      "description": "Independently verify derivative_point_substitution within its declared mathematical scope.",
+      "parameters": {
+        "operation": "derivative_point_substitution",
+        "variable": "x",
+        "point": {
+          "source": "0",
+          "latex": "0"
+        },
+        "formula": {
+          "source": "x/sqrt(x*x+t*t)",
+          "latex": "\\frac{x}{\\sqrt{t^{2} + x^{2}}}"
+        }
+      }
+    }
+  ],
+  "explanation_fragments": [
+    {
+      "id": "boundary-explanation",
+      "evidence_keys": [
+        "check-substitute-at-zero"
+      ],
+      "text": "A punctured derivative identity does not authorize substitution at its excluded point. The original left and right difference quotients decide point differentiability.",
+      "when": [
+        {
+          "rule_id": "check-substitute-at-zero",
+          "outcome": "invalid_point_substitution"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independent mathematical review of 06-10 approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "practice-005",
+  "title": "Practice 05",
+  "mode": "B",
+  "prompt": "Choose one declared change that changes the independently established conclusion. The method may remain valid; that does not prevent meeting this goal.",
+  "template_id": "linear-degeneration",
+  "goal": "change_conclusion",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

@@ -1,0 +1,96 @@
+:root { font-family: 'Segoe UI', Arial, sans-serif; color: #18352d; background: #f6f7f1; font-synthesis: none; text-rendering: optimizeLegibility; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #26624c; text-underline-offset: 4px; }
+.app-shell { max-width: 1120px; margin: auto; padding: 0 36px; }
+header { display: flex; align-items: center; gap: 16px; padding: 30px 0 24px; }
+.brand { font-weight: 800; font-size: 28px; text-decoration: none; color: #18352d; letter-spacing: -1px; }
+.brand span { color: #b7692d; padding: 0 5px; }
+.badge { font-size: 10px; letter-spacing: 1.4px; border: 1px solid #d9e0d1; border-radius: 4px; padding: 5px 8px; color: #617568; }
+nav { display: flex; flex-wrap: wrap; gap: 12px 28px; border-bottom: 1px solid #dce2d6; padding: 0 0 18px; }
+nav a { font-size: 13px; text-decoration: none; color: #67766c; padding: 4px 0; }
+nav a.active { color: #18352d; box-shadow: 0 2px #b7692d; }
+main { min-height: 68vh; padding: 58px 0; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.8px; color: #738267; }
+h1, h2, h3 { font-family: 'Segoe UI', Arial, sans-serif; }
+h1 { font-size: clamp(30px, 4.5vw, 49px); line-height: 1.2; font-weight: 600; letter-spacing: -1.7px; margin: 20px 0; }
+h2 { font-size: 21px; font-weight: 600; letter-spacing: -.5px; }
+h3 { font-size: 16px; margin-top: 26px; }
+p, li { line-height: 1.75; }
+.lead { max-width: 650px; color: #657367; font-size: 17px; }
+.button { display: inline-flex; gap: 28px; margin: 12px 0 30px; padding: 13px 20px; background: #254f3e; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; }
+.formula-card { padding: 28px; background: #edf0e4; border: 1px solid #dce3d1; border-radius: 8px; margin-top: 16px; text-align: center; }
+.formula-card .katex { font-size: 1.7em; }
+.formula-card p { color: #66765e; font-size: 14px; margin-bottom: 0; }
+.math { max-width: 100%; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
+.mode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 42px 0 26px; }
+.mode-grid article { border-top: 1px solid #d4ddcd; padding-top: 20px; }
+.mode-grid span { font-size: 10px; letter-spacing: 1px; color: #7a866f; }
+.mode-grid h2 { margin: 14px 0 8px; font-size: 18px; }
+.mode-grid p { color: #657367; font-size: 14px; }
+.phase-note { font-size: 12px; color: #687467; }
+.template-select { display: grid; gap: 10px; max-width: 620px; margin-top: 28px; font-size: 13px; }
+select { width: 100%; padding: 12px; background: white; color: #18352d; border: 1px solid #c6d1bd; border-radius: 4px; font: inherit; }
+.problem-card { background: #fff; border: 1px solid #dce2d6; border-radius: 8px; padding: 28px; margin-top: 28px; }
+.parameters, .allowed-values { display: inline-flex; gap: 18px; margin: 6px 0; }
+.parameters { background: #edf0e4; padding: 9px 16px; border-radius: 4px; }
+li { padding-bottom: 6px; }
+[role='alert'] { color: #953c24; }
+footer { padding: 24px 0 30px; border-top: 1px solid #dce2d6; color: #788271; font-size: 12px; }
+a:focus-visible, select:focus-visible { outline: 3px solid #b7692d; outline-offset: 5px; }
+button { font: inherit; cursor: pointer; padding: 10px 15px; border: 1px solid #c6d1bd; border-radius: 5px; background: white; color: #18352d; }
+button:disabled { opacity: .55; cursor: wait; }
+button:focus-visible, summary:focus-visible { outline: 3px solid #b7692d; outline-offset: 3px; }
+button[aria-pressed='true'] { background: #e5eddf; border-color: #42684b; }
+.comparison-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; }
+.comparison-grid > * { min-width: 0; }
+.condition-editor, .report-card, .step-detail, .empty-card { border: 1px solid #dce2d6; border-radius: 8px; padding: 24px; background: white; margin-top: 24px; min-width: 0; }
+.condition-editor { background: #edf0e4; }
+.condition-editor h2 { margin-top: 0; }
+.editor-fields { display: grid; grid-template-columns: minmax(0, 2fr) minmax(120px, 1fr); gap: 16px; }
+.editor-fields label { display: grid; gap: 8px; font-size: 14px; }
+.condition-editor .button { margin: 4px 12px 8px 0; }
+.value-preview .math { margin-left: 8px; }
+.hint { font-size: 13px; color: #576957; }
+.comparison-grid .problem-card { margin-top: 24px; }
+.conditions { padding-left: 22px; }
+.condition-changed { background: #fff3d9; border-left: 3px solid #b7692d; padding: 10px; }
+.change-marker { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #80501e; }
+.labels { display: inline-flex; gap: 6px; flex-wrap: wrap; vertical-align: middle; }
+.label { border: 1px solid; border-radius: 4px; padding: 2px 7px; font-size: 12px; line-height: 1.7; font-weight: 600; }
+.label-valid { color: #25533a; background: #eaf3e8; border-color: #bdd5b6; }
+.label-invalid { color: #8b351e; background: #fff0e9; border-color: #e9c7b9; }
+.label-checking, .label-inconvenient { color: #795112; background: #fff7df; border-color: #e2d39c; }
+.label-changed { color: #29597a; background: #eef6fc; border-color: #bbd2e3; }
+.label-unknown { color: #58506b; background: #f3f0f8; border-color: #d4cce4; }
+.dimension { border-top: 1px solid #dce2d6; padding: 0 0 16px; }
+.remediation, .unknown-reason, .notice, .request-error { padding: 12px 16px; border-left: 3px solid #b58a36; background: #fffaeb; overflow-wrap: anywhere; }
+.unknown-reason, .notice { border-color: #8f80a6; background: #f5f2f9; }
+.request-error { border-color: #b85a3c; background: #fff2e9; margin-top: 20px; }
+.notice { margin-top: 22px; }
+details { margin: 16px 0; }
+summary { cursor: pointer; line-height: 1.7; color: #365d46; }
+small { color: #667465; }
+.step-verdicts li { padding: 5px; }
+.page-links, .view-selector { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+.inspector-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 22px; }
+.step-list { list-style: none; padding: 0; }
+.step-list li { padding: 6px 0; }
+.step-list button { width: 100%; text-align: left; padding: 15px; }
+.step-detail { margin-top: 22px; }
+.step-detail h2 { margin-top: 0; }
+.assumptions { padding-left: 22px; }
+.assumptions li { padding-top: 12px; border-bottom: 1px solid #e1e7dc; overflow-wrap: anywhere; }
+.comparison-values { display: flex; flex-wrap: wrap; gap: 20px 40px; }
+.comparison-values > div { min-width: 0; max-width: 100%; }
+.challenge-form label { display: grid; gap: 8px; margin: 16px 0; font-size: 14px; }
+.challenge-form textarea { width: 100%; padding: 12px; border: 1px solid #c6d1bd; border-radius: 4px; font: inherit; color: inherit; resize: vertical; }
+.challenge-form textarea:focus-visible { outline: 3px solid #b7692d; outline-offset: 3px; }
+.presented-steps { padding-left: 24px; }
+.presented-steps li { border-bottom: 1px solid #dce2d6; padding-bottom: 16px; }
+.presented-steps h3 { margin-top: 20px; }
+.presented-steps p, .attempt-text { overflow-wrap: anywhere; }
+.attempt-text { white-space: pre-wrap; }
+@media (max-width: 760px) { .comparison-grid, .inspector-grid, .editor-fields { grid-template-columns: minmax(0, 1fr); } .report-card, .condition-editor, .step-detail { padding: 18px; } .step-list { display: flex; gap: 12px; overflow-x: auto; } .step-list li { min-width: 220px; } }
+@media (max-width: 640px) { .app-shell { padding: 0 20px; } header { padding-top: 22px; } main { padding: 36px 0; } nav { gap: 10px 20px; } .mode-grid { grid-template-columns: 1fr; gap: 16px; } .problem-card { padding: 20px; } h1 { letter-spacing: -1px; } }

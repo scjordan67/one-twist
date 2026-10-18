@@ -1,0 +1,228 @@
+{
+  "id": "sample-001",
+  "title": "Derivation 01",
+  "template_id": "linear-degeneration",
+  "problem": {
+    "statement": "Solve ax = 1 over the real numbers with a = 2.",
+    "expression": {
+      "source": null,
+      "latex": "ax=1"
+    },
+    "goal": "Find the complete real solution set.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "2",
+          "latex": "2"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "The parameter is fixed at two.",
+        "parameter_name": "a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "2",
+            "latex": "2"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "a*x",
+        "latex": "ax"
+      },
+      "right": {
+        "source": "1",
+        "latex": "1"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "nonzero",
+      "description": "The divisor is nonzero.",
+      "condition_ids": [
+        "condition-001"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "predicate",
+      "description": "The solution variable is nonnegative.",
+      "condition_ids": [],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-003",
+      "kind": "integer_requirement",
+      "description": "All proposed solutions must be integers.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Algebraic rearrangement",
+      "description": "Follow the displayed sequence over the stated real domain.",
+      "assumption_ids": [
+        "premise-001"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "ax=1,\\quad a=2"
+      },
+      "output": {
+        "source": null,
+        "latex": "2x=1"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Substitute the stated parameter."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "2x=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=\\frac12"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Divide both sides by the nonzero constant two."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "x=\\frac12"
+      },
+      "output": {
+        "source": null,
+        "latex": "S=\\left\\{\\frac12\\right\\}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "State the complete real solution set."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "S=\\left\\{\\frac12\\right\\}"
+  },
+  "category": "correct",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "Substitution uses the given value a=2."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "valid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "Division by 2 is reversible because 2 is nonzero."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "The sole candidate satisfies 2*(1/2)=1 and the reversible chain is exhaustive."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "sound",
+        "conclusion": "correct",
+        "step_id": null,
+        "assumption_id": null,
+        "reason_category": "no_flaw"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "The given parameter reduces the problem to 2x=1.",
+      "Multiplication by 2 is a bijection on the real numbers, so division by 2 preserves all solutions.",
+      "Substitution verifies x=1/2, and no other real value solves the linear equation."
+    ],
+    "actual_conclusion": {
+      "source": null,
+      "latex": "\\left\\{\\frac12\\right\\}"
+    },
+    "remediation": null
+  },
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-17: hand calculations, source/rubric and public-contract review, and independent SymPy content tests; 268 backend tests independently rerun successfully."
+  }
+}

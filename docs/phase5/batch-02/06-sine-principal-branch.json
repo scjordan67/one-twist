@@ -1,0 +1,472 @@
+{
+  "draft_version": 1,
+  "matrix_number": 6,
+  "id": "sine-principal-branch",
+  "topic": "Trigonometry",
+  "title": "A principal inverse can miss another sine solution",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independent mathematical review of 06-10 approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  },
+  "original_problem": {
+    "statement": "Solve sin(x)=c on 0<=x<b, initially c=1 and b=2*pi.",
+    "expression": {
+      "latex": "\\sin x=c,\\quad 0\\le x<b"
+    },
+    "goal": "Solve sin(x)=c on 0<=x<b, initially c=1 and b=2*pi.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "c",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      },
+      {
+        "name": "b",
+        "value": {
+          "source": "2*pi",
+          "latex": "2*pi"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-c",
+        "parameter_name": "c",
+        "description": "The value of c",
+        "predicate": {
+          "left": {
+            "source": "c",
+            "latex": "c"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      },
+      {
+        "id": "parameter-b",
+        "parameter_name": "b",
+        "description": "The value of b",
+        "predicate": {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "2*pi",
+            "latex": "2*pi"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "lt",
+        "right": {
+          "source": "b",
+          "latex": "b"
+        }
+      }
+    ],
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "sin(x)",
+        "latex": "sin(x)"
+      },
+      "right": {
+        "source": "c",
+        "latex": "c"
+      }
+    },
+    "well_formedness": null
+  },
+  "proposed_computation": {
+    "kind": "equation",
+    "variable": "x",
+    "left": {
+      "source": "sin(x)",
+      "latex": "sin(x)"
+    },
+    "right": {
+      "source": "c",
+      "latex": "c"
+    }
+  },
+  "assumptions": [
+    {
+      "id": "principal-covers-solutions",
+      "kind": "principal_sine_coverage",
+      "description": "The chosen principal root covers the complete solution set in this actual interval, not that sine is globally injective.",
+      "condition_ids": [
+        "parameter-c",
+        "parameter-b"
+      ],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "A principal inverse can miss another sine solution",
+      "description": "Apply the stated original method with its exact hypotheses.",
+      "assumption_ids": [
+        "principal-covers-solutions"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "principal-inverse",
+      "number": 1,
+      "input": {
+        "latex": "\\sin x=c,\\quad 0\\le x<b"
+      },
+      "output": {
+        "latex": "x=\\arcsin c"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "principal-covers-solutions"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "evaluate-chosen-root",
+      "number": 2,
+      "input": {
+        "latex": "x=\\arcsin c"
+      },
+      "output": {
+        "latex": "x=\\frac{\\pi}{2}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "claim-trig-completeness",
+      "number": 3,
+      "input": {
+        "latex": "x=\\arcsin c"
+      },
+      "output": {
+        "latex": "S=\\{\\arcsin c\\}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "principal-covers-solutions"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "missing-branch",
+      "condition_id": "parameter-c",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "1/2",
+        "latex": "1/2"
+      },
+      "description": "Set c=1/2."
+    },
+    {
+      "id": "shorter-interval",
+      "condition_id": "parameter-b",
+      "type": "interval_endpoint",
+      "new_value": {
+        "source": "pi",
+        "latex": "pi"
+      },
+      "description": "Set b=pi."
+    }
+  ],
+  "planned_checks": [
+    {
+      "operation": "principal_sine_inverse",
+      "step_id": "principal-inverse",
+      "equation": {
+        "kind": "equation",
+        "variable": "x",
+        "left": {
+          "source": "sin(x)",
+          "latex": "sin(x)"
+        },
+        "right": {
+          "source": "c",
+          "latex": "c"
+        }
+      }
+    },
+    {
+      "operation": "evaluate_principal_sine",
+      "step_id": "evaluate-chosen-root",
+      "argument": {
+        "source": "c",
+        "latex": "c"
+      }
+    },
+    {
+      "operation": "principal_sine_completeness",
+      "step_id": "claim-trig-completeness",
+      "equation": {
+        "kind": "equation",
+        "variable": "x",
+        "left": {
+          "source": "sin(x)",
+          "latex": "sin(x)"
+        },
+        "right": {
+          "source": "c",
+          "latex": "c"
+        }
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "c": "1",
+        "b": "2*pi"
+      },
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "pi/2",
+            "latex": "pi/2"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "pi/2",
+            "latex": "pi/2"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "principal-inverse": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-chosen-root": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-trig-completeness": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "On [0,2*pi), sin(x)=1 has exactly x=pi/2. The principal inverse gives this complete set."
+      ]
+    },
+    {
+      "id": "missing-branch",
+      "change_id": "missing-branch",
+      "parameter_values": {
+        "c": "1/2",
+        "b": "2*pi"
+      },
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "pi/6",
+            "latex": "pi/6"
+          },
+          {
+            "source": "5*pi/6",
+            "latex": "5*pi/6"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "pi/6",
+            "latex": "pi/6"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "principal-inverse": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "evaluate-chosen-root": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-trig-completeness": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Retain both inverse-sine branches and all relevant periods, then intersect with the actual interval."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "first_invalid_step_id": "principal-inverse",
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The complete sine solutions in [0,2*pi) are pi/6 and 5*pi/6, but arcsin(1/2)=pi/6 only."
+      ]
+    },
+    {
+      "id": "shorter-interval",
+      "change_id": "shorter-interval",
+      "parameter_values": {
+        "c": "1",
+        "b": "pi"
+      },
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "pi/2",
+            "latex": "pi/2"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "pi/2",
+            "latex": "pi/2"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "principal-inverse": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-chosen-root": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "claim-trig-completeness": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Only the upper bound b changes. On [0,pi), sin(x)=1 still has exactly pi/2."
+      ]
+    }
+  ]
+}

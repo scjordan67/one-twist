@@ -1,0 +1,446 @@
+{
+  "draft_version": 1,
+  "matrix_number": 10,
+  "id": "lhopital-form",
+  "topic": "Differentiation",
+  "title": "Differentiating a quotient requires the right limit form",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independent mathematical review of 06-10 approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  },
+  "original_problem": {
+    "statement": "Evaluate lim(x->0) x/(k*x+t), initially k=1,t=0.",
+    "expression": {
+      "latex": "\\lim_{x\\to0}\\frac{x}{kx+t}"
+    },
+    "goal": "Evaluate lim(x->0) x/(k*x+t), initially k=1,t=0.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "t",
+        "value": {
+          "source": "0",
+          "latex": "0"
+        },
+        "domain": "real"
+      },
+      {
+        "name": "k",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-t",
+        "parameter_name": "t",
+        "description": "The value of t",
+        "predicate": {
+          "left": {
+            "source": "t",
+            "latex": "t"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      },
+      {
+        "id": "parameter-k",
+        "parameter_name": "k",
+        "description": "The value of k",
+        "predicate": {
+          "left": {
+            "source": "k",
+            "latex": "k"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [],
+    "computation": null,
+    "well_formedness": null
+  },
+  "proposed_computation": {
+    "kind": "limit",
+    "variable": "x",
+    "expression": {
+      "source": "x/(k*x+t)",
+      "latex": "x/(k*x+t)"
+    },
+    "point": {
+      "source": "0",
+      "latex": "0"
+    },
+    "direction": "both"
+  },
+  "assumptions": [
+    {
+      "id": "indeterminate-form",
+      "kind": "lhopital_zero_over_zero",
+      "description": "The original numerator and denominator must both tend to zero for the reviewed zero-over-zero rule.",
+      "condition_ids": [
+        "parameter-t",
+        "parameter-k"
+      ],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "nonzero-derivative",
+      "kind": "nonzero",
+      "description": "The denominator derivative k is nonzero near the point.",
+      "condition_ids": [
+        "parameter-k"
+      ],
+      "predicate": {
+        "left": {
+          "source": "k",
+          "latex": "k"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Differentiating a quotient requires the right limit form",
+      "description": "Apply the stated original method with its exact hypotheses.",
+      "assumption_ids": [
+        "indeterminate-form",
+        "nonzero-derivative"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "differentiate-components",
+      "number": 1,
+      "input": {
+        "latex": "N(x)=x,\\quad D(x)=kx+t"
+      },
+      "output": {
+        "latex": "N'(x)=1,\\quad D'(x)=k"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "replace-quotient-limit",
+      "number": 2,
+      "input": {
+        "latex": "\\lim_{x\\to0}\\frac{x}{kx+t}"
+      },
+      "output": {
+        "latex": "\\lim_{x\\to0}\\frac{1}{k}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "indeterminate-form",
+        "nonzero-derivative"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "evaluate-derivative-ratio",
+      "number": 3,
+      "input": {
+        "latex": "\\lim_{x\\to0}\\frac{1}{k}"
+      },
+      "output": {
+        "latex": "\\frac1k"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "regular-denominator",
+      "condition_id": "parameter-t",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "1",
+        "latex": "1"
+      },
+      "description": "Set t=1."
+    },
+    {
+      "id": "scaled-control",
+      "condition_id": "parameter-k",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "2",
+        "latex": "2"
+      },
+      "description": "Set k=2."
+    }
+  ],
+  "planned_checks": [
+    {
+      "operation": "differentiate_limit_components",
+      "step_id": "differentiate-components",
+      "variable": "x",
+      "numerator": {
+        "source": "x",
+        "latex": "x"
+      },
+      "denominator": {
+        "source": "k*x+t",
+        "latex": "k*x+t"
+      }
+    },
+    {
+      "operation": "lhopital_replacement",
+      "step_id": "replace-quotient-limit",
+      "variable": "x",
+      "point": {
+        "source": "0",
+        "latex": "0"
+      },
+      "direction": "both",
+      "required_form": "zero_over_zero",
+      "numerator": {
+        "source": "x",
+        "latex": "x"
+      },
+      "denominator": {
+        "source": "k*x+t",
+        "latex": "k*x+t"
+      }
+    },
+    {
+      "operation": "evaluate_limit",
+      "step_id": "evaluate-derivative-ratio",
+      "variable": "x",
+      "point": {
+        "source": "0",
+        "latex": "0"
+      },
+      "expression": {
+        "source": "1/k",
+        "latex": "1/k"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "t": "0",
+        "k": "1"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "differentiate-components": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "replace-quotient-limit": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-derivative-ratio": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "At t=0 the punctured quotient equals 1/k and is genuinely 0/0 at the approach point; the derivative ratio also equals 1/k, with k!=0.",
+        "At t=1,k=1 the original limit is directly 0/1=0, whereas differentiating still gives 1. The derivative identities and evaluation of 1/k remain locally correct."
+      ]
+    },
+    {
+      "id": "regular-denominator",
+      "change_id": "regular-denominator",
+      "parameter_values": {
+        "t": "1",
+        "k": "1"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "differentiate-components": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "replace-quotient-limit": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "evaluate-derivative-ratio": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Check the indeterminate form first; for a nonzero limiting denominator, use ordinary limit laws."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": "replace-quotient-limit",
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "At t=0 the punctured quotient equals 1/k and is genuinely 0/0 at the approach point; the derivative ratio also equals 1/k, with k!=0.",
+        "At t=1,k=1 the original limit is directly 0/1=0, whereas differentiating still gives 1. The derivative identities and evaluation of 1/k remain locally correct."
+      ]
+    },
+    {
+      "id": "scaled-control",
+      "change_id": "scaled-control",
+      "parameter_values": {
+        "t": "0",
+        "k": "2"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "1/2",
+          "latex": "1/2"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "1/2",
+          "latex": "1/2"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "differentiate-components": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "replace-quotient-limit": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-derivative-ratio": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "At t=0 the punctured quotient equals 1/k and is genuinely 0/0 at the approach point; the derivative ratio also equals 1/k, with k!=0.",
+        "At t=1,k=1 the original limit is directly 0/1=0, whereas differentiating still gives 1. The derivative identities and evaluation of 1/k remain locally correct."
+      ]
+    }
+  ]
+}

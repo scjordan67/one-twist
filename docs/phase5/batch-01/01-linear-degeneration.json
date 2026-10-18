@@ -1,0 +1,543 @@
+{
+  "draft_version": 1,
+  "matrix_number": 1,
+  "id": "linear-degeneration",
+  "topic": "Algebra",
+  "title": "When division by a parameter stops working",
+  "difficulty": "introductory",
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Formal independent mathematical and typed-contract review approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  },
+  "original_problem": {
+    "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+    "expression": {
+      "source": null,
+      "latex": "ax=1"
+    },
+    "goal": "Find every real solution x.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-a",
+        "description": "The value of a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "a"
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "a*x",
+        "latex": "ax"
+      },
+      "right": {
+        "source": "1",
+        "latex": "1"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "a-nonzero",
+      "kind": "nonzero",
+      "description": "Division by a requires a to be nonzero.",
+      "condition_ids": [
+        "parameter-a"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "assumed_true",
+      "interval": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "divide-parameter",
+      "name": "Algebraic rearrangement",
+      "description": "Divide both sides by a, keeping the nonzero restriction.",
+      "assumption_ids": [
+        "a-nonzero"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "divide-by-a",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "ax=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=\\frac{1}{a}"
+      },
+      "method_id": "divide-parameter",
+      "assumption_ids": [
+        "a-nonzero"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "The equivalence holds only for a nonzero parameter. This restriction remains even if later expressions simplify."
+    },
+    {
+      "id": "substitute-a",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "x=\\frac{1}{a},\\quad a=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "method_id": "divide-parameter",
+      "assumption_ids": [
+        "a-nonzero"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Substitution gives the unique original solution x = 1."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "zero",
+      "condition_id": "parameter-a",
+      "type": "parameter_zero",
+      "description": "Set a=0.",
+      "new_value": {
+        "source": "0",
+        "latex": "0"
+      },
+      "choice_id": null
+    },
+    {
+      "id": "two",
+      "condition_id": "parameter-a",
+      "type": "parameter_value",
+      "description": "Set a=2.",
+      "new_value": {
+        "source": "2",
+        "latex": "2"
+      },
+      "choice_id": null
+    },
+    {
+      "id": "negative-one",
+      "condition_id": "parameter-a",
+      "type": "parameter_value",
+      "description": "Set a=-1.",
+      "new_value": {
+        "source": "-1",
+        "latex": "-1"
+      },
+      "choice_id": null
+    }
+  ],
+  "domain_condition": null,
+  "proposed_computation": {
+    "kind": "equation",
+    "variable": "x",
+    "left": {
+      "source": "a*x",
+      "latex": "ax"
+    },
+    "right": {
+      "source": "1",
+      "latex": "1"
+    }
+  },
+  "planned_checks": [
+    {
+      "id": "check-a-nonzero",
+      "kind": "equation_transform",
+      "refs": [
+        {
+          "kind": "assumption",
+          "id": "a-nonzero"
+        },
+        {
+          "kind": "step",
+          "id": "divide-by-a"
+        }
+      ],
+      "description": "Evaluate the divisor and compare complete solution sets.",
+      "parameters": {
+        "operation": "equation_transform",
+        "before": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "a*x",
+            "latex": "ax"
+          },
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "after": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "1/a",
+            "latex": "1/a"
+          }
+        },
+        "divisor": {
+          "source": "a",
+          "latex": "a"
+        }
+      }
+    },
+    {
+      "id": "check-substitute-a",
+      "kind": "evaluate_expression",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "substitute-a"
+        }
+      ],
+      "description": "Recompute the numerical solution with the new parameter.",
+      "parameters": {
+        "operation": "evaluate_expression",
+        "expression": {
+          "source": "1/a",
+          "latex": "1/a"
+        },
+        "result_variable": "x"
+      }
+    },
+    {
+      "id": "check-linear-solutions",
+      "kind": "solution_set",
+      "refs": [
+        {
+          "kind": "condition",
+          "id": "parameter-a"
+        }
+      ],
+      "description": "At a = 0, check the original equation directly rather than evaluating 1/a.",
+      "parameters": null
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "a": "1"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "1",
+            "latex": "1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "1",
+            "latex": "1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-a": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "substitute-a": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": false
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "With a=1, the nonzero divisor gives the complete singleton solution listed here."
+      ]
+    },
+    {
+      "id": "zero",
+      "change_id": "zero",
+      "parameter_values": {
+        "a": "0"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "undefined",
+        "value": null
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-a": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "substitute-a": {
+            "labels": [
+              "Invalid Step"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Return to ax=1 and split a=0 from a!=0."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "first_invalid_step_id": "divide-by-a",
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "problem_well_formedness": "NoSolution"
+      },
+      "mathematical_basis": [
+        "At a=0 the original equation is 0=1, hence its solution set is empty; evaluating 1/a is instead undefined."
+      ]
+    },
+    {
+      "id": "two",
+      "change_id": "two",
+      "parameter_values": {
+        "a": "2"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "1/2",
+            "latex": "1/2"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "1/2",
+            "latex": "1/2"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-a": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "substitute-a": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "With a=2, the nonzero divisor gives the complete singleton solution listed here."
+      ]
+    },
+    {
+      "id": "negative-one",
+      "change_id": "negative-one",
+      "parameter_values": {
+        "a": "-1"
+      },
+      "domain_choice_id": null,
+      "effective_domain_constraints": [],
+      "reference_outcome": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "derivation_claim": {
+        "status": "solution_set",
+        "values": [
+          {
+            "source": "-1",
+            "latex": "-1"
+          }
+        ],
+        "completeness": "complete"
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-a": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "substitute-a": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "With a=-1, the nonzero divisor gives the complete singleton solution listed here."
+      ]
+    }
+  ],
+  "planned_assumption_checks": {}
+}

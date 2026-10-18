@@ -1,0 +1,474 @@
+{
+  "draft_version": 1,
+  "matrix_number": 12,
+  "id": "integral-interior-pole",
+  "topic": "Integration",
+  "title": "Opposing interior infinities do not cancel into an integral",
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Private detailed mathematics awaiting Claude Code review. No batch-03 checker, IVP model or publication is implemented."
+  },
+  "original_problem": {
+    "statement": "Evaluate the ordinary real integral on [-1,1], initially c=2; no principal value is requested.",
+    "expression": {
+      "source": null,
+      "latex": "\\int_{-1}^{1}\\frac{dx}{x-c}"
+    },
+    "goal": "Evaluate the ordinary real integral on [-1,1], initially c=2; no principal value is requested.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "c",
+        "value": {
+          "source": "2",
+          "latex": "2"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "pole-location",
+        "parameter_name": "c",
+        "description": "The given real parameter c",
+        "predicate": {
+          "left": {
+            "source": "c",
+            "latex": "c"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "2",
+            "latex": "2"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "c",
+          "latex": "c"
+        }
+      }
+    ],
+    "computation": {
+      "kind": "integral",
+      "variable": "x",
+      "integrand": {
+        "source": "1/(x-c)",
+        "latex": "\\frac{1}{- c + x}"
+      },
+      "lower": {
+        "source": "-1",
+        "latex": "-1"
+      },
+      "upper": {
+        "source": "1",
+        "latex": "1"
+      }
+    },
+    "well_formedness": null
+  },
+  "proposed_computation": {
+    "kind": "integral",
+    "variable": "x",
+    "integrand": {
+      "source": "1/(x-c)",
+      "latex": "\\frac{1}{- c + x}"
+    },
+    "lower": {
+      "source": "-1",
+      "latex": "-1"
+    },
+    "upper": {
+      "source": "1",
+      "latex": "1"
+    }
+  },
+  "assumptions": [
+    {
+      "id": "closed-interval-regularity",
+      "kind": "continuity_on_interval",
+      "description": "The original proper-integral endpoint formula requires continuity across the full closed interval.",
+      "condition_ids": [
+        "pole-location"
+      ],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Single-interval endpoint evaluation",
+      "description": "Claim that one global F(upper)-F(lower) evaluates the ordinary integral without splitting. A componentwise primitive identity alone does not justify this claim.",
+      "assumption_ids": [
+        "closed-interval-regularity"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "primitive-on-components",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "f_c(x)=\\frac1{x-c}"
+      },
+      "output": {
+        "source": null,
+        "latex": "F_c(x)=\\log|x-c|,\\quad F'_c=f_c\\ (x\\ne c)"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "c",
+            "latex": "c"
+          }
+        }
+      ],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "apply-endpoint-formula",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\int_{-1}^1 f_c(x)\\,dx"
+      },
+      "output": {
+        "source": null,
+        "latex": "F_c(1)-F_c(-1)"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "closed-interval-regularity"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "evaluate-endpoint-expression",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "\\log|1-c|-\\log|-1-c|"
+      },
+      "output": {
+        "source": null,
+        "latex": "-\\log3"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "move-pole-inside",
+      "condition_id": "pole-location",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "0",
+        "latex": "0"
+      },
+      "description": "Move c=2 to c=0."
+    },
+    {
+      "id": "move-pole-outside",
+      "condition_id": "pole-location",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "3",
+        "latex": "3"
+      },
+      "description": "Move c=2 to c=3."
+    }
+  ],
+  "planned_checks": [
+    {
+      "operation": "primitive_identity_on_components",
+      "step_id": "primitive-on-components",
+      "variable": "x",
+      "primitive": {
+        "source": "log(abs(x-c))",
+        "latex": "\\log{\\left(\\left|{c - x}\\right| \\right)}"
+      }
+    },
+    {
+      "operation": "proper_integral_endpoint_formula",
+      "step_id": "apply-endpoint-formula",
+      "primitive": {
+        "source": "log(abs(x-c))",
+        "latex": "\\log{\\left(\\left|{c - x}\\right| \\right)}"
+      }
+    },
+    {
+      "operation": "evaluate_scalar",
+      "step_id": "evaluate-endpoint-expression",
+      "expression": {
+        "source": "log(abs(1-c))-log(abs(-1-c))",
+        "latex": "\\log{\\left(\\left|{c - 1}\\right| \\right)} - \\log{\\left(\\left|{c + 1}\\right| \\right)}"
+      },
+      "value_domain": "real"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "c": "2"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "-log(3)",
+          "latex": "- \\log{\\left(3 \\right)}"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "-log(3)",
+          "latex": "- \\log{\\left(3 \\right)}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "primitive-on-components": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "apply-endpoint-formula": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-endpoint-expression": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Primitive differentiation is valid separately on each component x!=c, not across the removed point. A missing proper-integral hypothesis alone is not the failure proof; the two divergent pieces independently refute a finite total."
+      ]
+    },
+    {
+      "id": "interior-pole",
+      "change_id": "move-pole-inside",
+      "parameter_values": {
+        "c": "0"
+      },
+      "reference_outcome": {
+        "status": "divergent",
+        "value": {
+          "source": null,
+          "latex": "\\text{Divergent: opposing one-sided infinities}"
+        },
+        "signed_direction": null
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "primitive-on-components": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "apply-endpoint-formula": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "evaluate-endpoint-expression": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Invalid Step"
+          ],
+          "remediation": "Split at the interior singularity and require both independently evaluated improper pieces to converge; they do not."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": "apply-endpoint-formula",
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "Divergent"
+      },
+      "mathematical_basis": [
+        "Primitive differentiation is valid separately on each component x!=c, not across the removed point. A missing proper-integral hypothesis alone is not the failure proof; the two divergent pieces independently refute a finite total."
+      ],
+      "one_sided_pieces": [
+        {
+          "interval": [
+            {
+              "source": "-1",
+              "latex": "-1"
+            },
+            {
+              "source": "0",
+              "latex": "0"
+            }
+          ],
+          "value": {
+            "source": null,
+            "latex": "-\\infty"
+          },
+          "signed_direction": "negative"
+        },
+        {
+          "interval": [
+            {
+              "source": "0",
+              "latex": "0"
+            },
+            {
+              "source": "1",
+              "latex": "1"
+            }
+          ],
+          "value": {
+            "source": null,
+            "latex": "+\\infty"
+          },
+          "signed_direction": "positive"
+        }
+      ],
+      "symmetric_principal_value": {
+        "value": {
+          "source": "0",
+          "latex": "0"
+        },
+        "is_requested_answer": false
+      }
+    },
+    {
+      "id": "outside-control",
+      "change_id": "move-pole-outside",
+      "parameter_values": {
+        "c": "3"
+      },
+      "reference_outcome": {
+        "status": "numeric_value",
+        "value": {
+          "source": "-log(2)",
+          "latex": "- \\log{\\left(2 \\right)}"
+        }
+      },
+      "derivation_claim": {
+        "status": "numeric_value",
+        "value": {
+          "source": "-log(2)",
+          "latex": "- \\log{\\left(2 \\right)}"
+        }
+      },
+      "expected_report": {
+        "step": {
+          "primitive-on-components": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "apply-endpoint-formula": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "evaluate-endpoint-expression": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "numeric_value",
+          "changed": true
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "Primitive differentiation is valid separately on each component x!=c, not across the removed point. A missing proper-integral hypothesis alone is not the failure proof; the two divergent pieces independently refute a finite total."
+      ]
+    }
+  ],
+  "planned_outcome_checks": [
+    {
+      "operation": "split_improper_integral",
+      "discover_from": "actual rational integrand and actual bounds",
+      "combine_only_if_each_piece_converges": true
+    }
+  ]
+}

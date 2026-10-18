@@ -1,0 +1,5119 @@
+{
+  "summaries": [
+    {
+      "id": "practice-001",
+      "title": "Practice 01",
+      "mode": "A"
+    },
+    {
+      "id": "practice-002",
+      "title": "Practice 02",
+      "mode": "A"
+    },
+    {
+      "id": "practice-003",
+      "title": "Practice 03",
+      "mode": "B"
+    },
+    {
+      "id": "practice-004",
+      "title": "Practice 04",
+      "mode": "B"
+    },
+    {
+      "id": "practice-005",
+      "title": "Practice 05",
+      "mode": "B"
+    },
+    {
+      "id": "practice-006",
+      "title": "Practice 06",
+      "mode": "C"
+    },
+    {
+      "id": "practice-007",
+      "title": "Practice 07",
+      "mode": "C"
+    },
+    {
+      "id": "practice-008",
+      "title": "Practice 08",
+      "mode": "C"
+    },
+    {
+      "id": "practice-009",
+      "title": "Practice 09",
+      "mode": "C"
+    },
+    {
+      "id": "practice-010",
+      "title": "Practice 10",
+      "mode": "C"
+    }
+  ],
+  "details": {
+    "practice-001": {
+      "id": "practice-001",
+      "title": "Practice 01",
+      "mode": "A",
+      "prompt": "Replay the displayed original derivation under the stated single condition change. Select the first invalid step, its relevant premise and a reason.",
+      "problem": {
+        "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+        "expression": {
+          "source": null,
+          "latex": "ax=1"
+        },
+        "goal": "Find every real solution x.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [
+          {
+            "name": "a",
+            "value": {
+              "source": "1",
+              "latex": "1"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "parameter-a",
+            "description": "The value of a",
+            "predicate": {
+              "left": {
+                "source": "a",
+                "latex": "a"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            },
+            "parameter_name": "a"
+          }
+        ],
+        "domain_constraints": []
+      },
+      "steps": [
+        {
+          "id": "divide-by-a",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "ax=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=\\frac{1}{a}"
+          },
+          "method_id": "divide-parameter",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "substitute-a",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "x=\\frac{1}{a},\\quad a=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=1"
+          },
+          "method_id": "divide-parameter",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "divide-parameter",
+          "name": "Algebraic rearrangement"
+        }
+      ],
+      "changed_problem": {
+        "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+        "expression": {
+          "source": null,
+          "latex": "ax=1"
+        },
+        "goal": "Find every real solution x.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [
+          {
+            "name": "a",
+            "value": {
+              "source": "0",
+              "latex": "0"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "parameter-a",
+            "description": "The value of a",
+            "predicate": {
+              "left": {
+                "source": "a",
+                "latex": "a"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "0",
+                "latex": "0"
+              }
+            },
+            "parameter_name": "a"
+          }
+        ],
+        "domain_constraints": []
+      },
+      "perturbation": {
+        "template_id": "linear-degeneration",
+        "rule_id": "set-a-zero",
+        "condition_id": "parameter-a",
+        "type": "parameter_zero",
+        "new_value": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "assumption_options": [
+        {
+          "id": "a-nonzero",
+          "label": "Division by a requires a to be nonzero."
+        }
+      ],
+      "reason_options": [
+        {
+          "id": "no_flaw",
+          "label": "No flaw in the presented derivation"
+        },
+        {
+          "id": "zero_divisor",
+          "label": "Division by a zero divisor"
+        },
+        {
+          "id": "improper_endpoint",
+          "label": "A singular endpoint requires an improper-integral treatment"
+        },
+        {
+          "id": "missing_sign_condition",
+          "label": "A required sign condition is missing"
+        },
+        {
+          "id": "irreversible_squaring",
+          "label": "Squaring was used as an equivalence without the reverse implication"
+        },
+        {
+          "id": "extraneous_root",
+          "label": "Extra candidates were accepted as original solutions"
+        },
+        {
+          "id": "lost_root",
+          "label": "A transformation loses original solutions"
+        },
+        {
+          "id": "arithmetic_error",
+          "label": "An arithmetic operation is incorrect"
+        }
+      ]
+    },
+    "practice-002": {
+      "id": "practice-002",
+      "title": "Practice 02",
+      "mode": "A",
+      "prompt": "Replay the displayed original derivation as a proper-integral argument after the condition change. Identify the first invalid step as written. This asks about that derivation, not whether substitution could be repaired using limits.",
+      "problem": {
+        "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+        "expression": {
+          "source": null,
+          "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+        },
+        "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+        "variables": {
+          "x": "real",
+          "u": "real"
+        },
+        "parameters": [
+          {
+            "name": "b",
+            "value": {
+              "source": "1/2",
+              "latex": "\\frac{1}{2}"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "upper-endpoint",
+            "description": "The upper endpoint b",
+            "predicate": {
+              "left": {
+                "source": "b",
+                "latex": "b"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "1/2",
+                "latex": "\\frac{1}{2}"
+              }
+            },
+            "parameter_name": "b"
+          },
+          {
+            "id": "lower-endpoint",
+            "description": "The lower endpoint remains zero.",
+            "predicate": null,
+            "parameter_name": null
+          }
+        ],
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "x",
+              "latex": "x"
+            },
+            "relation": "ne",
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "change-variable",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+          },
+          "output": {
+            "source": null,
+            "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+          },
+          "method_id": "substitution",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "evaluate-log",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+          },
+          "output": {
+            "source": "-log(1-b)",
+            "latex": "-\\log(1-b)"
+          },
+          "method_id": "substitution",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "substitute-bound",
+          "number": 3,
+          "input": {
+            "source": null,
+            "latex": "-\\log(1-b),\\quad b=\\frac12"
+          },
+          "output": {
+            "source": "log(2)",
+            "latex": "\\log 2"
+          },
+          "method_id": "substitution",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "substitution",
+          "name": "Substitution"
+        }
+      ],
+      "changed_problem": {
+        "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+        "expression": {
+          "source": null,
+          "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+        },
+        "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+        "variables": {
+          "x": "real",
+          "u": "real"
+        },
+        "parameters": [
+          {
+            "name": "b",
+            "value": {
+              "source": "1",
+              "latex": "1"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "upper-endpoint",
+            "description": "The upper endpoint b",
+            "predicate": {
+              "left": {
+                "source": "b",
+                "latex": "b"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            },
+            "parameter_name": "b"
+          },
+          {
+            "id": "lower-endpoint",
+            "description": "The lower endpoint remains zero.",
+            "predicate": null,
+            "parameter_name": null
+          }
+        ],
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "x",
+              "latex": "x"
+            },
+            "relation": "ne",
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        ]
+      },
+      "perturbation": {
+        "template_id": "integral-endpoint",
+        "rule_id": "move-upper-endpoint",
+        "condition_id": "upper-endpoint",
+        "type": "interval_endpoint",
+        "new_value": {
+          "source": "1",
+          "latex": "1"
+        }
+      },
+      "assumption_options": [
+        {
+          "id": "regular-upper-bound",
+          "label": "For the original positive upper bound below 1, the integrand is continuous on the closed interval."
+        },
+        {
+          "id": "positive-bound",
+          "label": "The listed examples have b > 0."
+        },
+        {
+          "id": "positive-u",
+          "label": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined."
+        }
+      ],
+      "reason_options": [
+        {
+          "id": "no_flaw",
+          "label": "No flaw in the presented derivation"
+        },
+        {
+          "id": "zero_divisor",
+          "label": "Division by a zero divisor"
+        },
+        {
+          "id": "improper_endpoint",
+          "label": "A singular endpoint requires an improper-integral treatment"
+        },
+        {
+          "id": "missing_sign_condition",
+          "label": "A required sign condition is missing"
+        },
+        {
+          "id": "irreversible_squaring",
+          "label": "Squaring was used as an equivalence without the reverse implication"
+        },
+        {
+          "id": "extraneous_root",
+          "label": "Extra candidates were accepted as original solutions"
+        },
+        {
+          "id": "lost_root",
+          "label": "A transformation loses original solutions"
+        },
+        {
+          "id": "arithmetic_error",
+          "label": "An arithmetic operation is incorrect"
+        }
+      ]
+    },
+    "practice-003": {
+      "id": "practice-003",
+      "title": "Practice 03",
+      "mode": "B",
+      "prompt": "Choose one declared change that makes at least one step of the original derivation invalid. A change of answer alone does not meet this goal.",
+      "problem": {
+        "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+        "expression": {
+          "source": null,
+          "latex": "ax=1"
+        },
+        "goal": "Find every real solution x.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [
+          {
+            "name": "a",
+            "value": {
+              "source": "1",
+              "latex": "1"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "parameter-a",
+            "description": "The value of a",
+            "predicate": {
+              "left": {
+                "source": "a",
+                "latex": "a"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            },
+            "parameter_name": "a"
+          }
+        ],
+        "domain_constraints": []
+      },
+      "steps": [
+        {
+          "id": "divide-by-a",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "ax=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=\\frac{1}{a}"
+          },
+          "method_id": "divide-parameter",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "substitute-a",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "x=\\frac{1}{a},\\quad a=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=1"
+          },
+          "method_id": "divide-parameter",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "divide-parameter",
+          "name": "Algebraic rearrangement"
+        }
+      ],
+      "template_id": "linear-degeneration",
+      "goal": "invalidate_original_derivation",
+      "allowed_perturbations": [
+        {
+          "id": "set-a-zero",
+          "condition_id": "parameter-a",
+          "type": "parameter_zero",
+          "description": "Replace the value of a with zero.",
+          "allowed_values": [
+            {
+              "source": "0",
+              "latex": "0"
+            }
+          ]
+        },
+        {
+          "id": "change-a",
+          "condition_id": "parameter-a",
+          "type": "parameter_value",
+          "description": "Replace the value of a with another listed real value.",
+          "allowed_values": [
+            {
+              "source": "2",
+              "latex": "2"
+            },
+            {
+              "source": "-1",
+              "latex": "-1"
+            }
+          ]
+        }
+      ]
+    },
+    "practice-004": {
+      "id": "practice-004",
+      "title": "Practice 04",
+      "mode": "B",
+      "prompt": "Choose one declared change that makes the original proper-integral derivation invalid as written. A method that can be repaired may still meet this derivation goal.",
+      "problem": {
+        "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+        "expression": {
+          "source": null,
+          "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+        },
+        "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+        "variables": {
+          "x": "real",
+          "u": "real"
+        },
+        "parameters": [
+          {
+            "name": "b",
+            "value": {
+              "source": "1/2",
+              "latex": "\\frac{1}{2}"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "upper-endpoint",
+            "description": "The upper endpoint b",
+            "predicate": {
+              "left": {
+                "source": "b",
+                "latex": "b"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "1/2",
+                "latex": "\\frac{1}{2}"
+              }
+            },
+            "parameter_name": "b"
+          },
+          {
+            "id": "lower-endpoint",
+            "description": "The lower endpoint remains zero.",
+            "predicate": null,
+            "parameter_name": null
+          }
+        ],
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "x",
+              "latex": "x"
+            },
+            "relation": "ne",
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "change-variable",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+          },
+          "output": {
+            "source": null,
+            "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+          },
+          "method_id": "substitution",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "evaluate-log",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+          },
+          "output": {
+            "source": "-log(1-b)",
+            "latex": "-\\log(1-b)"
+          },
+          "method_id": "substitution",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "substitute-bound",
+          "number": 3,
+          "input": {
+            "source": null,
+            "latex": "-\\log(1-b),\\quad b=\\frac12"
+          },
+          "output": {
+            "source": "log(2)",
+            "latex": "\\log 2"
+          },
+          "method_id": "substitution",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "substitution",
+          "name": "Substitution"
+        }
+      ],
+      "template_id": "integral-endpoint",
+      "goal": "invalidate_original_derivation",
+      "allowed_perturbations": [
+        {
+          "id": "move-upper-endpoint",
+          "condition_id": "upper-endpoint",
+          "type": "interval_endpoint",
+          "description": "Replace only the upper endpoint b.",
+          "allowed_values": [
+            {
+              "source": "1",
+              "latex": "1"
+            },
+            {
+              "source": "3/4",
+              "latex": "\\frac34"
+            }
+          ]
+        }
+      ]
+    },
+    "practice-005": {
+      "id": "practice-005",
+      "title": "Practice 05",
+      "mode": "B",
+      "prompt": "Choose one declared change that changes the independently established conclusion. The method may remain valid; that does not prevent meeting this goal.",
+      "problem": {
+        "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+        "expression": {
+          "source": null,
+          "latex": "ax=1"
+        },
+        "goal": "Find every real solution x.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [
+          {
+            "name": "a",
+            "value": {
+              "source": "1",
+              "latex": "1"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "parameter-a",
+            "description": "The value of a",
+            "predicate": {
+              "left": {
+                "source": "a",
+                "latex": "a"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            },
+            "parameter_name": "a"
+          }
+        ],
+        "domain_constraints": []
+      },
+      "steps": [
+        {
+          "id": "divide-by-a",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "ax=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=\\frac{1}{a}"
+          },
+          "method_id": "divide-parameter",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "substitute-a",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "x=\\frac{1}{a},\\quad a=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=1"
+          },
+          "method_id": "divide-parameter",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "divide-parameter",
+          "name": "Algebraic rearrangement"
+        }
+      ],
+      "template_id": "linear-degeneration",
+      "goal": "change_conclusion",
+      "allowed_perturbations": [
+        {
+          "id": "set-a-zero",
+          "condition_id": "parameter-a",
+          "type": "parameter_zero",
+          "description": "Replace the value of a with zero.",
+          "allowed_values": [
+            {
+              "source": "0",
+              "latex": "0"
+            }
+          ]
+        },
+        {
+          "id": "change-a",
+          "condition_id": "parameter-a",
+          "type": "parameter_value",
+          "description": "Replace the value of a with another listed real value.",
+          "allowed_values": [
+            {
+              "source": "2",
+              "latex": "2"
+            },
+            {
+              "source": "-1",
+              "latex": "-1"
+            }
+          ]
+        }
+      ]
+    },
+    "practice-006": {
+      "id": "practice-006",
+      "title": "Practice 06",
+      "mode": "C",
+      "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
+      "problem": {
+        "statement": "Solve ax = 1 over the real numbers with a = 2.",
+        "expression": {
+          "source": null,
+          "latex": "ax=1"
+        },
+        "goal": "Find the complete real solution set.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [
+          {
+            "name": "a",
+            "value": {
+              "source": "2",
+              "latex": "2"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "condition-001",
+            "description": "The parameter is fixed at two.",
+            "predicate": {
+              "left": {
+                "source": "a",
+                "latex": "a"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "2",
+                "latex": "2"
+              }
+            },
+            "parameter_name": "a"
+          }
+        ],
+        "domain_constraints": []
+      },
+      "steps": [
+        {
+          "id": "step-001",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "ax=1,\\quad a=2"
+          },
+          "output": {
+            "source": null,
+            "latex": "2x=1"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-002",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "2x=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=\\frac12"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-003",
+          "number": 3,
+          "input": {
+            "source": null,
+            "latex": "x=\\frac12"
+          },
+          "output": {
+            "source": null,
+            "latex": "S=\\left\\{\\frac12\\right\\}"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "method-001",
+          "name": "Algebraic rearrangement"
+        }
+      ],
+      "claimed_conclusion": {
+        "source": null,
+        "latex": "S=\\left\\{\\frac12\\right\\}"
+      },
+      "assumption_options": [
+        {
+          "id": "premise-001",
+          "label": "The divisor is nonzero."
+        },
+        {
+          "id": "premise-002",
+          "label": "The solution variable is nonnegative."
+        },
+        {
+          "id": "premise-003",
+          "label": "All proposed solutions must be integers."
+        }
+      ],
+      "reason_options": [
+        {
+          "id": "no_flaw",
+          "label": "No flaw in the presented derivation"
+        },
+        {
+          "id": "zero_divisor",
+          "label": "Division by a zero divisor"
+        },
+        {
+          "id": "improper_endpoint",
+          "label": "A singular endpoint requires an improper-integral treatment"
+        },
+        {
+          "id": "missing_sign_condition",
+          "label": "A required sign condition is missing"
+        },
+        {
+          "id": "irreversible_squaring",
+          "label": "Squaring was used as an equivalence without the reverse implication"
+        },
+        {
+          "id": "extraneous_root",
+          "label": "Extra candidates were accepted as original solutions"
+        },
+        {
+          "id": "lost_root",
+          "label": "A transformation loses original solutions"
+        },
+        {
+          "id": "arithmetic_error",
+          "label": "An arithmetic operation is incorrect"
+        }
+      ]
+    },
+    "practice-007": {
+      "id": "practice-007",
+      "title": "Practice 07",
+      "mode": "C",
+      "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
+      "problem": {
+        "statement": "Evaluate the real definite integral with b = 3/4, using u = 1 - x.",
+        "expression": {
+          "source": null,
+          "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+        },
+        "goal": "Evaluate the integral with its endpoint conditions.",
+        "variables": {
+          "x": "real",
+          "u": "real"
+        },
+        "parameters": [
+          {
+            "name": "b",
+            "value": {
+              "source": "3/4",
+              "latex": "\\frac34"
+            },
+            "domain": "real"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "condition-001",
+            "description": "The upper endpoint is three quarters.",
+            "predicate": {
+              "left": {
+                "source": "b",
+                "latex": "b"
+              },
+              "relation": "eq",
+              "right": {
+                "source": "3/4",
+                "latex": "\\frac34"
+              }
+            },
+            "parameter_name": "b"
+          },
+          {
+            "id": "condition-002",
+            "description": "The lower endpoint is zero.",
+            "predicate": null,
+            "parameter_name": null
+          }
+        ],
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "x",
+              "latex": "x"
+            },
+            "relation": "ne",
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "step-001",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "\\int_0^{3/4}\\frac{1}{1-x}\\,\\mathrm{d}x"
+          },
+          "output": {
+            "source": null,
+            "latex": "\\int_{1/4}^{1}\\frac{1}{u}\\,\\mathrm{d}u"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-002",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "\\int_{1/4}^{1}\\frac{1}{u}\\,\\mathrm{d}u"
+          },
+          "output": {
+            "source": null,
+            "latex": "\\log 1-\\log\\left(\\frac14\\right)"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-003",
+          "number": 3,
+          "input": {
+            "source": null,
+            "latex": "\\log 1-\\log\\left(\\frac14\\right)"
+          },
+          "output": {
+            "source": null,
+            "latex": "\\log 4"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "method-001",
+          "name": "Substitution"
+        }
+      ],
+      "claimed_conclusion": {
+        "source": null,
+        "latex": "\\log 4"
+      },
+      "assumption_options": [
+        {
+          "id": "premise-001",
+          "label": "The original integrand is continuous on the closed integration interval."
+        },
+        {
+          "id": "premise-002",
+          "label": "The transformed logarithm argument is positive throughout the interval."
+        },
+        {
+          "id": "premise-003",
+          "label": "The upper endpoint is negative."
+        }
+      ],
+      "reason_options": [
+        {
+          "id": "no_flaw",
+          "label": "No flaw in the presented derivation"
+        },
+        {
+          "id": "zero_divisor",
+          "label": "Division by a zero divisor"
+        },
+        {
+          "id": "improper_endpoint",
+          "label": "A singular endpoint requires an improper-integral treatment"
+        },
+        {
+          "id": "missing_sign_condition",
+          "label": "A required sign condition is missing"
+        },
+        {
+          "id": "irreversible_squaring",
+          "label": "Squaring was used as an equivalence without the reverse implication"
+        },
+        {
+          "id": "extraneous_root",
+          "label": "Extra candidates were accepted as original solutions"
+        },
+        {
+          "id": "lost_root",
+          "label": "A transformation loses original solutions"
+        },
+        {
+          "id": "arithmetic_error",
+          "label": "An arithmetic operation is incorrect"
+        }
+      ]
+    },
+    "practice-008": {
+      "id": "practice-008",
+      "title": "Practice 08",
+      "mode": "C",
+      "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
+      "problem": {
+        "statement": "Simplify f(x) = sqrt(x squared) for every real x. The square root is the nonnegative real square root.",
+        "expression": {
+          "source": null,
+          "latex": "f(x)=\\sqrt{x^2},\\quad x\\in\\mathbb{R}"
+        },
+        "goal": "Judge the claimed identity on the entire stated domain.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [],
+        "conditions": [
+          {
+            "id": "condition-001",
+            "description": "x may be any real number; no sign restriction is given.",
+            "predicate": null,
+            "parameter_name": null
+          }
+        ],
+        "domain_constraints": []
+      },
+      "steps": [
+        {
+          "id": "step-001",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "f(x)=\\sqrt{x^2}"
+          },
+          "output": {
+            "source": null,
+            "latex": "f(x)=\\sqrt{x\\cdot x}"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-002",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "f(x)=\\sqrt{x\\cdot x}"
+          },
+          "output": {
+            "source": null,
+            "latex": "f(x)=x"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-003",
+          "number": 3,
+          "input": {
+            "source": null,
+            "latex": "f(x)=x"
+          },
+          "output": {
+            "source": null,
+            "latex": "\\forall x\\in\\mathbb{R},\\quad \\sqrt{x^2}=x"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "method-001",
+          "name": "Radical simplification"
+        }
+      ],
+      "claimed_conclusion": {
+        "source": null,
+        "latex": "\\forall x\\in\\mathbb{R},\\quad \\sqrt{x^2}=x"
+      },
+      "assumption_options": [
+        {
+          "id": "premise-001",
+          "label": "The original variable is nonnegative."
+        },
+        {
+          "id": "premise-002",
+          "label": "The original variable is nonzero."
+        },
+        {
+          "id": "premise-003",
+          "label": "The original variable is nonpositive."
+        }
+      ],
+      "reason_options": [
+        {
+          "id": "no_flaw",
+          "label": "No flaw in the presented derivation"
+        },
+        {
+          "id": "zero_divisor",
+          "label": "Division by a zero divisor"
+        },
+        {
+          "id": "improper_endpoint",
+          "label": "A singular endpoint requires an improper-integral treatment"
+        },
+        {
+          "id": "missing_sign_condition",
+          "label": "A required sign condition is missing"
+        },
+        {
+          "id": "irreversible_squaring",
+          "label": "Squaring was used as an equivalence without the reverse implication"
+        },
+        {
+          "id": "extraneous_root",
+          "label": "Extra candidates were accepted as original solutions"
+        },
+        {
+          "id": "lost_root",
+          "label": "A transformation loses original solutions"
+        },
+        {
+          "id": "arithmetic_error",
+          "label": "An arithmetic operation is incorrect"
+        }
+      ]
+    },
+    "practice-009": {
+      "id": "practice-009",
+      "title": "Practice 09",
+      "mode": "C",
+      "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
+      "problem": {
+        "statement": "Solve 2x = 2 over the real numbers. Every displayed Equivalent transformation claims equal solution sets over R; no extra sign constraint is retained.",
+        "expression": {
+          "source": null,
+          "latex": "2x=2"
+        },
+        "goal": "Judge each claimed equivalence and the final real solution set independently.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [],
+        "conditions": [
+          {
+            "id": "condition-001",
+            "description": "The candidate domain is all real numbers throughout the displayed equivalences.",
+            "predicate": null,
+            "parameter_name": null
+          }
+        ],
+        "domain_constraints": []
+      },
+      "steps": [
+        {
+          "id": "step-001",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "2x=2"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=1"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-002",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "x=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x^2=1"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-003",
+          "number": 3,
+          "input": {
+            "source": null,
+            "latex": "x^2=1"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=1"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "method-001",
+          "name": "Equation transformations"
+        }
+      ],
+      "claimed_conclusion": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "assumption_options": [
+        {
+          "id": "premise-001",
+          "label": "Squaring must preserve the reverse implication when equivalence is claimed over the stated domain."
+        },
+        {
+          "id": "premise-002",
+          "label": "The candidate variable is nonzero."
+        },
+        {
+          "id": "premise-003",
+          "label": "The candidate variable is an integer."
+        }
+      ],
+      "reason_options": [
+        {
+          "id": "no_flaw",
+          "label": "No flaw in the presented derivation"
+        },
+        {
+          "id": "zero_divisor",
+          "label": "Division by a zero divisor"
+        },
+        {
+          "id": "improper_endpoint",
+          "label": "A singular endpoint requires an improper-integral treatment"
+        },
+        {
+          "id": "missing_sign_condition",
+          "label": "A required sign condition is missing"
+        },
+        {
+          "id": "irreversible_squaring",
+          "label": "Squaring was used as an equivalence without the reverse implication"
+        },
+        {
+          "id": "extraneous_root",
+          "label": "Extra candidates were accepted as original solutions"
+        },
+        {
+          "id": "lost_root",
+          "label": "A transformation loses original solutions"
+        },
+        {
+          "id": "arithmetic_error",
+          "label": "An arithmetic operation is incorrect"
+        }
+      ]
+    },
+    "practice-010": {
+      "id": "practice-010",
+      "title": "Practice 10",
+      "mode": "C",
+      "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
+      "problem": {
+        "statement": "Solve sqrt(x) = x - 2 over the real numbers. The square root is the nonnegative real square root, so x>=0 is required.",
+        "expression": {
+          "source": null,
+          "latex": "\\sqrt{x}=x-2"
+        },
+        "goal": "Find the complete real solution set of the original equation.",
+        "variables": {
+          "x": "real"
+        },
+        "parameters": [],
+        "conditions": [
+          {
+            "id": "condition-001",
+            "description": "The real square root requires x>=0.",
+            "predicate": {
+              "left": {
+                "source": "x",
+                "latex": "x"
+              },
+              "relation": "ge",
+              "right": {
+                "source": "0",
+                "latex": "0"
+              }
+            },
+            "parameter_name": null
+          }
+        ],
+        "domain_constraints": [
+          {
+            "left": {
+              "source": "x",
+              "latex": "x"
+            },
+            "relation": "ge",
+            "right": {
+              "source": "0",
+              "latex": "0"
+            }
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "step-001",
+          "number": 1,
+          "input": {
+            "source": null,
+            "latex": "\\sqrt{x}=x-2"
+          },
+          "output": {
+            "source": null,
+            "latex": "x=(x-2)^2"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "OneWayImplication"
+        },
+        {
+          "id": "step-002",
+          "number": 2,
+          "input": {
+            "source": null,
+            "latex": "x=(x-2)^2"
+          },
+          "output": {
+            "source": null,
+            "latex": "(x-1)(x-4)=0\\ \\Longleftrightarrow\\ x\\in\\{1,4\\}"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        },
+        {
+          "id": "step-003",
+          "number": 3,
+          "input": {
+            "source": null,
+            "latex": "x\\in\\{1,4\\}"
+          },
+          "output": {
+            "source": null,
+            "latex": "S_{\\mathrm{original}}=\\{1,4\\}"
+          },
+          "method_id": "method-001",
+          "transformation_kind": "Equivalent"
+        }
+      ],
+      "methods": [
+        {
+          "id": "method-001",
+          "name": "Equation transformations"
+        }
+      ],
+      "claimed_conclusion": {
+        "source": null,
+        "latex": "S_{\\mathrm{original}}=\\{1,4\\}"
+      },
+      "assumption_options": [
+        {
+          "id": "premise-001",
+          "label": "Candidates from the squared equation must also satisfy the original equation, including x-2>=0."
+        },
+        {
+          "id": "premise-002",
+          "label": "The square-root input is nonnegative."
+        },
+        {
+          "id": "premise-003",
+          "label": "The candidate is nonzero."
+        }
+      ],
+      "reason_options": [
+        {
+          "id": "no_flaw",
+          "label": "No flaw in the presented derivation"
+        },
+        {
+          "id": "zero_divisor",
+          "label": "Division by a zero divisor"
+        },
+        {
+          "id": "improper_endpoint",
+          "label": "A singular endpoint requires an improper-integral treatment"
+        },
+        {
+          "id": "missing_sign_condition",
+          "label": "A required sign condition is missing"
+        },
+        {
+          "id": "irreversible_squaring",
+          "label": "Squaring was used as an equivalence without the reverse implication"
+        },
+        {
+          "id": "extraneous_root",
+          "label": "Extra candidates were accepted as original solutions"
+        },
+        {
+          "id": "lost_root",
+          "label": "A transformation loses original solutions"
+        },
+        {
+          "id": "arithmetic_error",
+          "label": "An arithmetic operation is incorrect"
+        }
+      ]
+    }
+  },
+  "feedbacks": {
+    "practice-001": {
+      "challenge_id": "practice-001",
+      "mode": "A",
+      "grade": "Correct",
+      "explanation": "Your complete selection matches the established first invalid step and all of its required computed evidence.",
+      "evidence": [
+        {
+          "rule_id": "check-a-nonzero",
+          "summary": "The computed divisor is zero; division is undefined.",
+          "origin": "computed",
+          "outcome": "zero_divisor"
+        },
+        {
+          "rule_id": "assumption-a-nonzero",
+          "summary": "Division by a requires a to be nonzero. Result: violated.",
+          "origin": "computed",
+          "outcome": "violated"
+        },
+        {
+          "rule_id": "check-substitute-a",
+          "summary": "Direct evaluation does not give a finite real value.",
+          "origin": "computed",
+          "outcome": "undefined_expression"
+        },
+        {
+          "rule_id": "problem-evaluation",
+          "summary": "The new problem independently yields solution_set: \\emptyset.",
+          "origin": "computed",
+          "outcome": "solution_set"
+        },
+        {
+          "rule_id": "conclusion-comparison",
+          "summary": "Comparison basis: symbolic_formula; changed: True.",
+          "origin": "computed",
+          "outcome": "changed"
+        }
+      ],
+      "remediation": "Return to the original equation and split the zero-parameter case.",
+      "analysis": {
+        "template_id": "linear-degeneration",
+        "original_problem": {
+          "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+          "expression": {
+            "source": null,
+            "latex": "ax=1"
+          },
+          "goal": "Find every real solution x.",
+          "variables": {
+            "x": "real"
+          },
+          "parameters": [
+            {
+              "name": "a",
+              "value": {
+                "source": "1",
+                "latex": "1"
+              },
+              "domain": "real"
+            }
+          ],
+          "conditions": [
+            {
+              "id": "parameter-a",
+              "description": "The value of a",
+              "predicate": {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "eq",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              },
+              "parameter_name": "a"
+            }
+          ],
+          "domain_constraints": [],
+          "well_formedness": "WellFormed",
+          "computation": {
+            "kind": "equation",
+            "variable": "x",
+            "left": {
+              "source": "a*x",
+              "latex": "ax"
+            },
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        },
+        "perturbed": {
+          "template_id": "linear-degeneration",
+          "perturbation": {
+            "template_id": "linear-degeneration",
+            "rule_id": "set-a-zero",
+            "condition_id": "parameter-a",
+            "type": "parameter_zero",
+            "new_value": {
+              "source": "0",
+              "latex": "0"
+            }
+          },
+          "problem": {
+            "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+            "expression": {
+              "source": null,
+              "latex": "ax=1"
+            },
+            "goal": "Find every real solution x.",
+            "variables": {
+              "x": "real"
+            },
+            "parameters": [
+              {
+                "name": "a",
+                "value": {
+                  "source": "0",
+                  "latex": "0"
+                },
+                "domain": "real"
+              }
+            ],
+            "conditions": [
+              {
+                "id": "parameter-a",
+                "description": "The value of a",
+                "predicate": {
+                  "left": {
+                    "source": "a",
+                    "latex": "a"
+                  },
+                  "relation": "eq",
+                  "right": {
+                    "source": "0",
+                    "latex": "0"
+                  }
+                },
+                "parameter_name": "a"
+              }
+            ],
+            "domain_constraints": [],
+            "well_formedness": "NoSolution",
+            "computation": {
+              "kind": "equation",
+              "variable": "x",
+              "left": {
+                "source": "a*x",
+                "latex": "ax"
+              },
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            }
+          },
+          "assumptions": [
+            {
+              "id": "a-nonzero",
+              "kind": "nonzero",
+              "description": "Division by a requires a to be nonzero.",
+              "condition_ids": [
+                "parameter-a"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              },
+              "state": "perturbed_false",
+              "interval": null
+            }
+          ]
+        },
+        "replayed_steps": [
+          {
+            "id": "divide-by-a",
+            "number": 1,
+            "input": {
+              "source": null,
+              "latex": "ax=1"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "divide-parameter",
+            "assumption_ids": [
+              "a-nonzero"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-a-nonzero",
+                  "summary": "The computed divisor is zero; division is undefined.",
+                  "origin": "computed",
+                  "outcome": "zero_divisor"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "a-nonzero"
+                },
+                {
+                  "kind": "step",
+                  "id": "divide-by-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Return to the original equation and split the zero-parameter case."
+            },
+            "explanation": "The computed divisor is zero; division is undefined. Division by a requires a to be nonzero. Result: violated."
+          },
+          {
+            "id": "substitute-a",
+            "number": 2,
+            "input": {
+              "source": null,
+              "latex": "x=\\frac{1}{a},\\quad a=1"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "divide-parameter",
+            "assumption_ids": [
+              "a-nonzero"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-substitute-a",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            },
+            "explanation": "Direct evaluation does not give a finite real value. Division by a requires a to be nonzero. Result: violated."
+          }
+        ],
+        "methods": [
+          {
+            "id": "divide-parameter",
+            "name": "Algebraic rearrangement",
+            "description": "Divide both sides by a, keeping the nonzero restriction.",
+            "assumption_ids": [
+              "a-nonzero"
+            ]
+          }
+        ],
+        "report": {
+          "problem_well_formedness": "NoSolution",
+          "step": {
+            "divide-by-a": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-a-nonzero",
+                  "summary": "The computed divisor is zero; division is undefined.",
+                  "origin": "computed",
+                  "outcome": "zero_divisor"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "a-nonzero"
+                },
+                {
+                  "kind": "step",
+                  "id": "divide-by-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Return to the original equation and split the zero-parameter case."
+            },
+            "substitute-a": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-substitute-a",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            }
+          },
+          "method": {
+            "labels": [
+              "Invalid Step"
+            ],
+            "evidence": [
+              {
+                "rule_id": "check-a-nonzero",
+                "summary": "The computed divisor is zero; division is undefined.",
+                "origin": "computed",
+                "outcome": "zero_divisor"
+              },
+              {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "check-substitute-a",
+                "summary": "Direct evaluation does not give a finite real value.",
+                "origin": "computed",
+                "outcome": "undefined_expression"
+              },
+              {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              }
+            ],
+            "affected_refs": [
+              {
+                "kind": "assumption",
+                "id": "a-nonzero"
+              },
+              {
+                "kind": "step",
+                "id": "divide-by-a"
+              },
+              {
+                "kind": "step",
+                "id": "substitute-a"
+              }
+            ],
+            "reason_if_unknown": null,
+            "remediation": "Return to the original equation and split the zero-parameter case."
+          },
+          "conclusion": {
+            "labels": [
+              "Changed Conclusion",
+              "Valid"
+            ],
+            "evidence": [
+              {
+                "rule_id": "problem-evaluation",
+                "summary": "The new problem independently yields solution_set: \\emptyset.",
+                "origin": "computed",
+                "outcome": "solution_set"
+              },
+              {
+                "rule_id": "conclusion-comparison",
+                "summary": "Comparison basis: symbolic_formula; changed: True.",
+                "origin": "computed",
+                "outcome": "changed"
+              }
+            ],
+            "affected_refs": [],
+            "reason_if_unknown": null,
+            "remediation": null
+          },
+          "comparison": {
+            "basis": "symbolic_formula",
+            "original": {
+              "source": null,
+              "latex": "\\left\\{1\\right\\}"
+            },
+            "perturbed": {
+              "source": null,
+              "latex": "\\emptyset"
+            },
+            "changed": true
+          },
+          "first_invalid_step_id": "divide-by-a",
+          "first_unresolved_step_id": null,
+          "assumptions": {
+            "a-nonzero": {
+              "status": "violated",
+              "evidence": {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              "reason": null
+            }
+          },
+          "original_outcome": {
+            "status": "solution_set",
+            "value": {
+              "source": null,
+              "latex": "\\left\\{1\\right\\}"
+            },
+            "completeness": "complete",
+            "reason_if_unknown": null
+          },
+          "perturbed_outcome": {
+            "status": "solution_set",
+            "value": {
+              "source": null,
+              "latex": "\\emptyset"
+            },
+            "completeness": "complete",
+            "reason_if_unknown": null
+          }
+        },
+        "explanations": [
+          "The divisor is zero. Returning to the original equation gives 0 = 1, so the new problem has no solution; this is distinct from simply evaluating an undefined quotient."
+        ],
+        "execution": null
+      },
+      "sample_feedback": null,
+      "free_text": null
+    },
+    "practice-002": {
+      "challenge_id": "practice-002",
+      "mode": "A",
+      "grade": "Correct",
+      "explanation": "Your complete selection matches the established first invalid step and all of its required computed evidence.",
+      "evidence": [
+        {
+          "rule_id": "check-regular-bound",
+          "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+          "origin": "computed",
+          "outcome": "improper_required"
+        },
+        {
+          "rule_id": "assumption-regular-upper-bound",
+          "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+          "origin": "computed",
+          "outcome": "violated"
+        },
+        {
+          "rule_id": "assumption-positive-bound",
+          "summary": "The listed examples have b > 0. Result: satisfied.",
+          "origin": "computed",
+          "outcome": "satisfied"
+        },
+        {
+          "rule_id": "assumption-positive-u",
+          "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+          "origin": "computed",
+          "outcome": "violated"
+        },
+        {
+          "rule_id": "check-antiderivative",
+          "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+          "origin": "computed",
+          "outcome": "endpoint_not_finite"
+        },
+        {
+          "rule_id": "check-bound-value",
+          "summary": "Direct evaluation does not give a finite real value.",
+          "origin": "computed",
+          "outcome": "undefined_expression"
+        },
+        {
+          "rule_id": "problem-evaluation",
+          "summary": "The new problem independently yields divergent: \\infty.",
+          "origin": "computed",
+          "outcome": "divergent"
+        },
+        {
+          "rule_id": "conclusion-comparison",
+          "summary": "Comparison basis: numeric_value; changed: True.",
+          "origin": "computed",
+          "outcome": "changed"
+        }
+      ],
+      "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit. Replace endpoint substitution with separately evaluated one-sided limits.",
+      "analysis": {
+        "template_id": "integral-endpoint",
+        "original_problem": {
+          "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+          "expression": {
+            "source": null,
+            "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+          },
+          "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+          "variables": {
+            "x": "real",
+            "u": "real"
+          },
+          "parameters": [
+            {
+              "name": "b",
+              "value": {
+                "source": "1/2",
+                "latex": "\\frac{1}{2}"
+              },
+              "domain": "real"
+            }
+          ],
+          "conditions": [
+            {
+              "id": "upper-endpoint",
+              "description": "The upper endpoint b",
+              "predicate": {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "eq",
+                "right": {
+                  "source": "1/2",
+                  "latex": "\\frac{1}{2}"
+                }
+              },
+              "parameter_name": "b"
+            },
+            {
+              "id": "lower-endpoint",
+              "description": "The lower endpoint remains zero.",
+              "predicate": null,
+              "parameter_name": null
+            }
+          ],
+          "domain_constraints": [
+            {
+              "left": {
+                "source": "x",
+                "latex": "x"
+              },
+              "relation": "ne",
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            }
+          ],
+          "well_formedness": "WellFormed",
+          "computation": {
+            "variable": "x",
+            "lower": {
+              "source": "0",
+              "latex": "0"
+            },
+            "upper": {
+              "source": "b",
+              "latex": "b"
+            },
+            "kind": "integral",
+            "integrand": {
+              "source": "1/(1-x)",
+              "latex": "1/(1-x)"
+            }
+          }
+        },
+        "perturbed": {
+          "template_id": "integral-endpoint",
+          "perturbation": {
+            "template_id": "integral-endpoint",
+            "rule_id": "move-upper-endpoint",
+            "condition_id": "upper-endpoint",
+            "type": "interval_endpoint",
+            "new_value": {
+              "source": "1",
+              "latex": "1"
+            }
+          },
+          "problem": {
+            "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+            "expression": {
+              "source": null,
+              "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+            },
+            "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+            "variables": {
+              "x": "real",
+              "u": "real"
+            },
+            "parameters": [
+              {
+                "name": "b",
+                "value": {
+                  "source": "1",
+                  "latex": "1"
+                },
+                "domain": "real"
+              }
+            ],
+            "conditions": [
+              {
+                "id": "upper-endpoint",
+                "description": "The upper endpoint b",
+                "predicate": {
+                  "left": {
+                    "source": "b",
+                    "latex": "b"
+                  },
+                  "relation": "eq",
+                  "right": {
+                    "source": "1",
+                    "latex": "1"
+                  }
+                },
+                "parameter_name": "b"
+              },
+              {
+                "id": "lower-endpoint",
+                "description": "The lower endpoint remains zero.",
+                "predicate": null,
+                "parameter_name": null
+              }
+            ],
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "x",
+                  "latex": "x"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            ],
+            "well_formedness": "Divergent",
+            "computation": {
+              "variable": "x",
+              "lower": {
+                "source": "0",
+                "latex": "0"
+              },
+              "upper": {
+                "source": "b",
+                "latex": "b"
+              },
+              "kind": "integral",
+              "integrand": {
+                "source": "1/(1-x)",
+                "latex": "1/(1-x)"
+              }
+            }
+          },
+          "assumptions": [
+            {
+              "id": "regular-upper-bound",
+              "kind": "continuity_on_interval",
+              "description": "For the original positive upper bound below 1, the integrand is continuous on the closed interval.",
+              "condition_ids": [
+                "upper-endpoint",
+                "lower-endpoint"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "lt",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              },
+              "state": "perturbed_false",
+              "interval": null
+            },
+            {
+              "id": "positive-bound",
+              "kind": "parameter_range",
+              "description": "The listed examples have b > 0.",
+              "condition_ids": [
+                "upper-endpoint"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "gt",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              },
+              "state": "assumed_true",
+              "interval": null
+            },
+            {
+              "id": "positive-u",
+              "kind": "log_argument",
+              "description": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined.",
+              "condition_ids": [
+                "upper-endpoint"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "u",
+                  "latex": "u"
+                },
+                "relation": "gt",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              },
+              "state": "perturbed_false",
+              "interval": {
+                "variable": "u",
+                "lower": {
+                  "source": "1-b",
+                  "latex": "1-b"
+                },
+                "upper": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            }
+          ]
+        },
+        "replayed_steps": [
+          {
+            "id": "change-variable",
+            "number": 1,
+            "input": {
+              "source": null,
+              "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "substitution",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-bound",
+              "positive-u"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "u",
+                  "latex": "u"
+                },
+                "relation": "gt",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-regular-bound",
+                  "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "improper_required"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-bound",
+                  "summary": "The listed examples have b > 0. Result: satisfied.",
+                  "origin": "computed",
+                  "outcome": "satisfied"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "regular-upper-bound"
+                },
+                {
+                  "kind": "step",
+                  "id": "change-variable"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit."
+            },
+            "explanation": "The affine identity holds, but the original proper-integral step includes a singular endpoint. For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated. The listed examples have b > 0. Result: satisfied. The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated."
+          },
+          {
+            "id": "evaluate-log",
+            "number": 2,
+            "input": {
+              "source": null,
+              "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "substitution",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-u"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "lt",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-antiderivative",
+                  "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "endpoint_not_finite"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "evaluate-log"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Replace endpoint substitution with separately evaluated one-sided limits."
+            },
+            "explanation": "The derivative identity does not justify direct evaluation at a singular endpoint. For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated. The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated."
+          },
+          {
+            "id": "substitute-bound",
+            "number": 3,
+            "input": {
+              "source": null,
+              "latex": "-\\log(1-b),\\quad b=\\frac12"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "substitution",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-u"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "lt",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-bound-value",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-bound"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            },
+            "explanation": "Direct evaluation does not give a finite real value. For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated. The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated."
+          }
+        ],
+        "methods": [
+          {
+            "id": "substitution",
+            "name": "Substitution",
+            "description": "Use u = 1 - x and transform both endpoints.",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-bound",
+              "positive-u"
+            ]
+          }
+        ],
+        "report": {
+          "problem_well_formedness": "Divergent",
+          "step": {
+            "change-variable": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-regular-bound",
+                  "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "improper_required"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-bound",
+                  "summary": "The listed examples have b > 0. Result: satisfied.",
+                  "origin": "computed",
+                  "outcome": "satisfied"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "regular-upper-bound"
+                },
+                {
+                  "kind": "step",
+                  "id": "change-variable"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit."
+            },
+            "evaluate-log": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-antiderivative",
+                  "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "endpoint_not_finite"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "evaluate-log"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Replace endpoint substitution with separately evaluated one-sided limits."
+            },
+            "substitute-bound": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-bound-value",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-bound"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            }
+          },
+          "method": {
+            "labels": [
+              "Needs Checking"
+            ],
+            "evidence": [
+              {
+                "rule_id": "check-regular-bound",
+                "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+                "origin": "computed",
+                "outcome": "improper_required"
+              },
+              {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "assumption-positive-bound",
+                "summary": "The listed examples have b > 0. Result: satisfied.",
+                "origin": "computed",
+                "outcome": "satisfied"
+              },
+              {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "check-antiderivative",
+                "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+                "origin": "computed",
+                "outcome": "endpoint_not_finite"
+              },
+              {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "check-bound-value",
+                "summary": "Direct evaluation does not give a finite real value.",
+                "origin": "computed",
+                "outcome": "undefined_expression"
+              },
+              {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              }
+            ],
+            "affected_refs": [
+              {
+                "kind": "assumption",
+                "id": "regular-upper-bound"
+              },
+              {
+                "kind": "step",
+                "id": "change-variable"
+              },
+              {
+                "kind": "step",
+                "id": "evaluate-log"
+              },
+              {
+                "kind": "step",
+                "id": "substitute-bound"
+              }
+            ],
+            "reason_if_unknown": null,
+            "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit. Replace endpoint substitution with separately evaluated one-sided limits."
+          },
+          "conclusion": {
+            "labels": [
+              "Changed Conclusion",
+              "Valid"
+            ],
+            "evidence": [
+              {
+                "rule_id": "problem-evaluation",
+                "summary": "The new problem independently yields divergent: \\infty.",
+                "origin": "computed",
+                "outcome": "divergent"
+              },
+              {
+                "rule_id": "conclusion-comparison",
+                "summary": "Comparison basis: numeric_value; changed: True.",
+                "origin": "computed",
+                "outcome": "changed"
+              }
+            ],
+            "affected_refs": [],
+            "reason_if_unknown": null,
+            "remediation": null
+          },
+          "comparison": {
+            "basis": "numeric_value",
+            "original": {
+              "source": null,
+              "latex": "\\log{\\left(2 \\right)}"
+            },
+            "perturbed": {
+              "source": null,
+              "latex": "\\infty"
+            },
+            "changed": true
+          },
+          "first_invalid_step_id": "change-variable",
+          "first_unresolved_step_id": null,
+          "assumptions": {
+            "regular-upper-bound": {
+              "status": "violated",
+              "evidence": {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              "reason": null
+            },
+            "positive-bound": {
+              "status": "satisfied",
+              "evidence": {
+                "rule_id": "assumption-positive-bound",
+                "summary": "The listed examples have b > 0. Result: satisfied.",
+                "origin": "computed",
+                "outcome": "satisfied"
+              },
+              "reason": null
+            },
+            "positive-u": {
+              "status": "violated",
+              "evidence": {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              "reason": null
+            }
+          },
+          "original_outcome": {
+            "status": "numeric_value",
+            "value": {
+              "source": null,
+              "latex": "\\log{\\left(2 \\right)}"
+            },
+            "completeness": null,
+            "reason_if_unknown": null
+          },
+          "perturbed_outcome": {
+            "status": "divergent",
+            "value": {
+              "source": null,
+              "latex": "\\infty"
+            },
+            "completeness": null,
+            "reason_if_unknown": null
+          }
+        },
+        "explanations": [
+          "The singular endpoint requires an improper integral. The substitution itself can be retained after introducing the one-sided limit, which diverges to positive infinity."
+        ],
+        "execution": null
+      },
+      "sample_feedback": null,
+      "free_text": null
+    },
+    "practice-003": {
+      "challenge_id": "practice-003",
+      "mode": "B",
+      "grade": "Correct",
+      "explanation": "This change meets the stated goal: invalidate the original derivation as written. Method applicability and conclusion validity are reported independently below.",
+      "evidence": [
+        {
+          "rule_id": "check-a-nonzero",
+          "summary": "The computed divisor is zero; division is undefined.",
+          "origin": "computed",
+          "outcome": "zero_divisor"
+        },
+        {
+          "rule_id": "assumption-a-nonzero",
+          "summary": "Division by a requires a to be nonzero. Result: violated.",
+          "origin": "computed",
+          "outcome": "violated"
+        },
+        {
+          "rule_id": "check-substitute-a",
+          "summary": "Direct evaluation does not give a finite real value.",
+          "origin": "computed",
+          "outcome": "undefined_expression"
+        },
+        {
+          "rule_id": "problem-evaluation",
+          "summary": "The new problem independently yields solution_set: \\emptyset.",
+          "origin": "computed",
+          "outcome": "solution_set"
+        },
+        {
+          "rule_id": "conclusion-comparison",
+          "summary": "Comparison basis: symbolic_formula; changed: True.",
+          "origin": "computed",
+          "outcome": "changed"
+        }
+      ],
+      "remediation": "Return to the original equation and split the zero-parameter case.",
+      "analysis": {
+        "template_id": "linear-degeneration",
+        "original_problem": {
+          "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+          "expression": {
+            "source": null,
+            "latex": "ax=1"
+          },
+          "goal": "Find every real solution x.",
+          "variables": {
+            "x": "real"
+          },
+          "parameters": [
+            {
+              "name": "a",
+              "value": {
+                "source": "1",
+                "latex": "1"
+              },
+              "domain": "real"
+            }
+          ],
+          "conditions": [
+            {
+              "id": "parameter-a",
+              "description": "The value of a",
+              "predicate": {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "eq",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              },
+              "parameter_name": "a"
+            }
+          ],
+          "domain_constraints": [],
+          "well_formedness": "WellFormed",
+          "computation": {
+            "kind": "equation",
+            "variable": "x",
+            "left": {
+              "source": "a*x",
+              "latex": "ax"
+            },
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        },
+        "perturbed": {
+          "template_id": "linear-degeneration",
+          "perturbation": {
+            "template_id": "linear-degeneration",
+            "rule_id": "set-a-zero",
+            "condition_id": "parameter-a",
+            "type": "parameter_zero",
+            "new_value": {
+              "source": "0",
+              "latex": "0"
+            }
+          },
+          "problem": {
+            "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+            "expression": {
+              "source": null,
+              "latex": "ax=1"
+            },
+            "goal": "Find every real solution x.",
+            "variables": {
+              "x": "real"
+            },
+            "parameters": [
+              {
+                "name": "a",
+                "value": {
+                  "source": "0",
+                  "latex": "0"
+                },
+                "domain": "real"
+              }
+            ],
+            "conditions": [
+              {
+                "id": "parameter-a",
+                "description": "The value of a",
+                "predicate": {
+                  "left": {
+                    "source": "a",
+                    "latex": "a"
+                  },
+                  "relation": "eq",
+                  "right": {
+                    "source": "0",
+                    "latex": "0"
+                  }
+                },
+                "parameter_name": "a"
+              }
+            ],
+            "domain_constraints": [],
+            "well_formedness": "NoSolution",
+            "computation": {
+              "kind": "equation",
+              "variable": "x",
+              "left": {
+                "source": "a*x",
+                "latex": "ax"
+              },
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            }
+          },
+          "assumptions": [
+            {
+              "id": "a-nonzero",
+              "kind": "nonzero",
+              "description": "Division by a requires a to be nonzero.",
+              "condition_ids": [
+                "parameter-a"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              },
+              "state": "perturbed_false",
+              "interval": null
+            }
+          ]
+        },
+        "replayed_steps": [
+          {
+            "id": "divide-by-a",
+            "number": 1,
+            "input": {
+              "source": null,
+              "latex": "ax=1"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "divide-parameter",
+            "assumption_ids": [
+              "a-nonzero"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-a-nonzero",
+                  "summary": "The computed divisor is zero; division is undefined.",
+                  "origin": "computed",
+                  "outcome": "zero_divisor"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "a-nonzero"
+                },
+                {
+                  "kind": "step",
+                  "id": "divide-by-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Return to the original equation and split the zero-parameter case."
+            },
+            "explanation": "The computed divisor is zero; division is undefined. Division by a requires a to be nonzero. Result: violated."
+          },
+          {
+            "id": "substitute-a",
+            "number": 2,
+            "input": {
+              "source": null,
+              "latex": "x=\\frac{1}{a},\\quad a=1"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "divide-parameter",
+            "assumption_ids": [
+              "a-nonzero"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-substitute-a",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            },
+            "explanation": "Direct evaluation does not give a finite real value. Division by a requires a to be nonzero. Result: violated."
+          }
+        ],
+        "methods": [
+          {
+            "id": "divide-parameter",
+            "name": "Algebraic rearrangement",
+            "description": "Divide both sides by a, keeping the nonzero restriction.",
+            "assumption_ids": [
+              "a-nonzero"
+            ]
+          }
+        ],
+        "report": {
+          "problem_well_formedness": "NoSolution",
+          "step": {
+            "divide-by-a": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-a-nonzero",
+                  "summary": "The computed divisor is zero; division is undefined.",
+                  "origin": "computed",
+                  "outcome": "zero_divisor"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "a-nonzero"
+                },
+                {
+                  "kind": "step",
+                  "id": "divide-by-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Return to the original equation and split the zero-parameter case."
+            },
+            "substitute-a": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-substitute-a",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            }
+          },
+          "method": {
+            "labels": [
+              "Invalid Step"
+            ],
+            "evidence": [
+              {
+                "rule_id": "check-a-nonzero",
+                "summary": "The computed divisor is zero; division is undefined.",
+                "origin": "computed",
+                "outcome": "zero_divisor"
+              },
+              {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "check-substitute-a",
+                "summary": "Direct evaluation does not give a finite real value.",
+                "origin": "computed",
+                "outcome": "undefined_expression"
+              },
+              {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              }
+            ],
+            "affected_refs": [
+              {
+                "kind": "assumption",
+                "id": "a-nonzero"
+              },
+              {
+                "kind": "step",
+                "id": "divide-by-a"
+              },
+              {
+                "kind": "step",
+                "id": "substitute-a"
+              }
+            ],
+            "reason_if_unknown": null,
+            "remediation": "Return to the original equation and split the zero-parameter case."
+          },
+          "conclusion": {
+            "labels": [
+              "Changed Conclusion",
+              "Valid"
+            ],
+            "evidence": [
+              {
+                "rule_id": "problem-evaluation",
+                "summary": "The new problem independently yields solution_set: \\emptyset.",
+                "origin": "computed",
+                "outcome": "solution_set"
+              },
+              {
+                "rule_id": "conclusion-comparison",
+                "summary": "Comparison basis: symbolic_formula; changed: True.",
+                "origin": "computed",
+                "outcome": "changed"
+              }
+            ],
+            "affected_refs": [],
+            "reason_if_unknown": null,
+            "remediation": null
+          },
+          "comparison": {
+            "basis": "symbolic_formula",
+            "original": {
+              "source": null,
+              "latex": "\\left\\{1\\right\\}"
+            },
+            "perturbed": {
+              "source": null,
+              "latex": "\\emptyset"
+            },
+            "changed": true
+          },
+          "first_invalid_step_id": "divide-by-a",
+          "first_unresolved_step_id": null,
+          "assumptions": {
+            "a-nonzero": {
+              "status": "violated",
+              "evidence": {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              "reason": null
+            }
+          },
+          "original_outcome": {
+            "status": "solution_set",
+            "value": {
+              "source": null,
+              "latex": "\\left\\{1\\right\\}"
+            },
+            "completeness": "complete",
+            "reason_if_unknown": null
+          },
+          "perturbed_outcome": {
+            "status": "solution_set",
+            "value": {
+              "source": null,
+              "latex": "\\emptyset"
+            },
+            "completeness": "complete",
+            "reason_if_unknown": null
+          }
+        },
+        "explanations": [
+          "The divisor is zero. Returning to the original equation gives 0 = 1, so the new problem has no solution; this is distinct from simply evaluating an undefined quotient."
+        ],
+        "execution": null
+      },
+      "sample_feedback": null,
+      "free_text": null
+    },
+    "practice-004": {
+      "challenge_id": "practice-004",
+      "mode": "B",
+      "grade": "Correct",
+      "explanation": "This change meets the stated goal: invalidate the original derivation as written. Method applicability and conclusion validity are reported independently below.",
+      "evidence": [
+        {
+          "rule_id": "check-regular-bound",
+          "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+          "origin": "computed",
+          "outcome": "improper_required"
+        },
+        {
+          "rule_id": "assumption-regular-upper-bound",
+          "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+          "origin": "computed",
+          "outcome": "violated"
+        },
+        {
+          "rule_id": "assumption-positive-bound",
+          "summary": "The listed examples have b > 0. Result: satisfied.",
+          "origin": "computed",
+          "outcome": "satisfied"
+        },
+        {
+          "rule_id": "assumption-positive-u",
+          "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+          "origin": "computed",
+          "outcome": "violated"
+        },
+        {
+          "rule_id": "check-antiderivative",
+          "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+          "origin": "computed",
+          "outcome": "endpoint_not_finite"
+        },
+        {
+          "rule_id": "check-bound-value",
+          "summary": "Direct evaluation does not give a finite real value.",
+          "origin": "computed",
+          "outcome": "undefined_expression"
+        },
+        {
+          "rule_id": "problem-evaluation",
+          "summary": "The new problem independently yields divergent: \\infty.",
+          "origin": "computed",
+          "outcome": "divergent"
+        },
+        {
+          "rule_id": "conclusion-comparison",
+          "summary": "Comparison basis: numeric_value; changed: True.",
+          "origin": "computed",
+          "outcome": "changed"
+        }
+      ],
+      "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit. Replace endpoint substitution with separately evaluated one-sided limits.",
+      "analysis": {
+        "template_id": "integral-endpoint",
+        "original_problem": {
+          "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+          "expression": {
+            "source": null,
+            "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+          },
+          "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+          "variables": {
+            "x": "real",
+            "u": "real"
+          },
+          "parameters": [
+            {
+              "name": "b",
+              "value": {
+                "source": "1/2",
+                "latex": "\\frac{1}{2}"
+              },
+              "domain": "real"
+            }
+          ],
+          "conditions": [
+            {
+              "id": "upper-endpoint",
+              "description": "The upper endpoint b",
+              "predicate": {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "eq",
+                "right": {
+                  "source": "1/2",
+                  "latex": "\\frac{1}{2}"
+                }
+              },
+              "parameter_name": "b"
+            },
+            {
+              "id": "lower-endpoint",
+              "description": "The lower endpoint remains zero.",
+              "predicate": null,
+              "parameter_name": null
+            }
+          ],
+          "domain_constraints": [
+            {
+              "left": {
+                "source": "x",
+                "latex": "x"
+              },
+              "relation": "ne",
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            }
+          ],
+          "well_formedness": "WellFormed",
+          "computation": {
+            "variable": "x",
+            "lower": {
+              "source": "0",
+              "latex": "0"
+            },
+            "upper": {
+              "source": "b",
+              "latex": "b"
+            },
+            "kind": "integral",
+            "integrand": {
+              "source": "1/(1-x)",
+              "latex": "1/(1-x)"
+            }
+          }
+        },
+        "perturbed": {
+          "template_id": "integral-endpoint",
+          "perturbation": {
+            "template_id": "integral-endpoint",
+            "rule_id": "move-upper-endpoint",
+            "condition_id": "upper-endpoint",
+            "type": "interval_endpoint",
+            "new_value": {
+              "source": "1",
+              "latex": "1"
+            }
+          },
+          "problem": {
+            "statement": "Evaluate the real definite integral, initially with b = 1/2. The substitution variable is u = 1 - x.",
+            "expression": {
+              "source": null,
+              "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+            },
+            "goal": "Evaluate the integral and retain the conditions used in the substitution.",
+            "variables": {
+              "x": "real",
+              "u": "real"
+            },
+            "parameters": [
+              {
+                "name": "b",
+                "value": {
+                  "source": "1",
+                  "latex": "1"
+                },
+                "domain": "real"
+              }
+            ],
+            "conditions": [
+              {
+                "id": "upper-endpoint",
+                "description": "The upper endpoint b",
+                "predicate": {
+                  "left": {
+                    "source": "b",
+                    "latex": "b"
+                  },
+                  "relation": "eq",
+                  "right": {
+                    "source": "1",
+                    "latex": "1"
+                  }
+                },
+                "parameter_name": "b"
+              },
+              {
+                "id": "lower-endpoint",
+                "description": "The lower endpoint remains zero.",
+                "predicate": null,
+                "parameter_name": null
+              }
+            ],
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "x",
+                  "latex": "x"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            ],
+            "well_formedness": "Divergent",
+            "computation": {
+              "variable": "x",
+              "lower": {
+                "source": "0",
+                "latex": "0"
+              },
+              "upper": {
+                "source": "b",
+                "latex": "b"
+              },
+              "kind": "integral",
+              "integrand": {
+                "source": "1/(1-x)",
+                "latex": "1/(1-x)"
+              }
+            }
+          },
+          "assumptions": [
+            {
+              "id": "regular-upper-bound",
+              "kind": "continuity_on_interval",
+              "description": "For the original positive upper bound below 1, the integrand is continuous on the closed interval.",
+              "condition_ids": [
+                "upper-endpoint",
+                "lower-endpoint"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "lt",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              },
+              "state": "perturbed_false",
+              "interval": null
+            },
+            {
+              "id": "positive-bound",
+              "kind": "parameter_range",
+              "description": "The listed examples have b > 0.",
+              "condition_ids": [
+                "upper-endpoint"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "gt",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              },
+              "state": "assumed_true",
+              "interval": null
+            },
+            {
+              "id": "positive-u",
+              "kind": "log_argument",
+              "description": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined.",
+              "condition_ids": [
+                "upper-endpoint"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "u",
+                  "latex": "u"
+                },
+                "relation": "gt",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              },
+              "state": "perturbed_false",
+              "interval": {
+                "variable": "u",
+                "lower": {
+                  "source": "1-b",
+                  "latex": "1-b"
+                },
+                "upper": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            }
+          ]
+        },
+        "replayed_steps": [
+          {
+            "id": "change-variable",
+            "number": 1,
+            "input": {
+              "source": null,
+              "latex": "\\int_0^b \\frac{1}{1-x}\\,\\mathrm{d}x"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "substitution",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-bound",
+              "positive-u"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "u",
+                  "latex": "u"
+                },
+                "relation": "gt",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-regular-bound",
+                  "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "improper_required"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-bound",
+                  "summary": "The listed examples have b > 0. Result: satisfied.",
+                  "origin": "computed",
+                  "outcome": "satisfied"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "regular-upper-bound"
+                },
+                {
+                  "kind": "step",
+                  "id": "change-variable"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit."
+            },
+            "explanation": "The affine identity holds, but the original proper-integral step includes a singular endpoint. For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated. The listed examples have b > 0. Result: satisfied. The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated."
+          },
+          {
+            "id": "evaluate-log",
+            "number": 2,
+            "input": {
+              "source": null,
+              "latex": "-\\int_1^{1-b} \\frac{1}{u}\\,\\mathrm{d}u"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "substitution",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-u"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "lt",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-antiderivative",
+                  "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "endpoint_not_finite"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "evaluate-log"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Replace endpoint substitution with separately evaluated one-sided limits."
+            },
+            "explanation": "The derivative identity does not justify direct evaluation at a singular endpoint. For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated. The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated."
+          },
+          {
+            "id": "substitute-bound",
+            "number": 3,
+            "input": {
+              "source": null,
+              "latex": "-\\log(1-b),\\quad b=\\frac12"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "substitution",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-u"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "b",
+                  "latex": "b"
+                },
+                "relation": "lt",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-bound-value",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-bound"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            },
+            "explanation": "Direct evaluation does not give a finite real value. For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated. The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated."
+          }
+        ],
+        "methods": [
+          {
+            "id": "substitution",
+            "name": "Substitution",
+            "description": "Use u = 1 - x and transform both endpoints.",
+            "assumption_ids": [
+              "regular-upper-bound",
+              "positive-bound",
+              "positive-u"
+            ]
+          }
+        ],
+        "report": {
+          "problem_well_formedness": "Divergent",
+          "step": {
+            "change-variable": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-regular-bound",
+                  "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "improper_required"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-bound",
+                  "summary": "The listed examples have b > 0. Result: satisfied.",
+                  "origin": "computed",
+                  "outcome": "satisfied"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "regular-upper-bound"
+                },
+                {
+                  "kind": "step",
+                  "id": "change-variable"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit."
+            },
+            "evaluate-log": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-antiderivative",
+                  "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+                  "origin": "computed",
+                  "outcome": "endpoint_not_finite"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "evaluate-log"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Replace endpoint substitution with separately evaluated one-sided limits."
+            },
+            "substitute-bound": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-bound-value",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-regular-upper-bound",
+                  "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                },
+                {
+                  "rule_id": "assumption-positive-u",
+                  "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-bound"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            }
+          },
+          "method": {
+            "labels": [
+              "Needs Checking"
+            ],
+            "evidence": [
+              {
+                "rule_id": "check-regular-bound",
+                "summary": "The affine identity holds, but the original proper-integral step includes a singular endpoint.",
+                "origin": "computed",
+                "outcome": "improper_required"
+              },
+              {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "assumption-positive-bound",
+                "summary": "The listed examples have b > 0. Result: satisfied.",
+                "origin": "computed",
+                "outcome": "satisfied"
+              },
+              {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "check-antiderivative",
+                "summary": "The derivative identity does not justify direct evaluation at a singular endpoint.",
+                "origin": "computed",
+                "outcome": "endpoint_not_finite"
+              },
+              {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "check-bound-value",
+                "summary": "Direct evaluation does not give a finite real value.",
+                "origin": "computed",
+                "outcome": "undefined_expression"
+              },
+              {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              }
+            ],
+            "affected_refs": [
+              {
+                "kind": "assumption",
+                "id": "regular-upper-bound"
+              },
+              {
+                "kind": "step",
+                "id": "change-variable"
+              },
+              {
+                "kind": "step",
+                "id": "evaluate-log"
+              },
+              {
+                "kind": "step",
+                "id": "substitute-bound"
+              }
+            ],
+            "reason_if_unknown": null,
+            "remediation": "Truncate the interval before the singular endpoint, substitute there, then take the one-sided limit. Replace endpoint substitution with separately evaluated one-sided limits."
+          },
+          "conclusion": {
+            "labels": [
+              "Changed Conclusion",
+              "Valid"
+            ],
+            "evidence": [
+              {
+                "rule_id": "problem-evaluation",
+                "summary": "The new problem independently yields divergent: \\infty.",
+                "origin": "computed",
+                "outcome": "divergent"
+              },
+              {
+                "rule_id": "conclusion-comparison",
+                "summary": "Comparison basis: numeric_value; changed: True.",
+                "origin": "computed",
+                "outcome": "changed"
+              }
+            ],
+            "affected_refs": [],
+            "reason_if_unknown": null,
+            "remediation": null
+          },
+          "comparison": {
+            "basis": "numeric_value",
+            "original": {
+              "source": null,
+              "latex": "\\log{\\left(2 \\right)}"
+            },
+            "perturbed": {
+              "source": null,
+              "latex": "\\infty"
+            },
+            "changed": true
+          },
+          "first_invalid_step_id": "change-variable",
+          "first_unresolved_step_id": null,
+          "assumptions": {
+            "regular-upper-bound": {
+              "status": "violated",
+              "evidence": {
+                "rule_id": "assumption-regular-upper-bound",
+                "summary": "For the original positive upper bound below 1, the integrand is continuous on the closed interval. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              "reason": null
+            },
+            "positive-bound": {
+              "status": "satisfied",
+              "evidence": {
+                "rule_id": "assumption-positive-bound",
+                "summary": "The listed examples have b > 0. Result: satisfied.",
+                "origin": "computed",
+                "outcome": "satisfied"
+              },
+              "reason": null
+            },
+            "positive-u": {
+              "status": "violated",
+              "evidence": {
+                "rule_id": "assumption-positive-u",
+                "summary": "The substitution has u > 0 throughout the original closed interval, so direct real logarithm endpoint evaluation is defined. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              "reason": null
+            }
+          },
+          "original_outcome": {
+            "status": "numeric_value",
+            "value": {
+              "source": null,
+              "latex": "\\log{\\left(2 \\right)}"
+            },
+            "completeness": null,
+            "reason_if_unknown": null
+          },
+          "perturbed_outcome": {
+            "status": "divergent",
+            "value": {
+              "source": null,
+              "latex": "\\infty"
+            },
+            "completeness": null,
+            "reason_if_unknown": null
+          }
+        },
+        "explanations": [
+          "The singular endpoint requires an improper integral. The substitution itself can be retained after introducing the one-sided limit, which diverges to positive infinity."
+        ],
+        "execution": null
+      },
+      "sample_feedback": null,
+      "free_text": null
+    },
+    "practice-005": {
+      "challenge_id": "practice-005",
+      "mode": "B",
+      "grade": "Correct",
+      "explanation": "This change meets the stated goal: change the conclusion. Method applicability and conclusion validity are reported independently below.",
+      "evidence": [
+        {
+          "rule_id": "check-a-nonzero",
+          "summary": "The computed divisor is zero; division is undefined.",
+          "origin": "computed",
+          "outcome": "zero_divisor"
+        },
+        {
+          "rule_id": "assumption-a-nonzero",
+          "summary": "Division by a requires a to be nonzero. Result: violated.",
+          "origin": "computed",
+          "outcome": "violated"
+        },
+        {
+          "rule_id": "check-substitute-a",
+          "summary": "Direct evaluation does not give a finite real value.",
+          "origin": "computed",
+          "outcome": "undefined_expression"
+        },
+        {
+          "rule_id": "problem-evaluation",
+          "summary": "The new problem independently yields solution_set: \\emptyset.",
+          "origin": "computed",
+          "outcome": "solution_set"
+        },
+        {
+          "rule_id": "conclusion-comparison",
+          "summary": "Comparison basis: symbolic_formula; changed: True.",
+          "origin": "computed",
+          "outcome": "changed"
+        }
+      ],
+      "remediation": "Return to the original equation and split the zero-parameter case.",
+      "analysis": {
+        "template_id": "linear-degeneration",
+        "original_problem": {
+          "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+          "expression": {
+            "source": null,
+            "latex": "ax=1"
+          },
+          "goal": "Find every real solution x.",
+          "variables": {
+            "x": "real"
+          },
+          "parameters": [
+            {
+              "name": "a",
+              "value": {
+                "source": "1",
+                "latex": "1"
+              },
+              "domain": "real"
+            }
+          ],
+          "conditions": [
+            {
+              "id": "parameter-a",
+              "description": "The value of a",
+              "predicate": {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "eq",
+                "right": {
+                  "source": "1",
+                  "latex": "1"
+                }
+              },
+              "parameter_name": "a"
+            }
+          ],
+          "domain_constraints": [],
+          "well_formedness": "WellFormed",
+          "computation": {
+            "kind": "equation",
+            "variable": "x",
+            "left": {
+              "source": "a*x",
+              "latex": "ax"
+            },
+            "right": {
+              "source": "1",
+              "latex": "1"
+            }
+          }
+        },
+        "perturbed": {
+          "template_id": "linear-degeneration",
+          "perturbation": {
+            "template_id": "linear-degeneration",
+            "rule_id": "set-a-zero",
+            "condition_id": "parameter-a",
+            "type": "parameter_zero",
+            "new_value": {
+              "source": "0",
+              "latex": "0"
+            }
+          },
+          "problem": {
+            "statement": "Solve ax = 1 over the real numbers, initially with a = 1.",
+            "expression": {
+              "source": null,
+              "latex": "ax=1"
+            },
+            "goal": "Find every real solution x.",
+            "variables": {
+              "x": "real"
+            },
+            "parameters": [
+              {
+                "name": "a",
+                "value": {
+                  "source": "0",
+                  "latex": "0"
+                },
+                "domain": "real"
+              }
+            ],
+            "conditions": [
+              {
+                "id": "parameter-a",
+                "description": "The value of a",
+                "predicate": {
+                  "left": {
+                    "source": "a",
+                    "latex": "a"
+                  },
+                  "relation": "eq",
+                  "right": {
+                    "source": "0",
+                    "latex": "0"
+                  }
+                },
+                "parameter_name": "a"
+              }
+            ],
+            "domain_constraints": [],
+            "well_formedness": "NoSolution",
+            "computation": {
+              "kind": "equation",
+              "variable": "x",
+              "left": {
+                "source": "a*x",
+                "latex": "ax"
+              },
+              "right": {
+                "source": "1",
+                "latex": "1"
+              }
+            }
+          },
+          "assumptions": [
+            {
+              "id": "a-nonzero",
+              "kind": "nonzero",
+              "description": "Division by a requires a to be nonzero.",
+              "condition_ids": [
+                "parameter-a"
+              ],
+              "predicate": {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              },
+              "state": "perturbed_false",
+              "interval": null
+            }
+          ]
+        },
+        "replayed_steps": [
+          {
+            "id": "divide-by-a",
+            "number": 1,
+            "input": {
+              "source": null,
+              "latex": "ax=1"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "divide-parameter",
+            "assumption_ids": [
+              "a-nonzero"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-a-nonzero",
+                  "summary": "The computed divisor is zero; division is undefined.",
+                  "origin": "computed",
+                  "outcome": "zero_divisor"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "a-nonzero"
+                },
+                {
+                  "kind": "step",
+                  "id": "divide-by-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Return to the original equation and split the zero-parameter case."
+            },
+            "explanation": "The computed divisor is zero; division is undefined. Division by a requires a to be nonzero. Result: violated."
+          },
+          {
+            "id": "substitute-a",
+            "number": 2,
+            "input": {
+              "source": null,
+              "latex": "x=\\frac{1}{a},\\quad a=1"
+            },
+            "output": {
+              "source": null,
+              "latex": "\\text{Not replayed as a valid step}"
+            },
+            "method_id": "divide-parameter",
+            "assumption_ids": [
+              "a-nonzero"
+            ],
+            "transformation_kind": "Equivalent",
+            "domain_constraints": [
+              {
+                "left": {
+                  "source": "a",
+                  "latex": "a"
+                },
+                "relation": "ne",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ],
+            "verification": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-substitute-a",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            },
+            "explanation": "Direct evaluation does not give a finite real value. Division by a requires a to be nonzero. Result: violated."
+          }
+        ],
+        "methods": [
+          {
+            "id": "divide-parameter",
+            "name": "Algebraic rearrangement",
+            "description": "Divide both sides by a, keeping the nonzero restriction.",
+            "assumption_ids": [
+              "a-nonzero"
+            ]
+          }
+        ],
+        "report": {
+          "problem_well_formedness": "NoSolution",
+          "step": {
+            "divide-by-a": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-a-nonzero",
+                  "summary": "The computed divisor is zero; division is undefined.",
+                  "origin": "computed",
+                  "outcome": "zero_divisor"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "assumption",
+                  "id": "a-nonzero"
+                },
+                {
+                  "kind": "step",
+                  "id": "divide-by-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": "Return to the original equation and split the zero-parameter case."
+            },
+            "substitute-a": {
+              "labels": [
+                "Invalid Step"
+              ],
+              "evidence": [
+                {
+                  "rule_id": "check-substitute-a",
+                  "summary": "Direct evaluation does not give a finite real value.",
+                  "origin": "computed",
+                  "outcome": "undefined_expression"
+                },
+                {
+                  "rule_id": "assumption-a-nonzero",
+                  "summary": "Division by a requires a to be nonzero. Result: violated.",
+                  "origin": "computed",
+                  "outcome": "violated"
+                }
+              ],
+              "affected_refs": [
+                {
+                  "kind": "step",
+                  "id": "substitute-a"
+                }
+              ],
+              "reason_if_unknown": null,
+              "remediation": null
+            }
+          },
+          "method": {
+            "labels": [
+              "Invalid Step"
+            ],
+            "evidence": [
+              {
+                "rule_id": "check-a-nonzero",
+                "summary": "The computed divisor is zero; division is undefined.",
+                "origin": "computed",
+                "outcome": "zero_divisor"
+              },
+              {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              {
+                "rule_id": "check-substitute-a",
+                "summary": "Direct evaluation does not give a finite real value.",
+                "origin": "computed",
+                "outcome": "undefined_expression"
+              },
+              {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              }
+            ],
+            "affected_refs": [
+              {
+                "kind": "assumption",
+                "id": "a-nonzero"
+              },
+              {
+                "kind": "step",
+                "id": "divide-by-a"
+              },
+              {
+                "kind": "step",
+                "id": "substitute-a"
+              }
+            ],
+            "reason_if_unknown": null,
+            "remediation": "Return to the original equation and split the zero-parameter case."
+          },
+          "conclusion": {
+            "labels": [
+              "Changed Conclusion",
+              "Valid"
+            ],
+            "evidence": [
+              {
+                "rule_id": "problem-evaluation",
+                "summary": "The new problem independently yields solution_set: \\emptyset.",
+                "origin": "computed",
+                "outcome": "solution_set"
+              },
+              {
+                "rule_id": "conclusion-comparison",
+                "summary": "Comparison basis: symbolic_formula; changed: True.",
+                "origin": "computed",
+                "outcome": "changed"
+              }
+            ],
+            "affected_refs": [],
+            "reason_if_unknown": null,
+            "remediation": null
+          },
+          "comparison": {
+            "basis": "symbolic_formula",
+            "original": {
+              "source": null,
+              "latex": "\\left\\{1\\right\\}"
+            },
+            "perturbed": {
+              "source": null,
+              "latex": "\\emptyset"
+            },
+            "changed": true
+          },
+          "first_invalid_step_id": "divide-by-a",
+          "first_unresolved_step_id": null,
+          "assumptions": {
+            "a-nonzero": {
+              "status": "violated",
+              "evidence": {
+                "rule_id": "assumption-a-nonzero",
+                "summary": "Division by a requires a to be nonzero. Result: violated.",
+                "origin": "computed",
+                "outcome": "violated"
+              },
+              "reason": null
+            }
+          },
+          "original_outcome": {
+            "status": "solution_set",
+            "value": {
+              "source": null,
+              "latex": "\\left\\{1\\right\\}"
+            },
+            "completeness": "complete",
+            "reason_if_unknown": null
+          },
+          "perturbed_outcome": {
+            "status": "solution_set",
+            "value": {
+              "source": null,
+              "latex": "\\emptyset"
+            },
+            "completeness": "complete",
+            "reason_if_unknown": null
+          }
+        },
+        "explanations": [
+          "The divisor is zero. Returning to the original equation gives 0 = 1, so the new problem has no solution; this is distinct from simply evaluating an undefined quotient."
+        ],
+        "execution": null
+      },
+      "sample_feedback": null,
+      "free_text": null
+    },
+    "practice-006": {
+      "challenge_id": "practice-006",
+      "mode": "C",
+      "grade": "Correct",
+      "explanation": "Your full judgement matches the reviewed standard. This feedback comes from human review, not live symbolic verification of this derivation.",
+      "evidence": [
+        {
+          "rule_id": "sample-review",
+          "summary": "The given parameter reduces the problem to 2x=1.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "Multiplication by 2 is a bijection on the real numbers, so division by 2 preserves all solutions.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "Substitution verifies x=1/2, and no other real value solves the linear equation.",
+          "origin": "author_reviewed",
+          "outcome": null
+        }
+      ],
+      "remediation": null,
+      "analysis": null,
+      "sample_feedback": {
+        "derivation": "sound",
+        "conclusion": "correct",
+        "first_flaw_step_id": null,
+        "annotations": [
+          {
+            "step_id": "step-001",
+            "finding": "valid",
+            "assumption_ids": [],
+            "basis": "Substitution uses the given value a=2."
+          },
+          {
+            "step_id": "step-002",
+            "finding": "valid",
+            "assumption_ids": [
+              "premise-001"
+            ],
+            "basis": "Division by 2 is reversible because 2 is nonzero."
+          },
+          {
+            "step_id": "step-003",
+            "finding": "valid",
+            "assumption_ids": [],
+            "basis": "The sole candidate satisfies 2*(1/2)=1 and the reversible chain is exhaustive."
+          }
+        ],
+        "actual_conclusion": {
+          "source": null,
+          "latex": "\\left\\{\\frac12\\right\\}"
+        },
+        "reason_if_unknown": null
+      },
+      "free_text": null
+    },
+    "practice-007": {
+      "challenge_id": "practice-007",
+      "mode": "C",
+      "grade": "Correct",
+      "explanation": "Your full judgement matches the reviewed standard. This feedback comes from human review, not live symbolic verification of this derivation.",
+      "evidence": [
+        {
+          "rule_id": "sample-review",
+          "summary": "1-x >= 1/4 on [0,3/4], so this is a proper integral.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "u=1-x gives du=-dx and maps x=0,3/4 to u=1,1/4, respectively.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "The resulting integral of 1/u on [1/4,1] equals log(1)-log(1/4)=log(4).",
+          "origin": "author_reviewed",
+          "outcome": null
+        }
+      ],
+      "remediation": null,
+      "analysis": null,
+      "sample_feedback": {
+        "derivation": "sound",
+        "conclusion": "correct",
+        "first_flaw_step_id": null,
+        "annotations": [
+          {
+            "step_id": "step-001",
+            "finding": "valid",
+            "assumption_ids": [
+              "premise-001",
+              "premise-002"
+            ],
+            "basis": "On [0,3/4], the denominator is at least 1/4; the affine substitution is bijective and the reversed bounds are 1/4 to 1."
+          },
+          {
+            "step_id": "step-002",
+            "finding": "valid",
+            "assumption_ids": [
+              "premise-002"
+            ],
+            "basis": "For u in [1/4,1], log(u) is a real antiderivative of 1/u and both endpoint values are finite."
+          },
+          {
+            "step_id": "step-003",
+            "finding": "valid",
+            "assumption_ids": [],
+            "basis": "log(1)=0 and -log(1/4)=log(4)."
+          }
+        ],
+        "actual_conclusion": {
+          "source": "log(4)",
+          "latex": "\\log 4"
+        },
+        "reason_if_unknown": null
+      },
+      "free_text": null
+    },
+    "practice-008": {
+      "challenge_id": "practice-008",
+      "mode": "C",
+      "grade": "Correct",
+      "explanation": "Your full judgement matches the reviewed standard. This feedback comes from human review, not live symbolic verification of this derivation.",
+      "evidence": [
+        {
+          "rule_id": "sample-review",
+          "summary": "By definition, the principal real square root is nonnegative.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "abs(x) is nonnegative and its square is x squared, so sqrt(x squared)=abs(x) for every real x.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "The proposed identity equals x only when x>=0. The counterexample x=-1 disproves the claimed all-real conclusion.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "x!=0 does not repair the identity: x=-1 remains allowed. x<=0 would require -x, not x, except at zero.",
+          "origin": "author_reviewed",
+          "outcome": null
+        }
+      ],
+      "remediation": "Retain the stated domain and write f(x)=abs(x), or explicitly restrict the claimed identity to x>=0.",
+      "analysis": null,
+      "sample_feedback": {
+        "derivation": "not_sound",
+        "conclusion": "incorrect",
+        "first_flaw_step_id": "step-002",
+        "annotations": [
+          {
+            "step_id": "step-001",
+            "finding": "valid",
+            "assumption_ids": [],
+            "basis": "x squared equals x*x over all real numbers."
+          },
+          {
+            "step_id": "step-002",
+            "finding": "missing_condition",
+            "assumption_ids": [
+              "premise-001"
+            ],
+            "basis": "The principal square root of x*x is abs(x), not x unless x>=0. The given domain contains negative x."
+          },
+          {
+            "step_id": "step-003",
+            "finding": "invalid",
+            "assumption_ids": [
+              "premise-001"
+            ],
+            "basis": "The universal identity is false: at x=-1 the left side is 1 and the right side is -1."
+          }
+        ],
+        "actual_conclusion": {
+          "source": "abs(x)",
+          "latex": "f(x)=|x|"
+        },
+        "reason_if_unknown": null
+      },
+      "free_text": null
+    },
+    "practice-009": {
+      "challenge_id": "practice-009",
+      "mode": "C",
+      "grade": "Correct",
+      "explanation": "Your full judgement matches the reviewed standard. This feedback comes from human review, not live symbolic verification of this derivation.",
+      "evidence": [
+        {
+          "rule_id": "sample-review",
+          "summary": "The original equation 2x=2 has exactly the solution x=1.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "The first transformation preserves {1}. Step 2 changes the solution set from {1} to {-1,1}; its asserted equivalence is false.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "Step 3 changes {-1,1} back to {1}, again through a false equivalence. The two set errors happen to cancel in the displayed final answer.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "Thus the final displayed x=1 is correct for the original problem, but the proof chain contains invalid steps; the first is Step 2.",
+          "origin": "author_reviewed",
+          "outcome": null
+        }
+      ],
+      "remediation": "After dividing by two, stop at x=1. If squaring is used, label only the forward implication and justify the reverse direction separately.",
+      "analysis": null,
+      "sample_feedback": {
+        "derivation": "not_sound",
+        "conclusion": "correct",
+        "first_flaw_step_id": "step-002",
+        "annotations": [
+          {
+            "step_id": "step-001",
+            "finding": "valid",
+            "assumption_ids": [],
+            "basis": "Division by the nonzero constant 2 is reversible."
+          },
+          {
+            "step_id": "step-002",
+            "finding": "invalid",
+            "assumption_ids": [
+              "premise-001"
+            ],
+            "basis": "x=1 has the solution set {1}, whereas x squared=1 has {-1,1}; the reverse implication fails at -1."
+          },
+          {
+            "step_id": "step-003",
+            "finding": "invalid",
+            "assumption_ids": [
+              "premise-001"
+            ],
+            "basis": "Over R, sqrt(x squared)=abs(x), so x squared=1 implies abs(x)=1, not x=1. This step drops -1."
+          }
+        ],
+        "actual_conclusion": {
+          "source": null,
+          "latex": "\\{1\\}"
+        },
+        "reason_if_unknown": null
+      },
+      "free_text": null
+    },
+    "practice-010": {
+      "challenge_id": "practice-010",
+      "mode": "C",
+      "grade": "Correct",
+      "explanation": "Your full judgement matches the reviewed standard. This feedback comes from human review, not live symbolic verification of this derivation.",
+      "evidence": [
+        {
+          "rule_id": "sample-review",
+          "summary": "The original real square root requires x>=0 and, since it is nonnegative, the equation also implies x-2>=0.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "Squaring gives a necessary polynomial condition whose roots are 1 and 4. Step 1 is a valid one-way implication, not the first flaw.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "The roots of the polynomial exhaust the possible original solutions, but accepting them requires the reverse check.",
+          "origin": "author_reviewed",
+          "outcome": null
+        },
+        {
+          "rule_id": "sample-review",
+          "summary": "At x=1 the two original sides are 1 and -1. At x=4 they are both 2. Therefore the original solution set is exactly {4}, and the first invalid step is Step 3.",
+          "origin": "author_reviewed",
+          "outcome": null
+        }
+      ],
+      "remediation": "Retain x>=2 while solving the squared equation, or substitute every candidate into the original equation and reject x=1.",
+      "analysis": null,
+      "sample_feedback": {
+        "derivation": "not_sound",
+        "conclusion": "incorrect",
+        "first_flaw_step_id": "step-003",
+        "annotations": [
+          {
+            "step_id": "step-001",
+            "finding": "valid",
+            "assumption_ids": [],
+            "basis": "Squaring preserves this forward implication. The step explicitly does not claim equivalence."
+          },
+          {
+            "step_id": "step-002",
+            "finding": "valid",
+            "assumption_ids": [],
+            "basis": "The squared equation is x squared-5x+4=0, with real candidates 1 and 4, both in the square-root domain."
+          },
+          {
+            "step_id": "step-003",
+            "finding": "invalid",
+            "assumption_ids": [
+              "premise-001"
+            ],
+            "basis": "At x=1, sqrt(1)=1 but 1-2=-1; at x=4 both sides are 2. The candidate 1 is extraneous."
+          }
+        ],
+        "actual_conclusion": {
+          "source": null,
+          "latex": "\\{4\\}"
+        },
+        "reason_if_unknown": null
+      },
+      "free_text": null
+    }
+  },
+  "answers": {
+    "practice-001": {
+      "challenge_id": "practice-001",
+      "mode": "A",
+      "free_text": null,
+      "step_id": "divide-by-a",
+      "assumption_id": "a-nonzero",
+      "reason_category": "zero_divisor"
+    },
+    "practice-002": {
+      "challenge_id": "practice-002",
+      "mode": "A",
+      "free_text": null,
+      "step_id": "change-variable",
+      "assumption_id": "regular-upper-bound",
+      "reason_category": "improper_endpoint"
+    },
+    "practice-003": {
+      "challenge_id": "practice-003",
+      "mode": "B",
+      "free_text": null,
+      "perturbation": {
+        "template_id": "linear-degeneration",
+        "rule_id": "set-a-zero",
+        "condition_id": "parameter-a",
+        "type": "parameter_zero",
+        "new_value": {
+          "source": "0",
+          "latex": "0"
+        }
+      }
+    },
+    "practice-004": {
+      "challenge_id": "practice-004",
+      "mode": "B",
+      "free_text": null,
+      "perturbation": {
+        "template_id": "integral-endpoint",
+        "rule_id": "move-upper-endpoint",
+        "condition_id": "upper-endpoint",
+        "type": "interval_endpoint",
+        "new_value": {
+          "source": "1",
+          "latex": "1"
+        }
+      }
+    },
+    "practice-005": {
+      "challenge_id": "practice-005",
+      "mode": "B",
+      "free_text": null,
+      "perturbation": {
+        "template_id": "linear-degeneration",
+        "rule_id": "set-a-zero",
+        "condition_id": "parameter-a",
+        "type": "parameter_zero",
+        "new_value": {
+          "source": "0",
+          "latex": "0"
+        }
+      }
+    },
+    "practice-006": {
+      "challenge_id": "practice-006",
+      "mode": "C",
+      "free_text": null,
+      "step_id": null,
+      "assumption_id": null,
+      "reason_category": "no_flaw",
+      "derivation": "sound",
+      "conclusion": "correct"
+    },
+    "practice-007": {
+      "challenge_id": "practice-007",
+      "mode": "C",
+      "free_text": null,
+      "step_id": null,
+      "assumption_id": null,
+      "reason_category": "no_flaw",
+      "derivation": "sound",
+      "conclusion": "correct"
+    },
+    "practice-008": {
+      "challenge_id": "practice-008",
+      "mode": "C",
+      "free_text": null,
+      "step_id": "step-002",
+      "assumption_id": "premise-001",
+      "reason_category": "missing_sign_condition",
+      "derivation": "not_sound",
+      "conclusion": "incorrect"
+    },
+    "practice-009": {
+      "challenge_id": "practice-009",
+      "mode": "C",
+      "free_text": null,
+      "step_id": "step-002",
+      "assumption_id": "premise-001",
+      "reason_category": "irreversible_squaring",
+      "derivation": "not_sound",
+      "conclusion": "correct"
+    },
+    "practice-010": {
+      "challenge_id": "practice-010",
+      "mode": "C",
+      "free_text": null,
+      "step_id": "step-003",
+      "assumption_id": "premise-001",
+      "reason_category": "extraneous_root",
+      "derivation": "not_sound",
+      "conclusion": "incorrect"
+    }
+  }
+}

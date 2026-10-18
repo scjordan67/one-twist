@@ -1,0 +1,581 @@
+{
+  "draft_version": 1,
+  "matrix_number": 14,
+  "id": "ivp-zero-equilibrium",
+  "topic": "Differential Equations",
+  "title": "Separation can discard a zero equilibrium",
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Private detailed mathematics awaiting Claude Code review. No batch-03 checker, IVP model or publication is implemented."
+  },
+  "original_problem": {
+    "statement": "Solve y'=y, y(0)=a on all real time, initially a=1.",
+    "expression": {
+      "source": null,
+      "latex": "y'=y,\\quad y(0)=a,\\quad t\\in\\mathbb R"
+    },
+    "goal": "Solve y'=y, y(0)=a on all real time, initially a=1.",
+    "variables": {
+      "t": "real",
+      "y": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "initial-amplitude",
+        "parameter_name": "a",
+        "description": "The given real parameter a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        }
+      }
+    ],
+    "domain_constraints": [],
+    "computation": null,
+    "well_formedness": null
+  },
+  "proposed_computation": {
+    "kind": "first_order_ivp",
+    "independent_variable": "t",
+    "dependent_variable": "y",
+    "rhs": {
+      "source": "y",
+      "latex": "y"
+    },
+    "initial_time": {
+      "source": "0",
+      "latex": "0"
+    },
+    "initial_value": {
+      "source": "a",
+      "latex": "a"
+    },
+    "time_domain": {
+      "lower": null,
+      "upper": null,
+      "left_closed": false,
+      "right_closed": false
+    },
+    "state_domain": {
+      "number_system": "real",
+      "constraints": []
+    },
+    "question": "solution",
+    "solution_scope": "unique_solution",
+    "candidate_solutions": [
+      {
+        "source": "a*exp(t)",
+        "latex": "a e^{t}"
+      }
+    ]
+  },
+  "assumptions": [
+    {
+      "id": "nonzero-initial-state",
+      "kind": "nonzero",
+      "description": "For this verified linear family, a!=0 implies the trajectory never vanishes; division and log|y| are then defined.",
+      "condition_ids": [
+        "initial-amplitude"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Separation of variables",
+      "description": "The displayed logarithmic separation divides by y; a zero equilibrium requires a separately verified case.",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "divide-by-state",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "y'=y"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\frac{y'}y=1"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "y",
+            "latex": "y"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "integrate-log-state",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\frac{y'}y=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\log|y|=t+C"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "y",
+            "latex": "y"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "apply-log-initial-value",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "y(0)=a"
+      },
+      "output": {
+        "source": null,
+        "latex": "C=\\log|a|,\\quad \\operatorname{sgn}y=\\operatorname{sgn}a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "verify-original-ivp",
+      "number": 4,
+      "input": {
+        "source": null,
+        "latex": "y_a(t)=ae^t"
+      },
+      "output": {
+        "source": null,
+        "latex": "y'_a=y_a,\\quad y_a(0)=a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "OneWayImplication",
+      "domain_constraints": [],
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    }
+  ],
+  "allowed_changes": [
+    {
+      "id": "zero-initial-state",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "0",
+        "latex": "0"
+      },
+      "description": "Set the initial state to zero."
+    },
+    {
+      "id": "positive-initial-state",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "2",
+        "latex": "2"
+      },
+      "description": "Set the initial state to two."
+    },
+    {
+      "id": "negative-initial-state",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "new_value": {
+        "source": "-1",
+        "latex": "-1"
+      },
+      "description": "Set the initial state to minus one."
+    }
+  ],
+  "planned_checks": [
+    {
+      "operation": "linear_ivp_division",
+      "step_id": "divide-by-state",
+      "divisor": {
+        "source": "y",
+        "latex": "y"
+      }
+    },
+    {
+      "operation": "linear_ivp_log_separation",
+      "step_id": "integrate-log-state",
+      "state_expression": {
+        "source": "log(abs(y))",
+        "latex": "\\log{\\left(\\left|{y}\\right| \\right)}"
+      }
+    },
+    {
+      "operation": "linear_ivp_initial_constant",
+      "step_id": "apply-log-initial-value",
+      "expression": {
+        "source": "log(abs(a))",
+        "latex": "\\log{\\left(\\left|{a}\\right| \\right)}"
+      },
+      "retain_initial_sign": true
+    },
+    {
+      "operation": "ivp_candidate_substitution",
+      "step_id": "verify-original-ivp",
+      "candidate": {
+        "source": "a*exp(t)",
+        "latex": "a e^{t}"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "baseline",
+      "change_id": null,
+      "parameter_values": {
+        "a": "1"
+      },
+      "reference_outcome": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "1*exp(t)",
+          "latex": "e^{t}"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "derivation_claim": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "1*exp(t)",
+          "latex": "e^{t}"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-state": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "integrate-log-state": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "apply-log-initial-value": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "verify-original-ivp": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid"
+          ]
+        },
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": false
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The candidate a*exp(t) satisfies the original equation and initial data for every real a. For every C1 solution, (exp(-t)*y(t))'=0, forcing y=a*exp(t); this proves global uniqueness without dsolve.",
+        "At a=0 the unique trajectory is identically zero, so division by y and log|y| are undefined; the final candidate check is independently valid. Negative a retains its initial sign and does not become +exp(t)."
+      ]
+    },
+    {
+      "id": "zero-equilibrium",
+      "change_id": "zero-initial-state",
+      "parameter_values": {
+        "a": "0"
+      },
+      "reference_outcome": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "0",
+          "latex": "0"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "derivation_claim": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "0",
+          "latex": "0"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-state": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "integrate-log-state": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "apply-log-initial-value": {
+            "labels": [
+              "Invalid Step"
+            ]
+          },
+          "verify-original-ivp": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Needs Checking"
+          ],
+          "remediation": "Retain the zero equilibrium as a separate case and verify it in the original IVP; apply logarithmic separation only on nonzero trajectories."
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "first_invalid_step_id": "divide-by-state",
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The candidate a*exp(t) satisfies the original equation and initial data for every real a. For every C1 solution, (exp(-t)*y(t))'=0, forcing y=a*exp(t); this proves global uniqueness without dsolve.",
+        "At a=0 the unique trajectory is identically zero, so division by y and log|y| are undefined; the final candidate check is independently valid. Negative a retains its initial sign and does not become +exp(t)."
+      ]
+    },
+    {
+      "id": "positive-control",
+      "change_id": "positive-initial-state",
+      "parameter_values": {
+        "a": "2"
+      },
+      "reference_outcome": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "2*exp(t)",
+          "latex": "2 e^{t}"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "derivation_claim": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "2*exp(t)",
+          "latex": "2 e^{t}"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-state": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "integrate-log-state": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "apply-log-initial-value": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "verify-original-ivp": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The candidate a*exp(t) satisfies the original equation and initial data for every real a. For every C1 solution, (exp(-t)*y(t))'=0, forcing y=a*exp(t); this proves global uniqueness without dsolve.",
+        "At a=0 the unique trajectory is identically zero, so division by y and log|y| are undefined; the final candidate check is independently valid. Negative a retains its initial sign and does not become +exp(t)."
+      ]
+    },
+    {
+      "id": "negative-control",
+      "change_id": "negative-initial-state",
+      "parameter_values": {
+        "a": "-1"
+      },
+      "reference_outcome": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "-1*exp(t)",
+          "latex": "- e^{t}"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "derivation_claim": {
+        "status": "symbolic_formula",
+        "formula": {
+          "source": "-1*exp(t)",
+          "latex": "- e^{t}"
+        },
+        "variable": "t",
+        "solution_scope": "unique_solution"
+      },
+      "expected_report": {
+        "step": {
+          "divide-by-state": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "integrate-log-state": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "apply-log-initial-value": {
+            "labels": [
+              "Valid"
+            ]
+          },
+          "verify-original-ivp": {
+            "labels": [
+              "Valid"
+            ]
+          }
+        },
+        "method": {
+          "labels": [
+            "Valid"
+          ],
+          "remediation": null
+        },
+        "conclusion": {
+          "labels": [
+            "Valid",
+            "Changed Conclusion"
+          ]
+        },
+        "comparison": {
+          "basis": "symbolic_formula",
+          "changed": true
+        },
+        "first_invalid_step_id": null,
+        "first_unresolved_step_id": null,
+        "problem_well_formedness": "WellFormed"
+      },
+      "mathematical_basis": [
+        "The candidate a*exp(t) satisfies the original equation and initial data for every real a. For every C1 solution, (exp(-t)*y(t))'=0, forcing y=a*exp(t); this proves global uniqueness without dsolve.",
+        "At a=0 the unique trajectory is identically zero, so division by y and log|y| are undefined; the final candidate check is independently valid. Negative a retains its initial sign and does not become +exp(t)."
+      ]
+    }
+  ],
+  "family_verification": "Normalize the actual rhs and verify it equals the dependent variable; a declared family label alone is not evidence.",
+  "independent_uniqueness_proof": "For every solution, (exp(-t)*y)'=exp(-t)*(y'-y)=0. Initial data fixes the constant a.",
+  "comparison_scope": "Compare the computed solution functions on the stated full real time domain, not display strings or their common value at t=0 alone."
+}

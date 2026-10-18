@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "id": "sine-principal-branch",
+  "title": "A principal inverse can miss another sine solution",
+  "tags": [
+    "Trigonometry",
+    "sine-principal-branch"
+  ],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Solve sin(x)=c on 0<=x<b, initially c=1 and b=2*pi.",
+    "expression": {
+      "source": null,
+      "latex": "\\sin x=c,\\quad 0\\le x<b"
+    },
+    "goal": "Solve sin(x)=c on 0<=x<b, initially c=1 and b=2*pi.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "c",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      },
+      {
+        "name": "b",
+        "value": {
+          "source": "2*pi",
+          "latex": "2 \\pi"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-c",
+        "description": "The value of c",
+        "predicate": {
+          "left": {
+            "source": "c",
+            "latex": "c"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "c",
+        "domain_binding": null
+      },
+      {
+        "id": "parameter-b",
+        "description": "The value of b",
+        "predicate": {
+          "left": {
+            "source": "b",
+            "latex": "b"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "2*pi",
+            "latex": "2 \\pi"
+          }
+        },
+        "parameter_name": "b",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "lt",
+        "right": {
+          "source": "b",
+          "latex": "b"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "sin(x)",
+        "latex": "\\sin{\\left(x \\right)}"
+      },
+      "right": {
+        "source": "c",
+        "latex": "c"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "principal-covers-solutions",
+      "kind": "principal_sine_coverage",
+      "description": "The chosen principal root covers the complete solution set in this actual interval, not that sine is globally injective.",
+      "condition_ids": [
+        "parameter-c",
+        "parameter-b"
+      ],
+      "predicate": null,
+      "state": "unchecked",
+      "interval": null,
+      "check": {
+        "operation": "principal_sine_coverage",
+        "equation": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "sin(x)",
+            "latex": "\\sin{\\left(x \\right)}"
+          },
+          "right": {
+            "source": "c",
+            "latex": "c"
+          }
+        }
+      }
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "A principal inverse can miss another sine solution",
+      "description": "Apply the stated original method with its exact hypotheses.",
+      "assumption_ids": [
+        "principal-covers-solutions"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "principal-inverse",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\sin x=c,\\quad 0\\le x<b"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=\\arcsin c"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "principal-covers-solutions"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "evaluate-chosen-root",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "x=\\arcsin c"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=\\frac{\\pi}{2}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    },
+    {
+      "id": "claim-trig-completeness",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "x=\\arcsin c"
+      },
+      "output": {
+        "source": null,
+        "latex": "S=\\{\\arcsin c\\}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "principal-covers-solutions"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "This is the original derivation's claim, to be rechecked after the declared change."
+    }
+  ],
+  "conclusion": {
+    "source": null,
+    "latex": "\\left\\{\\frac{\\pi}{2}\\right\\}"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "missing-branch",
+      "condition_id": "parameter-c",
+      "type": "parameter_value",
+      "description": "Set c=1/2.",
+      "allowed_values": [
+        {
+          "source": "1/2",
+          "latex": "\\frac{1}{2}"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "shorter-interval",
+      "condition_id": "parameter-b",
+      "type": "interval_endpoint",
+      "description": "Set b=pi.",
+      "allowed_values": [
+        {
+          "source": "pi",
+          "latex": "\\pi"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "The complete sine solutions in [0,2*pi) are pi/6 and 5*pi/6, but arcsin(1/2)=pi/6 only."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-principal-inverse",
+      "kind": "principal_sine_inverse",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "principal-inverse"
+        }
+      ],
+      "description": "Independently verify principal_sine_inverse within its declared mathematical scope.",
+      "parameters": {
+        "operation": "principal_sine_inverse",
+        "equation": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "sin(x)",
+            "latex": "\\sin{\\left(x \\right)}"
+          },
+          "right": {
+            "source": "c",
+            "latex": "c"
+          }
+        }
+      }
+    },
+    {
+      "id": "check-evaluate-chosen-root",
+      "kind": "evaluate_principal_sine",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "evaluate-chosen-root"
+        }
+      ],
+      "description": "Independently verify evaluate_principal_sine within its declared mathematical scope.",
+      "parameters": {
+        "operation": "evaluate_principal_sine",
+        "argument": {
+          "source": "c",
+          "latex": "c"
+        }
+      }
+    },
+    {
+      "id": "check-claim-trig-completeness",
+      "kind": "principal_sine_completeness",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "claim-trig-completeness"
+        }
+      ],
+      "description": "Independently verify principal_sine_completeness within its declared mathematical scope.",
+      "parameters": {
+        "operation": "principal_sine_completeness",
+        "equation": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "sin(x)",
+            "latex": "\\sin{\\left(x \\right)}"
+          },
+          "right": {
+            "source": "c",
+            "latex": "c"
+          }
+        }
+      }
+    }
+  ],
+  "explanation_fragments": [
+    {
+      "id": "boundary-explanation",
+      "evidence_keys": [
+        "check-principal-inverse"
+      ],
+      "text": "A principal inverse supplies one branch. Retain both inverse-sine branches and all relevant periods before claiming completeness.",
+      "when": [
+        {
+          "rule_id": "check-principal-inverse",
+          "outcome": "missing_sine_branches"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independent mathematical review of 06-10 approved by Claude Code on 2026-10-18. Runtime isolation/API acceptance completed before publication."
+  }
+}

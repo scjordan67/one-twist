@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "id": "inverse-square-domain",
+  "title": "An inverse branch needs its domain",
+  "tags": [
+    "Functions",
+    "inverse-square-domain"
+  ],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "For f(x)=x^2, initially x>=0, find all preimages of y=1.",
+    "expression": {
+      "source": null,
+      "latex": "f(x)=x^2,\\quad f(x)=1"
+    },
+    "goal": "Find every admissible preimage, with the domain stated.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "y",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-y",
+        "description": "The value of y",
+        "predicate": {
+          "left": {
+            "source": "y",
+            "latex": "y"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "y",
+        "domain_binding": null
+      },
+      {
+        "id": "admissible-domain",
+        "description": "The admissible domain of f",
+        "predicate": null,
+        "parameter_name": null,
+        "domain_binding": {
+          "kind": "domain",
+          "variable": "x",
+          "current": {
+            "number_system": "real",
+            "constraints": [
+              {
+                "left": {
+                  "source": "x",
+                  "latex": "x"
+                },
+                "relation": "ge",
+                "right": {
+                  "source": "0",
+                  "latex": "0"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "x**2",
+        "latex": "x**2"
+      },
+      "right": {
+        "source": "y",
+        "latex": "y"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "principal-branch-covers-domain",
+      "kind": "domain_predicate",
+      "description": "Every admitted x lies in the nonnegative principal inverse branch.",
+      "condition_ids": [
+        "admissible-domain"
+      ],
+      "predicate": {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": null,
+      "check": {
+        "operation": "domain_predicate",
+        "variable": "x",
+        "required": {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      }
+    }
+  ],
+  "methods": [
+    {
+      "id": "principal-inverse",
+      "name": "Principal inverse branch",
+      "description": "Use the nonnegative square-root branch only where it covers the original domain.",
+      "assumption_ids": [
+        "principal-branch-covers-domain"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "apply-principal-inverse",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "x^2=y"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=\\sqrt{y}"
+      },
+      "method_id": "principal-inverse",
+      "assumption_ids": [
+        "principal-branch-covers-domain"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ge",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "On x>=0 the square function is injective and its inverse branch is sqrt(y)."
+    },
+    {
+      "id": "evaluate-principal-root",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "x=\\sqrt{y},\\ y=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "method_id": "principal-inverse",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Evaluating the chosen branch is locally correct even if that branch no longer covers the full domain."
+    },
+    {
+      "id": "claim-all-preimages",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "x=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "S_{\\mathrm{original}}=\\{1\\}"
+      },
+      "method_id": "principal-inverse",
+      "assumption_ids": [
+        "principal-branch-covers-domain"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "A single branch describes every preimage only on the appropriate domain."
+    }
+  ],
+  "conclusion": {
+    "source": null,
+    "latex": "\\left\\{1\\right\\}"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "allow-negative-preimages",
+      "condition_id": "admissible-domain",
+      "type": "domain",
+      "description": "Use the whole real line.",
+      "allowed_values": [],
+      "assumption_id": null,
+      "domain_choices": [
+        {
+          "id": "all-real",
+          "label": "Use the whole real line.",
+          "domain": {
+            "number_system": "real",
+            "constraints": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "restrict-positive-half",
+      "condition_id": "admissible-domain",
+      "type": "domain",
+      "description": "Restrict to x>=1/2.",
+      "allowed_values": [],
+      "assumption_id": null,
+      "domain_choices": [
+        {
+          "id": "positive-half",
+          "label": "Restrict to x>=1/2.",
+          "domain": {
+            "number_system": "real",
+            "constraints": [
+              {
+                "left": {
+                  "source": "x",
+                  "latex": "x"
+                },
+                "relation": "ge",
+                "right": {
+                  "source": "1/2",
+                  "latex": "1/2"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "Both -1 and 1 are admitted and square to 1. This pair explicitly disproves injectivity on R; the principal branch loses -1."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-inverse-equivalence",
+      "kind": "equation_transform",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "apply-principal-inverse"
+        }
+      ],
+      "description": "Recompute equation_transform for this step using the actual problem domain.",
+      "parameters": {
+        "operation": "equation_transform",
+        "before": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x**2",
+            "latex": "x**2"
+          },
+          "right": {
+            "source": "y",
+            "latex": "y"
+          }
+        },
+        "after": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "sqrt(y)",
+            "latex": "sqrt(y)"
+          }
+        },
+        "divisor": null
+      }
+    },
+    {
+      "id": "check-principal-evaluation",
+      "kind": "evaluate_expression",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "evaluate-principal-root"
+        }
+      ],
+      "description": "Recompute evaluate_expression for this step using the actual problem domain.",
+      "parameters": {
+        "operation": "evaluate_expression",
+        "expression": {
+          "source": "sqrt(y)",
+          "latex": "sqrt(y)"
+        },
+        "result_variable": "x"
+      }
+    },
+    {
+      "id": "check-preimage-completeness",
+      "kind": "candidate_acceptance",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "claim-all-preimages"
+        }
+      ],
+      "description": "Recompute candidate_acceptance for this step using the actual problem domain.",
+      "parameters": {
+        "operation": "candidate_acceptance",
+        "candidates_from": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "right": {
+            "source": "sqrt(y)",
+            "latex": "sqrt(y)"
+          }
+        },
+        "original": {
+          "kind": "equation",
+          "variable": "x",
+          "left": {
+            "source": "x**2",
+            "latex": "x**2"
+          },
+          "right": {
+            "source": "y",
+            "latex": "y"
+          }
+        }
+      }
+    }
+  ],
+  "explanation_fragments": [
+    {
+      "id": "boundary-explanation",
+      "evidence_keys": [
+        "check-inverse-equivalence"
+      ],
+      "text": "The principal square-root branch cannot describe every preimage when the problem admits a negative branch. Restore the branch domain or include both signed roots.",
+      "when": [
+        {
+          "rule_id": "check-inverse-equivalence",
+          "outcome": "solution_set_changed"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Mathematics approved; staged runtime candidate pending isolation/API acceptance."
+  }
+}

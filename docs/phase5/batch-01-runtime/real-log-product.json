@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "id": "real-log-product",
+  "title": "An invalid logarithm split can preserve the final value",
+  "tags": [
+    "Functions",
+    "real-log-product"
+  ],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Evaluate the real expression log(t^2), initially t=1.",
+    "expression": {
+      "source": null,
+      "latex": "\\log(t^2)"
+    },
+    "goal": "Evaluate the original real expression independently of the proposed split.",
+    "variables": {},
+    "parameters": [
+      {
+        "name": "t",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "parameter-t",
+        "description": "The value of t",
+        "predicate": {
+          "left": {
+            "source": "t",
+            "latex": "t"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "t",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "scalar_expression",
+      "expression": {
+        "source": "log(t*t)",
+        "latex": "\\log(t^2)"
+      },
+      "value_domain": "real"
+    }
+  },
+  "assumptions": [
+    {
+      "id": "positive-log-argument",
+      "kind": "log_argument",
+      "description": "Splitting log(t*t) into two real logarithms requires t>0.",
+      "condition_ids": [
+        "parameter-t"
+      ],
+      "predicate": {
+        "left": {
+          "source": "t",
+          "latex": "t"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "real-log-split",
+      "name": "Real logarithm product rule",
+      "description": "Split only after checking each factor is a positive real.",
+      "assumption_ids": [
+        "positive-log-argument"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "split-real-log",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\log(t^2)"
+      },
+      "output": {
+        "source": null,
+        "latex": "2\\log t"
+      },
+      "method_id": "real-log-split",
+      "assumption_ids": [
+        "positive-log-argument"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "The real product rule needs both factors positive; t*t>0 alone is insufficient."
+    },
+    {
+      "id": "evaluate-split-log",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "2\\log t,\\ t=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "0"
+      },
+      "method_id": "real-log-split",
+      "assumption_ids": [
+        "positive-log-argument"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Re-evaluate with the current parameter; never reuse the baseline displayed answer."
+    }
+  ],
+  "conclusion": {
+    "source": null,
+    "latex": "0"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "negative-factor",
+      "condition_id": "parameter-t",
+      "type": "parameter_sign",
+      "description": "Set t=-1.",
+      "allowed_values": [
+        {
+          "source": "-1",
+          "latex": "-1"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "positive-control",
+      "condition_id": "parameter-t",
+      "type": "parameter_value",
+      "description": "Set t=2.",
+      "allowed_values": [
+        {
+          "source": "2",
+          "latex": "2"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "The original argument (-1)*(-1)=1 is positive, so log(t*t)=0. The split contains the undefined real expression log(-1).",
+    "A complex logarithm value i*pi is not a valid evaluation of the requested real logarithm. Unchanged original value does not repair the derivation."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-real-log-identity",
+      "kind": "expression_identity",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "split-real-log"
+        }
+      ],
+      "description": "Recompute expression_identity for this step using the actual problem domain.",
+      "parameters": {
+        "operation": "expression_identity",
+        "left": {
+          "source": "log(t*t)",
+          "latex": "log(t*t)"
+        },
+        "right": {
+          "source": "2*log(t)",
+          "latex": "2*log(t)"
+        },
+        "value_domain": "real"
+      }
+    },
+    {
+      "id": "check-split-value",
+      "kind": "evaluate_scalar",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "evaluate-split-log"
+        }
+      ],
+      "description": "Recompute evaluate_scalar for this step using the actual problem domain.",
+      "parameters": {
+        "operation": "evaluate_scalar",
+        "expression": {
+          "source": "2*log(t)",
+          "latex": "2*log(t)"
+        },
+        "value_domain": "real"
+      }
+    }
+  ],
+  "explanation_fragments": [
+    {
+      "id": "boundary-explanation",
+      "evidence_keys": [
+        "check-real-log-identity"
+      ],
+      "text": "The real logarithm product rule needs each factor positive. The original product may remain positive even when its split logarithms are undefined. For real nonzero t, 2*log(abs(t)) is a valid repair.",
+      "when": [
+        {
+          "rule_id": "check-real-log-identity",
+          "outcome": "undefined_identity_side"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Mathematics approved; staged runtime candidate pending isolation/API acceptance."
+  }
+}
