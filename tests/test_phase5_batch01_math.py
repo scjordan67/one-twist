@@ -301,7 +301,9 @@ def test_loading_public_content_publishes_only_accepted_batch_and_does_not_compu
     templates = load_templates()
     approved = {draft["id"] for draft in DRAFTS.values()}
     assert set(templates) == approved | {"integral-endpoint", "sine-principal-branch", "cosine-quadrant-sign",
-                                        "derivative-cusp", "stationary-second-derivative", "lhopital-form"}
+                                        "derivative-cusp", "stationary-second-derivative", "lhopital-form",
+                                        "principal-argument-product", "real-square-to-complex-domain",
+                                        "vector-angle-zero-norm", "line-intersection-all-coordinates"}
     assert all(templates[id].review.status == "reviewed" for id in approved)
     assert templates["integral-endpoint"].review.status == "draft"
     with TestClient(create_app()) as client:

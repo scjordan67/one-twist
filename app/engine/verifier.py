@@ -6,6 +6,9 @@ import sympy as sp
 
 from app.engine.context import Context, UnsupportedMath, equal_sets, math_expression, subset, truth
 from app.engine.calculus import affine_components, finite_limit, lhopital_data, point_derivative, stationary_facts, real_point
+from app.engine.complex_vector import (
+    argument_additivity_data, line_intersection_facts, principal_argument_facts, vector_angle_facts,
+)
 from app.models.domain import (
     AntiderivativeCheck, ConclusionResult, DimensionResult, EquationSpec,
     EquationTransform, EvaluationCheck, Evidence, IntegralSpec, MathExpression,
@@ -17,6 +20,9 @@ from app.models.domain import (
     EvaluatePrincipalSineCheck, DerivativeIdentityCheck, DerivativePointSubstitutionCheck,
     StationaryValueCheck, ClaimStationaryClassificationCheck, DifferentiateLimitComponentsCheck,
     LHopitalReplacementCheck, EvaluateLimitCheck,
+    PrincipalArgumentSpec, VectorAngleSpec, LineIntersection3DSpec, LineRelationOutcome,
+    ArgumentPairCheck, RealSquareNonnegativeCheck, ClaimEmptySolutionSetCheck,
+    VectorStepCheck, LineXYCandidatesCheck, VerifyLineCommonPointCheck, ClaimLineRelationCheck,
 )
 
 
@@ -33,11 +39,33 @@ def solution_completeness(value: sp.Set) -> str:
     return "partial" if value.has(sp.ConditionSet) else "complete"
 
 
+def complex_polynomial_roots(spec: EquationSpec, context: Context) -> sp.Set:
+    """Narrow degree-1/2 closed complex polynomial solving; no general CAS."""
+    variable = context.symbols[spec.variable]
+    difference = sp.expand(context.expr(spec.left) - context.expr(spec.right))
+    if not difference.is_polynomial(variable):
+        raise UnsupportedMath("Complex equation solving currently requires a polynomial")
+    polynomial = sp.Poly(difference, variable)
+    if polynomial.degree() not in (1, 2) or any(
+        not c.is_number or c.is_finite is not True for c in polynomial.all_coeffs()
+    ):
+        raise UnsupportedMath("Complex polynomial solving is limited to closed degree 1 or 2")
+    roots = sp.solveset(difference, variable, domain=sp.S.Complexes)
+    if not isinstance(roots, sp.FiniteSet):
+        raise UnsupportedMath("Complex roots were not established as a finite set")
+    for root in roots:
+        if sp.simplify(difference.subs(variable, root)) != 0:
+            raise UnsupportedMath("A candidate complex root failed to verify in the original equation")
+    return roots
+
+
 def solve_equation(spec: EquationSpec, context: Context, constraints=()) -> Solutions:
     variable = context.symbols[spec.variable]
     variable_domain = context.problem.variables[spec.variable]
     if variable_domain == "complex":
-        raise UnsupportedMath("Complex equation domains are not supported in Phase 2")
+        if constraints:
+            raise UnsupportedMath("Complex equation solving does not yet support additional constraints")
+        return Solutions(complex_polynomial_roots(spec, context), "complete")
     domain = context.domain(spec.left, variable) & context.domain(spec.right, variable) & context.admissible_domain(variable)
     if variable_domain == "integer":
         domain &= sp.S.Integers
@@ -122,7 +150,7 @@ def _integral(spec: IntegralSpec, context: Context) -> ProblemEvaluation:
 def evaluate_problem(context: Context) -> ProblemEvaluation:
     try:
         spec = context.problem.computation
-        if isinstance(spec, (EquationSpec, IntegralSpec)):
+        if isinstance(spec, (EquationSpec, IntegralSpec)) and context.problem.variables[spec.variable] != "complex":
             admissible = context.admissible_domain(context.symbols[spec.variable])
             if admissible is sp.S.EmptySet:
                 return ProblemEvaluation(
@@ -177,6 +205,32 @@ def evaluate_problem(context: Context) -> ProblemEvaluation:
             value = math_expression(facts.value) if facts.value is not None else MathExpression(latex=r"\text{Two-sided limit does not exist}")
             return ProblemEvaluation(ConclusionResult(status=facts.status, value=value), facts.value,
                                      WellFormedness.DIVERGENT if facts.status == "divergent" else WellFormedness.WELL_FORMED)
+        if isinstance(spec, PrincipalArgumentSpec):
+            theta = principal_argument_facts(context, spec)
+            if theta is None:
+                return ProblemEvaluation(ConclusionResult(
+                    status="undefined", value=MathExpression(latex=r"\text{Arg is undefined at zero}"),
+                ), well_formedness=WellFormedness.UNDEFINED)
+            return ProblemEvaluation(ConclusionResult(status="numeric_value", value=math_expression(theta)),
+                                     theta, WellFormedness.WELL_FORMED)
+        if isinstance(spec, VectorAngleSpec):
+            facts = vector_angle_facts(context, spec)
+            if facts.angle is None:
+                return ProblemEvaluation(ConclusionResult(
+                    status="undefined", value=MathExpression(latex=r"\text{The angle is undefined for a zero vector}"),
+                ), well_formedness=WellFormedness.WELL_FORMED)
+            return ProblemEvaluation(ConclusionResult(status="numeric_value", value=math_expression(facts.angle)),
+                                     facts.angle, WellFormedness.WELL_FORMED)
+        if isinstance(spec, LineIntersection3DSpec):
+            facts = line_intersection_facts(context, spec)
+            outcome = LineRelationOutcome(
+                relation=facts.relation,
+                intersection_point=tuple(math_expression(c) for c in facts.point) if facts.point else None,
+            )
+            display = MathExpression(latex=r"\text{" + facts.relation.replace("_", " ") + "}"
+                                      + (r"\ " + sp.latex(facts.point) if facts.point else ""))
+            return ProblemEvaluation(ConclusionResult(status="line_relation", value=display, line_relation=outcome),
+                                     None, WellFormedness.WELL_FORMED)
         raise UnsupportedMath("No supported computation spec")
     except (UnsupportedMath, NotImplementedError, ValueError, TypeError) as exc:
         return unknown_outcome(str(exc))
@@ -587,6 +641,166 @@ def _retained_constraints(rule: VerificationRule, step: Step, context: Context) 
     return None
 
 
+def _argument_factors(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, ArgumentPairCheck)
+    data = argument_additivity_data(context, params)
+    return verdict(rule, ValidityLabel.VALID, "factors_evaluated",
+                   "Both factors are established nonzero with real, finite principal arguments.",
+                   output=MathExpression(latex=f"\\alpha={sp.latex(data.alpha)},\\quad \\beta={sp.latex(data.beta)}"))
+
+
+def _argument_product(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, ArgumentPairCheck)
+    data = argument_additivity_data(context, params)
+    if not data.additive:
+        return verdict(rule, ValidityLabel.INVALID_STEP, "argument_sum_out_of_branch",
+                       f"The unwrapped sum is {data.unwrapped}, outside the declared principal branch; the actual principal argument is {data.principal}.",
+                       remediation="Wrap the sum back into (-pi, pi], or evaluate Arg directly from the product's position.")
+    return verdict(rule, ValidityLabel.VALID, "argument_additivity_verified",
+                   "The unwrapped sum already lies in the declared principal branch and equals the actual argument.",
+                   output=math_expression(data.unwrapped))
+
+
+def _argument_sum(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, ArgumentPairCheck)
+    data = argument_additivity_data(context, params)
+    return verdict(rule, ValidityLabel.VALID, "sum_evaluated",
+                   "The sum of the two factor arguments is evaluated locally; this does not by itself establish branch membership.",
+                   output=math_expression(data.unwrapped))
+
+
+def _real_square_nonnegative(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, RealSquareNonnegativeCheck)
+    variable_domain = context.problem.variables[params.variable]
+    if variable_domain == "complex":
+        return verdict(rule, ValidityLabel.INVALID_STEP, "real_order_unavailable",
+                       "The complex numbers have no order structure; z**2>=0 is not a theorem on this domain.",
+                       remediation="Use the complex factorization z**2+1=(z-i)(z+i) instead of a real-order argument.")
+    if variable_domain != "real":
+        raise UnsupportedMath("Real-square nonnegativity currently supports real or complex variables only")
+    square = context.symbols[params.variable] ** 2
+    if square.is_nonnegative is not True:
+        raise UnsupportedMath("Real-square nonnegativity was not established for this symbol")
+    return verdict(rule, ValidityLabel.VALID, "real_square_theorem_applies",
+                   "On the real numbers, z**2>=0 for every z; this theorem step is valid here.",
+                   output=MathExpression(latex=sp.latex(square) + r"\ge 0"))
+
+
+def _claim_empty_solution_set(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, ClaimEmptySolutionSetCheck)
+    spec = context.problem.computation
+    if not isinstance(spec, EquationSpec):
+        raise UnsupportedMath("Empty-solution-set claim requires the actual equation")
+    result = solve_equation(spec, context, context.problem.domain_constraints)
+    if result.undefined or result.completeness != "complete":
+        raise UnsupportedMath("The complete original solution set was not established")
+    if result.value is not sp.S.EmptySet:
+        return verdict(rule, ValidityLabel.INVALID_STEP, "nonempty_counterexample",
+                       f"The independently solved original equation has solutions {result.value}; the claimed empty set is false.",
+                       remediation="Use the complex factorization and accept the roots it produces.")
+    return verdict(rule, ValidityLabel.VALID, "empty_solution_set_verified",
+                   "The independently solved original equation has no solutions, confirming the claim.",
+                   output=math_expression(result.value))
+
+
+def _vector_step(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, VectorStepCheck)
+    spec = context.problem.computation
+    if not isinstance(spec, VectorAngleSpec):
+        raise UnsupportedMath("Vector step checks require the actual vector_angle computation")
+    facts = vector_angle_facts(context, spec)
+    if params.operation == "vector_metrics":
+        return verdict(rule, ValidityLabel.VALID, "metrics_evaluated",
+                       "Dot product and squared norms are computed independently from the actual vectors.",
+                       output=MathExpression(latex=f"D={sp.latex(facts.dot)},\\ U={sp.latex(facts.norm_u_sq)},\\ V={sp.latex(facts.norm_v_sq)}"))
+    if params.operation == "normalize_vector_dot":
+        if facts.angle is None:
+            return verdict(rule, ValidityLabel.INVALID_STEP, "zero_norm_division",
+                           "A vector has zero norm; the normalized ratio divides by zero.",
+                           remediation="Check both norms are nonzero before normalizing; report the angle as undefined otherwise.")
+        ratio = sp.simplify(facts.dot / (sp.sqrt(facts.norm_u_sq) * sp.sqrt(facts.norm_v_sq)))
+        return verdict(rule, ValidityLabel.VALID, "ratio_evaluated",
+                       "Both norms are established nonzero before dividing.", output=math_expression(ratio))
+    if facts.angle is None:
+        return verdict(rule, ValidityLabel.INVALID_STEP, "angle_undefined",
+                       "The standard Euclidean angle is undefined for a zero vector; arccos cannot repair this.",
+                       remediation="State that the angle is undefined rather than evaluating arccos of an undefined ratio.")
+    return verdict(rule, ValidityLabel.VALID, "angle_evaluated",
+                   "The arccos of the verified in-range ratio is evaluated.", output=math_expression(facts.angle))
+
+
+def _line_xy_candidates(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, LineXYCandidatesCheck)
+    spec = context.problem.computation
+    if not isinstance(spec, LineIntersection3DSpec):
+        raise UnsupportedMath("Line projection checks require the actual line_intersection_3d computation")
+    origin1 = [context.expr(c) for c in spec.first.origin[:2]]
+    direction1 = [context.expr(c) for c in spec.first.direction[:2]]
+    origin2 = [context.expr(c) for c in spec.second.origin[:2]]
+    direction2 = [context.expr(c) for c in spec.second.direction[:2]]
+    t, s = sp.Dummy("t", real=True), sp.Dummy("s", real=True)
+    residuals = [sp.simplify(origin1[i] + t * direction1[i] - origin2[i] - s * direction2[i]) for i in range(2)]
+    solution = sp.linsolve(residuals, (t, s))
+    if not (isinstance(solution, sp.FiniteSet) and len(solution) == 1):
+        raise UnsupportedMath("The two-component projection does not have a unique candidate")
+    (t_value, s_value), = solution
+    return verdict(rule, ValidityLabel.VALID, "projection_candidate_found",
+                   "A unique (t, s) candidate solves only the first two components; this does not by itself establish a space intersection.",
+                   output=MathExpression(latex=f"t={sp.latex(t_value)},\\ s={sp.latex(s_value)}"))
+
+
+def _verify_line_common_point(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, VerifyLineCommonPointCheck)
+    spec = context.problem.computation
+    if not isinstance(spec, LineIntersection3DSpec):
+        raise UnsupportedMath("Common-point verification requires the actual line_intersection_3d computation")
+    if context.definedness(params.first_parameter, "real") is not True or context.definedness(params.second_parameter, "real") is not True:
+        raise UnsupportedMath("Claimed parameters are not established real and finite")
+    t_value, s_value = context.expr(params.first_parameter), context.expr(params.second_parameter)
+    origin1 = [context.expr(c) for c in spec.first.origin]
+    direction1 = [context.expr(c) for c in spec.first.direction]
+    origin2 = [context.expr(c) for c in spec.second.origin]
+    direction2 = [context.expr(c) for c in spec.second.direction]
+    point1 = [sp.simplify(origin1[i] + t_value * direction1[i]) for i in range(3)]
+    point2 = [sp.simplify(origin2[i] + s_value * direction2[i]) for i in range(3)]
+    residuals = [sp.simplify(a - b) for a, b in zip(point1, point2, strict=True)]
+    zero = [r.is_zero for r in residuals]
+    if None in zero:
+        raise UnsupportedMath("A component residual is not established zero or nonzero")
+    if not all(zero):
+        mismatch = next(r for r, z in zip(residuals, zero, strict=True) if not z)
+        return verdict(rule, ValidityLabel.INVALID_STEP, "common_point_residual_nonzero",
+                       f"Substituting the claimed parameters leaves a nonzero component residual {mismatch}; the two projected points are not the same space point.",
+                       remediation="Solve all three coordinate equations simultaneously instead of accepting a projection.")
+    return verdict(rule, ValidityLabel.VALID, "common_point_verified",
+                   "All three coordinate components agree at the claimed parameters.",
+                   output=MathExpression(latex=f"({', '.join(sp.latex(c) for c in point1)})"))
+
+
+def _claim_line_relation(rule, step, context):
+    params = rule.parameters
+    assert isinstance(params, ClaimLineRelationCheck)
+    spec = context.problem.computation
+    if not isinstance(spec, LineIntersection3DSpec):
+        raise UnsupportedMath("Line-relation claim requires the actual line_intersection_3d computation")
+    facts = line_intersection_facts(context, spec)
+    if params.relation.value != facts.relation:
+        return verdict(rule, ValidityLabel.INVALID_STEP, "line_relation_false",
+                       f"The independently established relation is {facts.relation}; the claimed relation {params.relation.value} is false.",
+                       remediation="Solve all three coordinate equations and classify using the actual common-solution structure and direction parallelism.")
+    return verdict(rule, ValidityLabel.VALID, "line_relation_verified",
+                   f"The claimed relation {facts.relation} is independently established.",
+                   output=MathExpression(latex=facts.relation.replace("_", " ")))
+
+
 CHECKERS = {
     "equation_transform": _equation, "substitution": _substitution,
     "antiderivative": _antiderivative, "evaluate_expression": _evaluation,
@@ -598,6 +812,12 @@ CHECKERS = {
     "stationary_point_check": _stationary_value, "second_derivative_value": _stationary_value,
     "claim_stationary_classification": _stationary_claim,
     "differentiate_limit_components": _limit_components, "lhopital_replacement": _lhopital, "evaluate_limit": _evaluate_limit,
+    "evaluate_argument_factors": _argument_factors, "principal_argument_product": _argument_product,
+    "evaluate_argument_sum": _argument_sum, "real_square_nonnegative": _real_square_nonnegative,
+    "claim_empty_solution_set": _claim_empty_solution_set,
+    "vector_metrics": _vector_step, "normalize_vector_dot": _vector_step, "evaluate_vector_angle": _vector_step,
+    "line_xy_candidates": _line_xy_candidates, "verify_line_common_point": _verify_line_common_point,
+    "claim_line_relation": _claim_line_relation,
 }
 
 

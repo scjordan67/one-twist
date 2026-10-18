@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "real-square-to-complex-domain",
+  "title": "A real no-solution proof cannot be moved to the complex numbers",
+  "tags": ["Complex Numbers", "domain", "order"],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Solve z^2+1=0 for the admissible number system, initially the reals.",
+    "expression": {"latex": "z^2+1=0"},
+    "goal": "Find the complete solution set of z^2+1=0 for the current admissible domain.",
+    "variables": {"z": "real"},
+    "parameters": [],
+    "conditions": [
+      {"id": "admissible-domain", "description": "The number system admissible for z.", "domain_binding": {"kind": "domain", "variable": "z", "current": {"number_system": "real", "constraints": []}}}
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {"kind": "equation", "variable": "z", "left": {"source": "z**2+1", "latex": "z^2+1"}, "right": {"source": "0", "latex": "0"}}
+  },
+  "assumptions": [
+    {"id": "order-available", "kind": "real_order_available", "description": "The admissible number system has a real order structure making z^2>=0 a theorem.", "condition_ids": ["admissible-domain"], "predicate": null, "check": {"operation": "real_order_available", "variable": "z"}, "state": "unchecked"}
+  ],
+  "methods": [
+    {"id": "real-order-argument", "name": "Real-order nonnegativity argument", "description": "Rearrange to z^2=-1, apply z^2>=0, and conclude no solutions.", "assumption_ids": ["order-available"]}
+  ],
+  "correct_steps": [
+    {"id": "rearrange-square-equation", "number": 1, "input": {"latex": "z^2+1=0"}, "output": {"latex": "z^2=-1"}, "method_id": "real-order-argument", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Pure rearrangement; valid in both the real and complex numbers."},
+    {"id": "real-square-nonnegative", "number": 2, "input": {"latex": "z^2=-1"}, "output": {"latex": "z^2\\ge0"}, "method_id": "real-order-argument", "assumption_ids": ["order-available"], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Apply the real theorem that every square is nonnegative."},
+    {"id": "claim-no-solutions", "number": 3, "input": {"latex": "z^2\\ge0,\\ z^2=-1"}, "output": {"latex": "\\varnothing"}, "method_id": "real-order-argument", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Since -1<0, the equation has no admissible solutions."}
+  ],
+  "conclusion": {"latex": "\\varnothing"},
+  "allowed_perturbations": [
+    {"id": "widen-to-complex", "condition_id": "admissible-domain", "type": "domain", "description": "Widen the admissible domain to the complex numbers.", "domain_choices": [{"id": "all-complex", "label": "All complex numbers", "domain": {"number_system": "complex", "constraints": []}}]},
+    {"id": "restrict-nonnegative", "condition_id": "admissible-domain", "type": "domain", "description": "Restrict the admissible domain to the nonnegative reals.", "domain_choices": [{"id": "nonnegative-real", "label": "Nonnegative reals", "domain": {"number_system": "real", "constraints": [{"left": {"source": "z", "latex": "z"}, "relation": "ge", "right": {"source": "0", "latex": "0"}}]}}]}
+  ],
+  "expected_failure_mechanisms": ["Over the complex numbers, z^2+1=(z-i)(z+i)=0 has solutions {-i, i}; the real order theorem z^2>=0 does not apply because C has no order structure."],
+  "verification_rules": [
+    {"id": "check-rearrange", "kind": "equation_transform", "refs": [{"kind": "step", "id": "rearrange-square-equation"}], "description": "Pure rearrangement, valid on either domain.", "parameters": {"operation": "equation_transform", "before": {"kind": "equation", "variable": "z", "left": {"source": "z**2+1", "latex": "z^2+1"}, "right": {"source": "0", "latex": "0"}}, "after": {"kind": "equation", "variable": "z", "left": {"source": "z**2", "latex": "z^2"}, "right": {"source": "-1", "latex": "-1"}}}},
+    {"id": "check-real-square", "kind": "real_square_nonnegative", "refs": [{"kind": "step", "id": "real-square-nonnegative"}], "description": "Check whether the real-order nonnegativity theorem applies on the current domain.", "parameters": {"operation": "real_square_nonnegative", "variable": "z"}},
+    {"id": "check-empty-claim", "kind": "claim_empty_solution_set", "refs": [{"kind": "step", "id": "claim-no-solutions"}], "description": "Independently solve the original equation and compare to the claimed empty set.", "parameters": {"operation": "claim_empty_solution_set"}}
+  ],
+  "explanation_fragments": [
+    {"id": "complex-explanation", "evidence_keys": ["check-real-square", "check-empty-claim"], "when": [{"rule_id": "check-real-square", "outcome": "real_order_unavailable"}, {"rule_id": "check-empty-claim", "outcome": "nonempty_counterexample"}], "text": "The complex numbers have no order structure, so z^2>=0 is not a theorem there. Factoring z^2+1=(z-i)(z+i) gives the complete solution set {-i, i}; the real no-solution argument does not transfer."}
+  ],
+  "review": {"status": "reviewed", "reviewer": "Claude Code", "basis": "Independently approved by Claude Code, acting as implementer/reviewer under explicit user authorization after Codex hit a usage limit: hand-verified z^2+1=(z-i)(z+i), both roots check, and the real/nonnegative-real domains stay empty."}
+}

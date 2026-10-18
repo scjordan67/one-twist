@@ -21,7 +21,7 @@ def validate_expressions(value: object, symbols: set[str]) -> None:
     elif isinstance(value, Model):
         for field in type(value).model_fields:
             validate_expressions(getattr(value, field), symbols)
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple)):
         for item in value:
             validate_expressions(item, symbols)
 

@@ -44,15 +44,22 @@ def comparison(original: ProblemEvaluation, changed: ProblemEvaluation) -> Concl
             different = True
         elif left.status == "classification":
             different = left.classification != right.classification
+        elif left.status == "line_relation":
+            # Compare the typed relation/point, never t/s parameters or LaTeX:
+            # a control may be a pure re-parametrization of the same line.
+            different = left.line_relation != right.line_relation
         elif original.value is not None and changed.value is not None:
             equal = equal_sets(original.value, changed.value) if left.status == "solution_set" else truth(sp.Eq(original.value, changed.value))
             if equal is None and left.status == "numeric_value":
                 equal = (sp.simplify(original.value - changed.value)).is_zero
             different = None if equal is None else not equal
+    basis = (
+        "line_relation" if "line_relation" in {left.status, right.status} else
+        "classification" if "classification" in {left.status, right.status} else
+        "symbolic_formula" if "solution_set" in {left.status, right.status} else "numeric_value"
+    )
     return ConclusionComparison(
-        basis="classification" if "classification" in {left.status, right.status} else (
-            "symbolic_formula" if "solution_set" in {left.status, right.status} else "numeric_value"),
-        original=left.value or MathExpression(latex=r"\text{Unknown}"), perturbed=right.value,
+        basis=basis, original=left.value or MathExpression(latex=r"\text{Unknown}"), perturbed=right.value,
         changed=different,
     )
 

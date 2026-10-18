@@ -290,8 +290,8 @@ def test_drafts_do_not_publish_or_change_the_existing_integral(monkeypatch):
         pytest.fail("Review preparation and public GET must not run a computation")
     monkeypatch.setattr("app.core.isolation.ComputationExecutor.run", forbidden)
     templates = load_templates()
-    assert len(templates) == 11
-    assert sum(template.review.status == "reviewed" for template in templates.values()) == 10
+    assert len(templates) == 15
+    assert sum(template.review.status == "reviewed" for template in templates.values()) == 14
     original = json.loads((DEFAULT_DIRECTORY / "integral-endpoint.json").read_text(encoding="utf-8"))
     assert DRAFTS[11]["existing_template_snapshot"] == original
     assert templates["integral-endpoint"].review.status == "draft"

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "line-intersection-all-coordinates",
+  "title": "A two-coordinate projection cannot prove a space intersection",
+  "tags": ["Vectors", "lines", "3D geometry"],
+  "difficulty": "intermediate",
+  "original_problem": {
+    "statement": "Classify the relation of l1(t)=(t,0,0) and l2(s)=(0,b*s,c), initially b=1, c=0.",
+    "expression": {"latex": "\\ell_1(t)=(t,0,0),\\ \\ell_2(s)=(0,bs,c)"},
+    "goal": "Classify the two lines as intersecting, skew, parallel_distinct or coincident, and give the point if intersecting.",
+    "variables": {},
+    "parameters": [
+      {"name": "b", "value": {"source": "1", "latex": "1"}, "domain": "real"},
+      {"name": "c", "value": {"source": "0", "latex": "0"}, "domain": "real"}
+    ],
+    "conditions": [
+      {"id": "b-value", "parameter_name": "b", "description": "The direction scale b", "predicate": {"left": {"source": "b", "latex": "b"}, "relation": "eq", "right": {"source": "1", "latex": "1"}}},
+      {"id": "c-value", "parameter_name": "c", "description": "The offset c", "predicate": {"left": {"source": "c", "latex": "c"}, "relation": "eq", "right": {"source": "0", "latex": "0"}}}
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {"kind": "line_intersection_3d",
+      "first": {"origin": [{"source": "0", "latex": "0"}, {"source": "0", "latex": "0"}, {"source": "0", "latex": "0"}], "direction": [{"source": "1", "latex": "1"}, {"source": "0", "latex": "0"}, {"source": "0", "latex": "0"}]},
+      "second": {"origin": [{"source": "0", "latex": "0"}, {"source": "0", "latex": "0"}, {"source": "c", "latex": "c"}], "direction": [{"source": "0", "latex": "0"}, {"source": "b", "latex": "b"}, {"source": "0", "latex": "0"}]}}
+  },
+  "assumptions": [
+    {"id": "directions-nonzero", "kind": "line_directions_nonzero", "description": "Both direction vectors are nonzero, so each is genuinely a line.", "condition_ids": ["b-value", "c-value"], "predicate": null, "check": {"operation": "line_directions_nonzero"}, "state": "unchecked"}
+  ],
+  "methods": [
+    {"id": "projection-then-claim", "name": "Two-coordinate projection then claim", "description": "Solve only the x and y components for a candidate, then claim it is the space intersection.", "assumption_ids": ["directions-nonzero"]}
+  ],
+  "correct_steps": [
+    {"id": "solve-xy-projection", "number": 1, "input": {"latex": "t=0,\\ bs=0"}, "output": {"latex": "(t,s)=(0,0)"}, "method_id": "projection-then-claim", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Solve only the x and y component equations for a candidate (t, s)."},
+    {"id": "claim-common-point", "number": 2, "input": {"latex": "(t,s)=(0,0)"}, "output": {"latex": "(0,0,0)"}, "method_id": "projection-then-claim", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Substitute the candidate into both full lines and claim the same space point."},
+    {"id": "claim-intersecting", "number": 3, "input": {"latex": "(0,0,0)"}, "output": {"latex": "\\text{intersecting}"}, "method_id": "projection-then-claim", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Conclude the lines intersect at that point."}
+  ],
+  "conclusion": {"latex": "\\text{intersecting at }(0,0,0)"},
+  "allowed_perturbations": [
+    {"id": "offset-c", "condition_id": "c-value", "type": "parameter_value", "description": "Replace c with 1, offsetting the second line.", "allowed_values": [{"source": "1", "latex": "1"}]},
+    {"id": "scale-b", "condition_id": "b-value", "type": "parameter_value", "description": "Replace b with 2, rescaling the second line's direction.", "allowed_values": [{"source": "2", "latex": "2"}]}
+  ],
+  "expected_failure_mechanisms": ["At c=1, the x/y projection still gives (t,s)=(0,0), but the z components 0 and 1 disagree; the lines are skew, not intersecting, because their directions are not parallel."],
+  "verification_rules": [
+    {"id": "check-xy", "kind": "line_xy_candidates", "refs": [{"kind": "step", "id": "solve-xy-projection"}], "description": "Recompute the two-component projection candidate.", "parameters": {"operation": "line_xy_candidates"}},
+    {"id": "check-common-point", "kind": "verify_line_common_point", "refs": [{"kind": "step", "id": "claim-common-point"}], "description": "Substitute the claimed parameters into all three components of both lines.", "parameters": {"operation": "verify_line_common_point", "first_parameter": {"source": "0", "latex": "0"}, "second_parameter": {"source": "0", "latex": "0"}}},
+    {"id": "check-relation", "kind": "claim_line_relation", "refs": [{"kind": "step", "id": "claim-intersecting"}], "description": "Independently classify the relation from all three components and direction parallelism.", "parameters": {"operation": "claim_line_relation", "relation": "intersecting"}}
+  ],
+  "explanation_fragments": [
+    {"id": "skew-explanation", "evidence_keys": ["check-common-point", "check-relation"], "when": [{"rule_id": "check-common-point", "outcome": "common_point_residual_nonzero"}, {"rule_id": "check-relation", "outcome": "line_relation_false"}], "text": "Solving only the x and y components finds a candidate, but it must also satisfy the z component. At c=1 it does not, and the directions are not parallel, so the lines are skew rather than intersecting."}
+  ],
+  "review": {"status": "reviewed", "reviewer": "Claude Code", "basis": "Independently approved by Claude Code, acting as implementer/reviewer under explicit user authorization after Codex hit a usage limit: hand-verified the z-residual mismatch at c=1, the cross product (0,0,b), the scalar triple product bc, and that b=2 is a pure re-parametrization leaving the relation and point unchanged."}
+}
