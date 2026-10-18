@@ -1,0 +1,213 @@
+{
+  "id": "sample-006",
+  "title": "Derivation 06",
+  "template_id": null,
+  "problem": {
+    "statement": "Solve sin(x)=1/2 for 0<=x<2*pi. Angles are in radians. Assess every asserted equivalence and the completeness of the claimed solution set.",
+    "expression": {
+      "source": null,
+      "latex": "\\sin x=\\frac12,\\qquad 0\\le x<2\\pi"
+    },
+    "goal": "Judge the displayed derivation and its claimed complete solution set independently.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "The solution interval is 0<=x<2*pi; angles are measured in radians."
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "lt",
+        "right": {
+          "source": "2*pi",
+          "latex": "2\\pi"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "kind": "equation",
+      "variable": "x",
+      "left": {
+        "source": "sin(x)",
+        "latex": "\\sin x"
+      },
+      "right": {
+        "source": "1/2",
+        "latex": "\\frac12"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "predicate",
+      "description": "The listed candidates cover every solution in the stated interval.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "predicate",
+      "description": "The sine equation has a right-hand side in [-1,1].",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-003",
+      "kind": "predicate",
+      "description": "The stated solution interval contains only nonnegative angles.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Displayed derivation",
+      "description": "Evaluate the principal inverse sine, then use that value in an asserted equivalent equation.",
+      "assumption_ids": [
+        "premise-001"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\alpha=\\arcsin\\left(\\frac12\\right)"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\alpha=\\frac{\\pi}{6}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Evaluate the principal inverse sine value."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\sin x=\\sin\\alpha,\\qquad 0\\le x<2\\pi"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\sin x=\\sin\\alpha\\ \\Longleftrightarrow\\ x=\\alpha=\\frac{\\pi}{6}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Assert equivalence with the principal inverse value over the full stated interval."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "x=\\frac{\\pi}{6}"
+      },
+      "output": {
+        "source": null,
+        "latex": "S_{\\mathrm{original}}=\\left\\{\\frac{\\pi}{6}\\right\\}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "State this singleton as the complete original solution set."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "S_{\\mathrm{original}}=\\left\\{\\frac{\\pi}{6}\\right\\}"
+  },
+  "category": "flawed",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "The principal inverse sine of 1/2 is pi/6."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "invalid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "The implication from the original equation to x=alpha fails at x=5*pi/6, which lies in the stated interval and also has sine 1/2."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "invalid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "The singleton is not the complete original solution set; the missing angle is 5*pi/6."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "not_sound",
+        "conclusion": "incorrect",
+        "step_id": "step-002",
+        "assumption_id": "premise-001",
+        "reason_category": "lost_root"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "The principal inverse sine returns pi/6, so Step 1 is locally correct.",
+      "The full real family is x=pi/6+2*k*pi or x=5*pi/6+2*k*pi for integer k. Intersecting with [0,2*pi) leaves exactly pi/6 and 5*pi/6.",
+      "Thus Step 2 is the first false asserted equivalence. A complete singleton answer is incorrect, not merely not established.",
+      "The right-hand side is in [-1,1] and both solutions are nonnegative; neither distractor repairs branch completeness."
+    ],
+    "actual_conclusion": {
+      "source": null,
+      "latex": "S_{\\mathrm{original}}=\\left\\{\\frac{\\pi}{6},\\frac{5\\pi}{6}\\right\\}"
+    },
+    "remediation": "Keep both sine branches, add their 2*pi periods, and intersect all candidates with the actual interval."
+  },
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Phase 5 extra Mode C mathematical draft. Pending independent mathematical, rubric and regression review by Claude Code; not approved for publication."
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "id": "sample-007",
+  "title": "Derivation 07",
+  "template_id": null,
+  "problem": {
+    "statement": "Find theta=Arg(z) for z=i*(-1)=-i, using the principal-argument convention -pi<theta<=pi. Step 2 forms an unwrapped argument candidate only; every asserted equality remains a claim of the displayed derivation.",
+    "expression": {
+      "source": null,
+      "latex": "z=i(-1)=-i,\\qquad \\theta=\\operatorname{Arg}(z)\\in(-\\pi,\\pi]"
+    },
+    "goal": "Judge the derivation and the claimed principal value, distinguishing an unwrapped argument from a principal argument.",
+    "variables": {
+      "theta": "real"
+    },
+    "parameters": [],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "The principal argument lies in (-pi,pi]; pi is included and -pi is excluded."
+      },
+      {
+        "id": "condition-002",
+        "description": "The fixed complex input is z=i*(-1)=-i, which is nonzero."
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "theta",
+          "latex": "\\theta"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "-pi",
+          "latex": "-\\pi"
+        }
+      },
+      {
+        "left": {
+          "source": "theta",
+          "latex": "\\theta"
+        },
+        "relation": "le",
+        "right": {
+          "source": "pi",
+          "latex": "\\pi"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": null
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "predicate",
+      "description": "An argument candidate is retained only when it belongs to the stated principal interval.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "predicate",
+      "description": "The complex input whose argument is requested is nonzero.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-003",
+      "kind": "predicate",
+      "description": "The imaginary unit satisfies i squared = -1.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Displayed derivation",
+      "description": "Compute the factor arguments, form an unwrapped argument candidate, and select a principal value.",
+      "assumption_ids": [
+        "premise-001"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "z=i(-1)"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\alpha=\\operatorname{Arg}(i)=\\frac{\\pi}{2},\\qquad \\beta=\\operatorname{Arg}(-1)=\\pi"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Evaluate the two factor principal arguments."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\alpha=\\frac{\\pi}{2},\\qquad\\beta=\\pi"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\theta_0=\\alpha+\\beta=\\frac{3\\pi}{2},\\qquad e^{i\\theta_0}=-i"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Form an unwrapped argument candidate; this step does not claim that theta_0 is principal."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "\\theta_0=\\frac{3\\pi}{2}"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\operatorname{Arg}(-i)=\\theta_0=\\frac{3\\pi}{2}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Accept the candidate as the principal argument."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "\\operatorname{Arg}(-i)=\\frac{3\\pi}{2}"
+  },
+  "category": "missing_condition",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "The stipulated interval gives Arg(i)=pi/2 and Arg(-1)=pi."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "The sum 3*pi/2 is an argument of -i because exp(3*pi*i/2)=-i. Only an unwrapped candidate is claimed."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "missing_condition",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "The candidate 3*pi/2 exceeds pi and is excluded by the stated principal domain. The first invalid acceptance is Step 3."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "not_sound",
+        "conclusion": "incorrect",
+        "step_id": "step-003",
+        "assumption_id": "premise-001",
+        "reason_category": "extraneous_root"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "A nonzero complex number has arguments differing by integer multiples of 2*pi; the principal argument selects the unique representative in (-pi,pi].",
+      "The unwrapped candidate theta_0=3*pi/2 has the correct complex unit direction, so Step 2 is not an arithmetic or branch-equality error.",
+      "Step 3 accepts a candidate of the angle equation exp(i*theta)=-i outside its required interval. This is the existing extraneous_root reason: a candidate was accepted as an original solution without the domain check.",
+      "Subtracting 2*pi gives -pi/2 in the required interval, so the claimed principal value is incorrect. The other premises already hold and do not repair branch selection."
+    ],
+    "actual_conclusion": {
+      "source": "-pi/2",
+      "latex": "\\operatorname{Arg}(-i)=-\\frac{\\pi}{2}"
+    },
+    "remediation": "Normalize the unwrapped argument by subtracting 2*pi and verify the result belongs to (-pi,pi] before calling it Arg."
+  },
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Phase 5 extra Mode C mathematical draft. Pending independent mathematical, rubric and regression review by Claude Code; not approved for publication."
+  }
+}
