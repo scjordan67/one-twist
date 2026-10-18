@@ -304,7 +304,9 @@ def test_loading_public_content_publishes_only_accepted_batch_and_does_not_compu
                                         "derivative-cusp", "stationary-second-derivative", "lhopital-form",
                                         "integral-interior-pole", "integral-coalescing-poles",
                                         "ivp-zero-equilibrium", "ivp-principal-initial-root",
-                                        "ivp-nonuniqueness-witness"}
+                                        "ivp-nonuniqueness-witness",
+                                        "principal-argument-product", "real-square-to-complex-domain",
+                                        "vector-angle-zero-norm", "line-intersection-all-coordinates"}
     assert all(templates[id].review.status == "reviewed" for id in approved)
     # integral-endpoint received its own formal re-review in batch 11-15.
     assert templates["integral-endpoint"].review.status == "reviewed"

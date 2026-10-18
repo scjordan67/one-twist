@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "vector-angle-zero-norm",
+  "title": "A zero vector cannot be normalized to find an angle",
+  "tags": ["Vectors", "angle", "normalization"],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Find the standard Euclidean angle between u=(a,0) and v=(1,1), initially a=1.",
+    "expression": {"latex": "\\theta=\\angle(u,v)"},
+    "goal": "Find the angle between u and v in [0, pi].",
+    "variables": {},
+    "parameters": [{"name": "a", "value": {"source": "1", "latex": "1"}, "domain": "real"}],
+    "conditions": [
+      {"id": "a-value", "parameter_name": "a", "description": "The value of a", "predicate": {"left": {"source": "a", "latex": "a"}, "relation": "eq", "right": {"source": "1", "latex": "1"}}}
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {"kind": "vector_angle", "u": [{"source": "a", "latex": "a"}, {"source": "0", "latex": "0"}], "v": [{"source": "1", "latex": "1"}, {"source": "1", "latex": "1"}]}
+  },
+  "assumptions": [
+    {"id": "norms-nonzero", "kind": "vector_norms_nonzero", "description": "Both vectors have nonzero norm, so the standard angle formula applies.", "condition_ids": ["a-value"], "predicate": null, "check": {"operation": "vector_norms_nonzero"}, "state": "unchecked"}
+  ],
+  "methods": [
+    {"id": "normalize-and-arccos", "name": "Normalize and take arccos", "description": "Divide the dot product by both norms, then take arccos.", "assumption_ids": ["norms-nonzero"]}
+  ],
+  "correct_steps": [
+    {"id": "compute-vector-metrics", "number": 1, "input": {"latex": "u,\\ v"}, "output": {"latex": "u\\cdot v=a,\\ \\|u\\|=|a|,\\ \\|v\\|=\\sqrt2"}, "method_id": "normalize-and-arccos", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Compute the dot product and both norms from the actual vectors."},
+    {"id": "normalize-vector-dot", "number": 2, "input": {"latex": "u\\cdot v,\\ \\|u\\|,\\ \\|v\\|"}, "output": {"latex": "r=\\frac{a}{|a|\\sqrt2}"}, "method_id": "normalize-and-arccos", "assumption_ids": ["norms-nonzero"], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Divide by both norms, assuming they are nonzero."},
+    {"id": "evaluate-vector-angle", "number": 3, "input": {"latex": "r"}, "output": {"latex": "\\theta=\\arccos r"}, "method_id": "normalize-and-arccos", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Take arccos of the ratio to get the angle."}
+  ],
+  "conclusion": {"latex": "\\pi/4"},
+  "allowed_perturbations": [
+    {"id": "zero-vector", "condition_id": "a-value", "type": "parameter_zero", "description": "Replace a with 0, making u the zero vector.", "allowed_values": [{"source": "0", "latex": "0"}]},
+    {"id": "change-a", "condition_id": "a-value", "type": "parameter_value", "description": "Replace a with another listed value.", "allowed_values": [{"source": "2", "latex": "2"}]}
+  ],
+  "expected_failure_mechanisms": ["At a=0, u becomes the zero vector; its norm is zero, so normalizing divides by zero and the angle is undefined, not pi/2 or any other evaluated value."],
+  "verification_rules": [
+    {"id": "check-metrics", "kind": "vector_metrics", "refs": [{"kind": "step", "id": "compute-vector-metrics"}], "description": "Recompute the dot product and squared norms independently.", "parameters": {"operation": "vector_metrics"}},
+    {"id": "check-normalize", "kind": "normalize_vector_dot", "refs": [{"kind": "step", "id": "normalize-vector-dot"}], "description": "Check both norms are nonzero before dividing.", "parameters": {"operation": "normalize_vector_dot"}},
+    {"id": "check-angle", "kind": "evaluate_vector_angle", "refs": [{"kind": "step", "id": "evaluate-vector-angle"}], "description": "Check the angle is defined before evaluating arccos.", "parameters": {"operation": "evaluate_vector_angle"}}
+  ],
+  "explanation_fragments": [
+    {"id": "zero-norm-explanation", "evidence_keys": ["check-normalize"], "when": [{"rule_id": "check-normalize", "outcome": "zero_norm_division"}], "text": "The standard Euclidean angle formula requires both vectors to be nonzero. At a=0, u is the zero vector and has no direction, so the angle is undefined; it is not meaningful to evaluate arccos of an undefined ratio."}
+  ],
+  "review": {"status": "reviewed", "reviewer": "Claude Code", "basis": "Independently approved by Claude Code, acting as implementer/reviewer under explicit user authorization after Codex hit a usage limit: hand-verified dot=a, norms |a| and sqrt(2), angle pi/4 at a=1,2, and the zero-norm division at a=0."}
+}

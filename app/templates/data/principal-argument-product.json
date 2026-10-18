@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "principal-argument-product",
+  "title": "Adding principal arguments needs a branch check",
+  "tags": ["Complex Numbers", "principal argument", "branch"],
+  "difficulty": "introductory",
+  "original_problem": {
+    "statement": "Compute Arg(i*p) for real p, fixing the principal branch (-pi, pi], initially p=1.",
+    "expression": {"latex": "\\operatorname{Arg}(ip)"},
+    "goal": "Find the principal argument of the product i*p.",
+    "variables": {},
+    "parameters": [{"name": "p", "value": {"source": "1", "latex": "1"}, "domain": "real"}],
+    "conditions": [
+      {"id": "p-value", "parameter_name": "p", "description": "The value of p", "predicate": {"left": {"source": "p", "latex": "p"}, "relation": "eq", "right": {"source": "1", "latex": "1"}}}
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {"kind": "principal_argument", "expression": {"source": "I*p", "latex": "ip"}}
+  },
+  "assumptions": [
+    {"id": "additivity", "kind": "principal_argument_additivity", "description": "The unwrapped sum of the factors' principal arguments lies in the declared branch.", "condition_ids": ["p-value"], "predicate": null, "check": {"operation": "principal_argument_additivity", "left": {"source": "I", "latex": "i"}, "right": {"source": "p", "latex": "p"}}, "state": "unchecked"}
+  ],
+  "methods": [
+    {"id": "unwrapped-argument-addition", "name": "Unwrapped argument addition", "description": "Evaluate each factor's principal argument, then add them without normalizing back into the branch.", "assumption_ids": ["additivity"]}
+  ],
+  "correct_steps": [
+    {"id": "evaluate-factor-arguments", "number": 1, "input": {"latex": "\\operatorname{Arg}(i),\\ \\operatorname{Arg}(p)"}, "output": {"latex": "\\alpha=\\pi/2,\\ \\beta=0"}, "method_id": "unwrapped-argument-addition", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Evaluate each nonzero factor's principal argument."},
+    {"id": "add-principal-arguments", "number": 2, "input": {"latex": "\\alpha,\\ \\beta"}, "output": {"latex": "\\operatorname{Arg}(ip)=\\alpha+\\beta"}, "method_id": "unwrapped-argument-addition", "assumption_ids": ["additivity"], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Assert the product's principal argument equals the unwrapped sum, without renormalizing."},
+    {"id": "evaluate-argument-sum", "number": 3, "input": {"latex": "\\alpha+\\beta"}, "output": {"latex": "\\pi/2"}, "method_id": "unwrapped-argument-addition", "assumption_ids": [], "transformation_kind": "Equivalent", "domain_constraints": [], "explanation": "Evaluate the sum locally."}
+  ],
+  "conclusion": {"latex": "\\pi/2"},
+  "allowed_perturbations": [
+    {"id": "change-p", "condition_id": "p-value", "type": "parameter_value", "description": "Replace the value of p.", "allowed_values": [{"source": "-1", "latex": "-1"}, {"source": "2", "latex": "2"}]}
+  ],
+  "expected_failure_mechanisms": ["At p=-1, the unwrapped sum pi/2+pi=3*pi/2 lies outside (-pi, pi]; the actual principal argument is -pi/2."],
+  "verification_rules": [
+    {"id": "check-factors", "kind": "evaluate_argument_factors", "refs": [{"kind": "step", "id": "evaluate-factor-arguments"}], "description": "Evaluate each factor's principal argument.", "parameters": {"operation": "evaluate_argument_factors", "left": {"source": "I", "latex": "i"}, "right": {"source": "p", "latex": "p"}}},
+    {"id": "check-product-claim", "kind": "principal_argument_product", "refs": [{"kind": "step", "id": "add-principal-arguments"}], "description": "Check whether the unwrapped sum already lies in the declared branch and equals the actual product argument.", "parameters": {"operation": "principal_argument_product", "left": {"source": "I", "latex": "i"}, "right": {"source": "p", "latex": "p"}}},
+    {"id": "check-sum-eval", "kind": "evaluate_argument_sum", "refs": [{"kind": "step", "id": "evaluate-argument-sum"}], "description": "Recompute the local sum of the two factor arguments.", "parameters": {"operation": "evaluate_argument_sum", "left": {"source": "I", "latex": "i"}, "right": {"source": "p", "latex": "p"}}}
+  ],
+  "explanation_fragments": [
+    {"id": "branch-explanation", "evidence_keys": ["check-product-claim"], "when": [{"rule_id": "check-product-claim", "outcome": "argument_sum_out_of_branch"}], "text": "Principal arguments add modulo 2*pi, but the sum needs a unique branch representative. The unwrapped sum left the declared (-pi, pi] branch; wrap it back (subtract 2*pi here) to recover the actual principal argument."}
+  ],
+  "review": {"status": "reviewed", "reviewer": "Claude Code", "basis": "Independently approved by Claude Code, acting as implementer/reviewer under explicit user authorization after Codex hit a usage limit: hand-verified arg(i)=pi/2, arg(-1)=pi, the unwrapped sum 3*pi/2 at p=-1 wraps to -pi/2, and the p=2 control stays in-branch."}
+}

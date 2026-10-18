@@ -17,7 +17,9 @@ def test_loads_published_library():
                               "stationary-second-derivative", "lhopital-form",
                               "integral-interior-pole", "integral-coalescing-poles",
                               "ivp-zero-equilibrium", "ivp-principal-initial-root",
-                              "ivp-nonuniqueness-witness"}
+                              "ivp-nonuniqueness-witness",
+                              "principal-argument-product", "real-square-to-complex-domain",
+                              "vector-angle-zero-norm", "line-intersection-all-coordinates"}
     assert templates["integral-endpoint"].conclusion.source == "log(2)"
 
 

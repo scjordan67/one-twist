@@ -1,9 +1,13 @@
 """Small function registry. Declared assumption state is never proof."""
 
 from app.engine.context import Context, UnsupportedMath, subset, truth
-from app.models.domain import Assumption, AssumptionResult, Evidence, IntegralSpec, EquationSpec, DomainPredicateCheck, CandidatePredicateCheck
+from app.models.domain import (
+    Assumption, AssumptionResult, Evidence, IntegralSpec, EquationSpec, DomainPredicateCheck,
+    CandidatePredicateCheck, VectorAngleSpec, LineIntersection3DSpec,
+)
 from app.engine.verifier import solve_equation, principal_sine_data, point_formula_status
 from app.engine.calculus import lhopital_data
+from app.engine.complex_vector import argument_additivity_data, line_intersection_facts, vector_angle_facts
 
 
 def _predicate(assumption: Assumption, context: Context) -> bool | None:
@@ -59,6 +63,31 @@ def _lhopital_form(assumption, context):
     return form
 
 
+def _argument_additivity(assumption, context):
+    data = argument_additivity_data(context, assumption.check)
+    return data.additive
+
+
+def _real_order_available(assumption, context):
+    params = assumption.check
+    return context.problem.variables[params.variable] != "complex"
+
+
+def _vector_norms_nonzero(assumption, context):
+    spec = context.problem.computation
+    if not isinstance(spec, VectorAngleSpec):
+        raise UnsupportedMath("Vector norm assumption requires the actual vector_angle computation")
+    return vector_angle_facts(context, spec).angle is not None
+
+
+def _line_directions_nonzero(assumption, context):
+    spec = context.problem.computation
+    if not isinstance(spec, LineIntersection3DSpec):
+        raise UnsupportedMath("Line direction assumption requires the actual line_intersection_3d computation")
+    line_intersection_facts(context, spec)  # raises UnsupportedMath if a direction is zero
+    return True
+
+
 CHECKERS = {
     "nonzero": _predicate,
     "parameter_range": _predicate,
@@ -69,6 +98,10 @@ CHECKERS = {
     "principal_sine_coverage": _principal_coverage,
     "point_formula_defined": _point_formula,
     "lhopital_zero_over_zero": _lhopital_form,
+    "principal_argument_additivity": _argument_additivity,
+    "real_order_available": _real_order_available,
+    "vector_norms_nonzero": _vector_norms_nonzero,
+    "line_directions_nonzero": _line_directions_nonzero,
 }
 
 

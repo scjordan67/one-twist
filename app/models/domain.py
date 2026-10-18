@@ -211,8 +211,43 @@ class FirstOrderIVPSpec(Model):
         return self
 
 
+class PrincipalArgumentSpec(Model):
+    kind: Literal["principal_argument"] = "principal_argument"
+    expression: MathExpression
+    branch: Literal["negative_pi_open_positive_pi_closed"] = "negative_pi_open_positive_pi_closed"
+
+
+ScalarVector2 = tuple[MathExpression, MathExpression]
+ScalarVector3 = tuple[MathExpression, MathExpression, MathExpression]
+ScalarVector = ScalarVector2 | ScalarVector3
+
+
+class VectorAngleSpec(Model):
+    kind: Literal["vector_angle"] = "vector_angle"
+    u: ScalarVector
+    v: ScalarVector
+
+    @model_validator(mode="after")
+    def matching_dimension(self) -> Self:
+        if len(self.u) != len(self.v):
+            raise ValueError("Vectors must have matching dimension")
+        return self
+
+
+class Line3D(Model):
+    origin: ScalarVector3
+    direction: ScalarVector3
+
+
+class LineIntersection3DSpec(Model):
+    kind: Literal["line_intersection_3d"] = "line_intersection_3d"
+    first: Line3D
+    second: Line3D
+
+
 ComputationSpec = Annotated[
-    EquationSpec | IntegralSpec | ScalarExpressionSpec | DerivativeAtPointSpec | StationaryPointSpec | LimitSpec | FirstOrderIVPSpec,
+    EquationSpec | IntegralSpec | ScalarExpressionSpec | DerivativeAtPointSpec | StationaryPointSpec | LimitSpec
+    | FirstOrderIVPSpec | PrincipalArgumentSpec | VectorAngleSpec | LineIntersection3DSpec,
     Field(discriminator="kind"),
 ]
 
@@ -438,8 +473,80 @@ class InitialRootCheck(Model):
     claimed_constant: MathExpression
 
 
+class ArgumentPairCheck(Model):
+    operation: Literal["evaluate_argument_factors", "principal_argument_product", "evaluate_argument_sum"]
+    left: MathExpression
+    right: MathExpression
+
+
+class ArgumentAdditivityCheck(Model):
+    operation: Literal["principal_argument_additivity"] = "principal_argument_additivity"
+    left: MathExpression
+    right: MathExpression
+
+
+class RealSquareNonnegativeCheck(Model):
+    operation: Literal["real_square_nonnegative"] = "real_square_nonnegative"
+    variable: Identifier
+
+
+class RealOrderAvailableCheck(Model):
+    operation: Literal["real_order_available"] = "real_order_available"
+    variable: Identifier
+
+
+class ClaimEmptySolutionSetCheck(Model):
+    operation: Literal["claim_empty_solution_set"] = "claim_empty_solution_set"
+
+
+class VectorStepCheck(Model):
+    operation: Literal["vector_metrics", "normalize_vector_dot", "evaluate_vector_angle"]
+
+
+class VectorNormsNonzeroCheck(Model):
+    operation: Literal["vector_norms_nonzero"] = "vector_norms_nonzero"
+
+
+class LineXYCandidatesCheck(Model):
+    operation: Literal["line_xy_candidates"] = "line_xy_candidates"
+
+
+class VerifyLineCommonPointCheck(Model):
+    operation: Literal["verify_line_common_point"] = "verify_line_common_point"
+    first_parameter: MathExpression
+    second_parameter: MathExpression
+
+
+class LineRelation(StrEnum):
+    INTERSECTING = "intersecting"
+    SKEW = "skew"
+    PARALLEL_DISTINCT = "parallel_distinct"
+    COINCIDENT = "coincident"
+
+
+class ClaimLineRelationCheck(Model):
+    operation: Literal["claim_line_relation"] = "claim_line_relation"
+    relation: LineRelation
+
+
+class LineDirectionsNonzeroCheck(Model):
+    operation: Literal["line_directions_nonzero"] = "line_directions_nonzero"
+
+
+class LineRelationOutcome(Model):
+    relation: LineRelation
+    intersection_point: tuple[MathExpression, MathExpression, MathExpression] | None = None
+
+    @model_validator(mode="after")
+    def point_only_when_intersecting(self) -> Self:
+        if (self.relation == LineRelation.INTERSECTING) != (self.intersection_point is not None):
+            raise ValueError("Intersection point is required exactly when relation is intersecting")
+        return self
+
+
 AssumptionCheck = Annotated[
-    DomainPredicateCheck | CandidatePredicateCheck | PrincipalSineCoverageCheck | PointFormulaCheck | LHopitalPremiseCheck,
+    DomainPredicateCheck | CandidatePredicateCheck | PrincipalSineCoverageCheck | PointFormulaCheck | LHopitalPremiseCheck
+    | ArgumentAdditivityCheck | RealOrderAvailableCheck | VectorNormsNonzeroCheck | LineDirectionsNonzeroCheck,
     Field(discriminator="operation"),
 ]
 
@@ -452,7 +559,9 @@ RuleParameters = Annotated[
     | LHopitalReplacementCheck | EvaluateLimitCheck | RootRateCheck
     | PrimitiveComponentsCheck | ProperEndpointCheck | TwoPoleAnsatzCheck | TwoPoleCoefficientsCheck
     | TwoPolePrimitiveCheck | TwoPoleEndpointCheck | LinearDivisionCheck | LinearLogCheck
-    | LinearInitialCheck | IVPCandidateCheck | SqrtSubstitutionCheck | SqrtIntegrationCheck | InitialRootCheck,
+    | LinearInitialCheck | IVPCandidateCheck | SqrtSubstitutionCheck | SqrtIntegrationCheck | InitialRootCheck
+    | ArgumentPairCheck | RealSquareNonnegativeCheck | ClaimEmptySolutionSetCheck
+    | VectorStepCheck | LineXYCandidatesCheck | VerifyLineCommonPointCheck | ClaimLineRelationCheck,
     Field(discriminator="operation"),
 ]
 
@@ -503,7 +612,11 @@ class Assumption(Model):
     def explicit_scope(self) -> Self:
         operation = {"domain_predicate": "domain_predicate", "candidate_sign": "candidate_predicate",
                      "principal_sine_coverage": "principal_sine_coverage", "point_formula_defined": "point_formula_defined",
-                     "lhopital_zero_over_zero": "lhopital_zero_over_zero"}.get(self.kind)
+                     "lhopital_zero_over_zero": "lhopital_zero_over_zero",
+                     "principal_argument_additivity": "principal_argument_additivity",
+                     "real_order_available": "real_order_available",
+                     "vector_norms_nonzero": "vector_norms_nonzero",
+                     "line_directions_nonzero": "line_directions_nonzero"}.get(self.kind)
         if operation is not None and (self.check is None or self.check.operation != operation):
             raise ValueError("Scoped assumption requires its matching typed check")
         if self.check is not None:
@@ -577,7 +690,7 @@ class Perturbation(Model):
 
 
 class ConclusionComparison(Model):
-    basis: Literal["numeric_value", "symbolic_formula", "classification"]
+    basis: Literal["numeric_value", "symbolic_formula", "classification", "line_relation"]
     original: MathExpression
     perturbed: MathExpression | None = None
     # None means not established, not unchanged.
@@ -585,7 +698,7 @@ class ConclusionComparison(Model):
 
 
 class ConclusionResult(Model):
-    status: Literal["numeric_value", "solution_set", "divergent", "undefined", "unknown", "classification", "symbolic_formula"]
+    status: Literal["numeric_value", "solution_set", "divergent", "undefined", "unknown", "classification", "symbolic_formula", "line_relation"]
     value: MathExpression | None = None
     completeness: Literal["complete", "partial", "conditional"] | None = None
     reason_if_unknown: NonEmpty | None = None
@@ -593,6 +706,7 @@ class ConclusionResult(Model):
     solution_scope: Literal["unique_solution", "verified_witness", "nonuniqueness_witnesses"] | None = None
     variable: Identifier | None = None
     time_domain: TimeDomain | None = None
+    line_relation: LineRelationOutcome | None = None
 
     @model_validator(mode="after")
     def consistent_result(self) -> Self:
@@ -602,6 +716,8 @@ class ConclusionResult(Model):
             raise ValueError("Established conclusion requires a value")
         if (self.status == "classification") != (self.classification is not None):
             raise ValueError("Classification requires its typed payload, which is forbidden for other statuses")
+        if (self.status == "line_relation") != (self.line_relation is not None):
+            raise ValueError("line_relation requires its typed payload, which is forbidden for other statuses")
         if self.status == "solution_set" and self.completeness is None:
             raise ValueError("Solution set requires completeness")
         symbolic = self.status == "symbolic_formula"
@@ -767,8 +883,14 @@ class Template(Model):
             if assumption.interval is not None:
                 require_refs([assumption.interval.variable], set(self.original_problem.variables), assumption.id)
             if assumption.check is not None:
-                variable = assumption.check.equation.variable if isinstance(assumption.check, PrincipalSineCoverageCheck) else assumption.check.variable
-                require_refs([variable], set(self.original_problem.variables), assumption.id)
+                if isinstance(assumption.check, PrincipalSineCoverageCheck):
+                    variable = assumption.check.equation.variable
+                elif isinstance(assumption.check, (ArgumentAdditivityCheck, VectorNormsNonzeroCheck, LineDirectionsNonzeroCheck)):
+                    variable = None
+                else:
+                    variable = assumption.check.variable
+                if variable is not None:
+                    require_refs([variable], set(self.original_problem.variables), assumption.id)
         for rule in self.verification_rules:
             params = rule.parameters
             if isinstance(params, EquationTransform):
@@ -790,7 +912,8 @@ class Template(Model):
                 if params.equation != spec:
                     raise ValueError("Principal inverse must reference the actual problem equation")
             elif isinstance(params, (DerivativeIdentityCheck, DerivativePointSubstitutionCheck, StationaryValueCheck,
-                                     DifferentiateLimitComponentsCheck, EvaluateLimitCheck, PrimitiveComponentsCheck, TwoPoleAnsatzCheck)):
+                                     DifferentiateLimitComponentsCheck, EvaluateLimitCheck, PrimitiveComponentsCheck,
+                                     TwoPoleAnsatzCheck, RealSquareNonnegativeCheck)):
                 require_refs([params.variable], set(self.original_problem.variables), rule.id)
                 if spec is not None and getattr(spec, "variable", None) != params.variable:
                     raise ValueError("Rule variable must match the actual computation variable")
