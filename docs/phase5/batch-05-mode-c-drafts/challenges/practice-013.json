@@ -1,0 +1,12 @@
+{
+  "id": "practice-013",
+  "title": "Practice 13",
+  "mode": "C",
+  "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
+  "sample_id": "sample-008",
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Phase 5 extra Mode C mathematical draft. Pending independent mathematical, rubric and regression review by Claude Code; not approved for publication."
+  }
+}

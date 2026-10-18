@@ -1,0 +1,174 @@
+{
+  "id": "sample-008",
+  "title": "Derivation 08",
+  "template_id": null,
+  "problem": {
+    "statement": "Determine whether the standard Euclidean angle between the real 3D vectors u=(0,0,0) and v=(1,1,0) is defined, and give its value if it is. Every displayed equality is asserted; the final line does not retract earlier claims.",
+    "expression": {
+      "source": null,
+      "latex": "u=(0,0,0),\\qquad v=(1,1,0)"
+    },
+    "goal": "Judge all asserted steps and the final statement about existence of the standard Euclidean angle separately.",
+    "variables": {},
+    "parameters": [],
+    "conditions": [
+      {
+        "id": "condition-001",
+        "description": "The fixed vectors are u=(0,0,0) and v=(1,1,0) in real Euclidean 3-space."
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": null
+  },
+  "assumptions": [
+    {
+      "id": "premise-001",
+      "kind": "predicate",
+      "description": "A vector being divided by its Euclidean norm has nonzero norm.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-002",
+      "kind": "predicate",
+      "description": "The vector components are real numbers.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    },
+    {
+      "id": "premise-003",
+      "kind": "predicate",
+      "description": "The two vectors have the same dimension.",
+      "condition_ids": [],
+      "predicate": null,
+      "state": "unchecked"
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-001",
+      "name": "Displayed derivation",
+      "description": "Compute the vector norms, attempt normalization, then state whether the standard angle exists.",
+      "assumption_ids": [
+        "premise-001"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-001",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "u=(0,0,0),\\quad v=(1,1,0)"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\|u\\|=0,\\qquad \\|v\\|=\\sqrt2"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Compute the Euclidean norms."
+    },
+    {
+      "id": "step-002",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "u=(0,0,0),\\quad \\|u\\|=0"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\frac{u}{\\|u\\|}=\\left(\\frac00,\\frac00,\\frac00\\right)=(0,0,0)"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Normalize u, treating each zero-over-zero coordinate as zero."
+    },
+    {
+      "id": "step-003",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "\\|u\\|=0"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\|u\\|=0\\ \\Longrightarrow\\ \\angle(u,v)\\text{ is undefined}"
+      },
+      "method_id": "method-001",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Use the zero norm from Step 1 to give the standard angle-existence conclusion."
+    }
+  ],
+  "claimed_conclusion": {
+    "source": null,
+    "latex": "\\angle(u,v)\\text{ is undefined}"
+  },
+  "category": "wrong_derivation_right_answer",
+  "annotations": [
+    {
+      "step_id": "step-001",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "The two squared norms are 0 and 2."
+    },
+    {
+      "step_id": "step-002",
+      "finding": "invalid",
+      "assumption_ids": [
+        "premise-001"
+      ],
+      "basis": "Every displayed normalization coordinate divides by zero. Zero over zero is undefined, not zero."
+    },
+    {
+      "step_id": "step-003",
+      "finding": "valid",
+      "assumption_ids": [],
+      "basis": "The standard Euclidean angle requires two nonzero vectors. The zero norm already computed in Step 1 establishes the stated nonexistence independently of the false normalization."
+    }
+  ],
+  "rubric": {
+    "accepted_answers": [
+      {
+        "derivation": "not_sound",
+        "conclusion": "correct",
+        "step_id": "step-002",
+        "assumption_id": "premise-001",
+        "reason_category": "zero_divisor"
+      }
+    ],
+    "reason_if_unknown": null,
+    "mathematical_basis": [
+      "The original real vector data are well defined, with squared norms 0 and 2.",
+      "Step 2 is the first invalid claim: u divided by its zero norm is undefined; neither a zero vector nor any unit vector results from this division.",
+      "The standard Euclidean angle is defined only for two nonzero vectors, so the final nonexistence statement is correct, as established by Step 1.",
+      "The normalization error remains an asserted equality and is not retracted or described as a rejected attempt. A correct final conclusion does not make every asserted intermediate equality sound.",
+      "Real components and equal dimensions both hold, but neither makes division by zero meaningful. The angle is proved undefined; this is not an unknown grading standard."
+    ],
+    "actual_conclusion": {
+      "source": null,
+      "latex": "\\angle(u,v)\\text{ is undefined}"
+    },
+    "remediation": "After computing norm(u)=0, stop and report that the standard Euclidean angle is undefined. Do not attempt normalization."
+  },
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Phase 5 extra Mode C mathematical draft. Pending independent mathematical, rubric and regression review by Claude Code; not approved for publication."
+  }
+}
