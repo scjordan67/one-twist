@@ -132,12 +132,22 @@ class Context:
         raw = self.raw(expression)
         if raw.free_symbols - {variable}:
             raise UnsupportedMath("Expression depends on an unresolved variable")
-        result = continuous_domain(raw, variable, sp.S.Reals)
+        # SymPy's domain solver also assumes canonical arithmetic. Intersect
+        # domains of retained function/power nodes BEFORE their restrictions
+        # can disappear from a normalized parent (log(x)-log(x), x/x, etc.).
+        # raw() itself is unchanged; each SymPy query uses a computation copy.
+        result = sp.S.Reals
+        for node in sp.postorder_traversal(raw):
+            canonical = node.doit()
+            if not canonical.free_symbols and (canonical.is_real is False or canonical.is_finite is False):
+                return sp.S.EmptySet
+            if node is raw or node.is_Function or isinstance(node, sp.Pow):
+                result &= continuous_domain(canonical, variable, sp.S.Reals)
         # Retain syntactic denominator restrictions even if the expression
         # cancels later (x/x -> 1). Work on the unevaluated tree.
         for node in sp.preorder_traversal(raw):
-            if isinstance(node, sp.Pow) and node.exp.is_negative is True:
-                zeros = sp.solveset(node.base, variable, domain=sp.S.Reals)
+            if isinstance(node, sp.Pow) and node.exp.doit().is_negative is True:
+                zeros = sp.solveset(node.base.doit(), variable, domain=sp.S.Reals)
                 if zeros.has(sp.ConditionSet):
                     raise UnsupportedMath("Denominator zeros remain conditional")
                 result -= zeros

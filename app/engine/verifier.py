@@ -1,11 +1,13 @@
 """Finite real equation, integral, branch and calculus checks; worker-only."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import sympy as sp
 
 from app.engine.context import Context, UnsupportedMath, equal_sets, math_expression, subset, truth
 from app.engine.calculus import affine_components, finite_limit, lhopital_data, point_derivative, stationary_facts, real_point
+from app.engine.integrals import simple_pole, component_primitive, interior_contributions, two_pole_facts
+from app.engine.ivp import ivp_facts, candidate_valid, verified_reference, verified_nonuniqueness
 from app.models.domain import (
     AntiderivativeCheck, ConclusionResult, DimensionResult, EquationSpec,
     EquationTransform, EvaluationCheck, Evidence, IntegralSpec, MathExpression,
@@ -16,7 +18,11 @@ from app.models.domain import (
     DerivativeAtPointSpec, StationaryPointSpec, LimitSpec, PrincipalSineCheck,
     EvaluatePrincipalSineCheck, DerivativeIdentityCheck, DerivativePointSubstitutionCheck,
     StationaryValueCheck, ClaimStationaryClassificationCheck, DifferentiateLimitComponentsCheck,
-    LHopitalReplacementCheck, EvaluateLimitCheck,
+    LHopitalReplacementCheck, EvaluateLimitCheck, FirstOrderIVPSpec,
+    PrimitiveComponentsCheck, ProperEndpointCheck, TwoPoleAnsatzCheck, TwoPoleCoefficientsCheck,
+    TwoPolePrimitiveCheck, TwoPoleEndpointCheck, LinearDivisionCheck, LinearLogCheck,
+    LinearInitialCheck, IVPCandidateCheck, SqrtSubstitutionCheck, SqrtIntegrationCheck, InitialRootCheck,
+    RootRateCheck,
 )
 
 
@@ -57,6 +63,7 @@ class ProblemEvaluation:
     result: ConclusionResult
     value: sp.Basic | None = None
     well_formedness: WellFormedness | None = None
+    evidence: list[Evidence] = field(default_factory=list)
 
 
 def unknown_outcome(reason: str) -> ProblemEvaluation:
@@ -85,7 +92,15 @@ def _integral(spec: IntegralSpec, context: Context) -> ProblemEvaluation:
     for predicate in context.constraints(variable):
         domain &= context.constraint_set(predicate, variable)
     if subset(sp.Interval.open(interval.start, interval.end), domain) is not True:
-        raise UnsupportedMath("Interior singularities or unresolved interval domains require separate analysis; no principal value is used")
+        left, right = interior_contributions(context)
+        if left is not -sp.oo or right is not sp.oo:
+            raise UnsupportedMath("Separate simple-pole divergences were not established")
+        return ProblemEvaluation(
+            ConclusionResult(status="divergent", value=MathExpression(latex=r"\text{Divergent (opposing one-sided infinities)}")),
+            well_formedness=WellFormedness.DIVERGENT,
+            evidence=[Evidence(rule_id="split-interior-pole", outcome="opposing_infinities",
+                               summary=f"Independent left piece tends to {left}; independent right piece tends to {right}. The ordinary integral diverges; no principal value or signed total is used.")],
+        )
     integrand = context.expr(spec.integrand)
     primitive = sp.integrate(integrand, variable)
     if primitive.has(sp.Integral) or sp.simplify(sp.diff(primitive, variable) - integrand) != 0:
@@ -146,6 +161,36 @@ def evaluate_problem(context: Context) -> ProblemEvaluation:
             return ProblemEvaluation(result, solution.value, formed)
         if isinstance(spec, IntegralSpec):
             return _integral(spec, context)
+        if isinstance(spec, FirstOrderIVPSpec):
+            facts = ivp_facts(context)
+            # The reported scope reflects the family the engine actually
+            # established from the computed initial value, never the static
+            # declared field: a perturbation can move a template between
+            # families the single static solution_scope cannot track.
+            established_scope = {"linear": "unique_solution", "sqrt": "verified_witness",
+                                 "sqrt_zero": "nonuniqueness_witnesses"}[facts.family]
+            if facts.family == "sqrt_zero":
+                distinct, witnesses = verified_nonuniqueness(context, facts)
+                if not distinct:
+                    raise UnsupportedMath("Two pairwise distinct verified witnesses were not established")
+                value = MathExpression(latex=r"\text{Not unique: } " + r"\text{ and }".join(sp.latex(item) for item in witnesses) + r"\text{ both solve it}")
+                return ProblemEvaluation(
+                    ConclusionResult(status="symbolic_formula", value=value,
+                                     solution_scope=established_scope, variable=spec.independent_variable,
+                                     time_domain=spec.time_domain),
+                    None, WellFormedness.WELL_FORMED,
+                    [Evidence(rule_id="ivp-nonuniqueness", outcome="distinct_witnesses_verified",
+                              summary=facts.proof + f" Verified distinct solutions: {', '.join(sp.latex(item) for item in witnesses)}.")],
+                )
+            if not verified_reference(context, facts):
+                raise UnsupportedMath("No declared candidate establishes the reference solution")
+            return ProblemEvaluation(
+                ConclusionResult(status="symbolic_formula", value=math_expression(facts.reference),
+                                 solution_scope=established_scope, variable=spec.independent_variable,
+                                 time_domain=spec.time_domain),
+                facts.reference, WellFormedness.WELL_FORMED,
+                [Evidence(rule_id="ivp-reference", outcome=established_scope, summary=facts.proof)],
+            )
         if isinstance(spec, ScalarExpressionSpec):
             defined = context.definedness(spec.expression, spec.value_domain)
             if defined is False:
@@ -178,7 +223,7 @@ def evaluate_problem(context: Context) -> ProblemEvaluation:
             return ProblemEvaluation(ConclusionResult(status=facts.status, value=value), facts.value,
                                      WellFormedness.DIVERGENT if facts.status == "divergent" else WellFormedness.WELL_FORMED)
         raise UnsupportedMath("No supported computation spec")
-    except (UnsupportedMath, NotImplementedError, ValueError, TypeError) as exc:
+    except (UnsupportedMath, NotImplementedError, ValueError, TypeError, sp.PolynomialError) as exc:
         return unknown_outcome(str(exc))
 
 
@@ -188,14 +233,16 @@ class StepCheck:
     output: MathExpression | None = None
     input: MathExpression | None = None
     repairable: bool = False
+    # Required in addition to repairable for symbolic IVP method repairs.
+    repair_verified: bool = False
 
 
-def verdict(rule: VerificationRule, label: ValidityLabel, outcome: str, summary: str, *, remediation=None, output=None, input=None, repairable=False) -> StepCheck:
+def verdict(rule: VerificationRule, label: ValidityLabel, outcome: str, summary: str, *, remediation=None, output=None, input=None, repairable=False, repair_verified=False) -> StepCheck:
     return StepCheck(DimensionResult(
         labels={label}, evidence=[Evidence(rule_id=rule.id, outcome=outcome, summary=summary)],
         affected_refs=rule.refs, reason_if_unknown=summary if label == ValidityLabel.UNKNOWN else None,
         remediation=remediation,
-    ), output=output, input=input, repairable=repairable)
+    ), output=output, input=input, repairable=repairable, repair_verified=repair_verified)
 
 
 def _equation(rule: VerificationRule, step: Step, context: Context) -> StepCheck:
@@ -566,8 +613,169 @@ def _evaluate_limit(rule, step, context):
                    output=math_expression(result.value))
 
 
+def _primitive_components(rule, step, context):
+    params = rule.parameters
+    spec, x, _ = simple_pole(context)
+    if isinstance(params, PrimitiveComponentsCheck) and params.variable != spec.variable:
+        raise UnsupportedMath("Primitive variable must match the actual integral")
+    valid = component_primitive(context, params.primitive)
+    if not valid:
+        return verdict(rule, ValidityLabel.INVALID_STEP, "wrong_component_primitive",
+                       "The primitive identity or component domain does not match the actual integrand.")
+    if isinstance(params, ProperEndpointCheck):
+        regular = integral_regularity(spec, context)
+        if regular is False:
+            left, right = interior_contributions(context)
+            return verdict(rule, ValidityLabel.INVALID_STEP, "unsplit_endpoint_formula",
+                           f"The interior pole separates two divergent pieces ({left}, {right}); endpoint subtraction is not the ordinary integral.",
+                           remediation="Replace the single-interval endpoint formula by two independent one-sided improper-integral limits.")
+        if regular is not True:
+            raise UnsupportedMath("Proper interval regularity remains unresolved")
+    primitive = context.expr(params.primitive)
+    output = primitive if isinstance(params, PrimitiveComponentsCheck) else sp.simplify(
+        (primitive.subs(x, context.expr(spec.upper))-primitive.subs(x, context.expr(spec.lower))).doit())
+    return verdict(rule, ValidityLabel.VALID, "component_primitive_verified",
+                   "The primitive identity is verified on each separate component; the endpoint formula additionally requires a regular closed interval.",
+                   output=math_expression(output))
+
+
+def _two_pole(rule, step, context):
+    params = rule.parameters
+    facts = two_pole_facts(context)
+    x, a = facts.x, facts.a
+    if isinstance(params, TwoPoleAnsatzCheck):
+        if params.variable != str(x):
+            raise UnsupportedMath("Ansatz variable must match the actual integral")
+        alpha, beta = (context.symbols[name] for name in params.coefficient_names)
+        if sp.simplify((context.expr(params.ansatz)-(alpha/x+beta/(x-a))).doit()) != 0:
+            return verdict(rule, ValidityLabel.INVALID_STEP, "wrong_ansatz", "The authored ansatz does not match the two reviewed constant-coefficient terms.")
+    if not facts.solvable:
+        return verdict(rule, ValidityLabel.INVALID_STEP, "collapsed_distinct_poles",
+                       f"The actual constant-coefficient system has rank {facts.rank} and augmented rank {facts.augmented_rank}; no distinct-pole coefficients exist.",
+                       remediation="Use alpha/x+beta/x^2, with alpha=0,beta=1; the verified primitive is -1/x on the regular integration interval.",
+                       repairable=facts.repair_verified, repair_verified=facts.repair_verified)
+    if isinstance(params, TwoPoleCoefficientsCheck):
+        alpha = context.expr(params.coefficient_values["alpha"])
+        beta = context.expr(params.coefficient_values["beta"])
+        valid = sp.simplify((alpha+beta).doit()) == 0 and sp.simplify((-a*alpha-1).doit()) == 0
+        output = sp.Tuple(alpha, beta)
+    elif isinstance(params, TwoPolePrimitiveCheck):
+        primitive = context.expr(params.primitive)
+        lower = context.expr(context.problem.computation.lower)
+        # The reviewed intervals lie to the right of both poles. Normalize
+        # there before differentiating real absolute-value logarithms.
+        if lower.is_positive is not True or (lower-a).is_positive is not True:
+            raise UnsupportedMath("This partial-fraction primitive proof requires the reviewed right-of-poles interval")
+        h = sp.Dummy("positive_offset", positive=True)
+        restricted = sp.simplify(primitive.subs(x, lower+h).doit())
+        valid = (sp.simplify((sp.diff(restricted, h)-facts.integrand.subs(x, lower+h)).doit()) == 0
+                 and subset(context.interval(context.problem.computation), context.domain(params.primitive, x)) is True)
+        output = primitive
+    elif isinstance(params, TwoPoleEndpointCheck):
+        value = context.expr(params.expression)
+        actual = _integral(context.problem.computation, context)
+        valid = context.definedness(params.expression) is True and sp.simplify((value-actual.value).doit()) == 0
+        output = value
+    else:
+        valid, output = True, context.expr(params.ansatz)
+    return verdict(rule, ValidityLabel.VALID if valid else ValidityLabel.INVALID_STEP,
+                   "two_pole_verified" if valid else "two_pole_claim_false",
+                   "Actual pole multiplicities, constant-coefficient equations and the claimed expression are recomputed.",
+                   output=math_expression(output) if valid else None)
+
+
+def _ivp(rule, step, context):
+    params = rule.parameters
+    facts = ivp_facts(context)
+    # verified_reference needs a single reference formula; the nonuniqueness
+    # family has none, so its own repair evidence comes from its witnesses.
+    repaired = verified_nonuniqueness(context, facts)[0] if facts.family == "sqrt_zero" else verified_reference(context, facts)
+    if isinstance(params, IVPCandidateCheck):
+        valid, candidate, summary = candidate_valid(context, facts, params.candidate)
+        return verdict(rule, ValidityLabel.VALID if valid else ValidityLabel.INVALID_STEP,
+                       "ivp_candidate_verified" if valid else "ivp_candidate_false", summary,
+                       output=math_expression(candidate) if valid else None,
+                       remediation=f"Use the independently verified candidate {facts.reference} on the entire declared time domain." if not valid and repaired else None,
+                       repairable=not valid and repaired, repair_verified=not valid and repaired)
+    if isinstance(params, (LinearDivisionCheck, LinearLogCheck, LinearInitialCheck)):
+        if facts.family != "linear":
+            raise UnsupportedMath("A linear separation rule requires actual RHS y")
+        if isinstance(params, LinearDivisionCheck):
+            authored, expected = context.expr(params.divisor), facts.y
+        elif isinstance(params, LinearLogCheck):
+            authored, expected = context.expr(params.state_expression), sp.log(sp.Abs(facts.y))
+        else:
+            authored, expected = context.expr(params.expression), sp.log(sp.Abs(facts.initial))
+        if isinstance(params, (LinearDivisionCheck, LinearLogCheck)) and sp.simplify((authored-expected).doit()) != 0:
+            return verdict(rule, ValidityLabel.INVALID_STEP, "linear_separation_claim_false",
+                           "The claimed divisor/logarithmic expression differs from the actual separation step.")
+        if facts.initial == 0:
+            return verdict(rule, ValidityLabel.INVALID_STEP, "zero_equilibrium_excluded",
+                           "The original IVP has the verified zero solution, which division/logarithms exclude.",
+                           remediation="Handle y=0 as a separate equilibrium case before division; verify it against the original ODE and initial value.",
+                           repairable=repaired, repair_verified=repaired)
+        if sp.simplify((authored-expected).doit()) != 0:
+            return verdict(rule, ValidityLabel.INVALID_STEP, "linear_separation_claim_false", "The divisor or logarithmic expression differs from the actual linear separation step.")
+        return verdict(rule, ValidityLabel.VALID, "linear_separation_verified",
+                       "The integrating-factor proof establishes y=a*exp(t); nonzero initial state stays nonzero and retains its sign. " + facts.proof,
+                       output=math_expression(authored))
+    if facts.family not in ("sqrt", "sqrt_zero"):
+        raise UnsupportedMath("A principal-root rule requires actual RHS 2*sqrt(y)")
+    if isinstance(params, InitialRootCheck):
+        if facts.family != "sqrt":
+            raise UnsupportedMath("The principal-initial-root disambiguation applies only to the positive-state family")
+        constant, root = context.expr(params.claimed_constant), sp.sqrt(facts.initial)
+        valid = sp.simplify((constant-root).doit()) == 0
+        return verdict(rule, ValidityLabel.VALID if valid else ValidityLabel.INVALID_STEP,
+                       "initial_root_verified" if valid else "principal_initial_root_false",
+                       f"The principal initial root is {root}; the claimed integration constant is {constant}.",
+                       output=math_expression(root) if valid else None,
+                       remediation="Choose C=sqrt(a^2)=abs(a), then verify the repaired candidate on the entire forward time domain." if not valid else None,
+                       repairable=not valid and repaired, repair_verified=not valid and repaired)
+    u = context.symbols[params.root_variable]
+    if (u == facts.t or u == facts.y or context.problem.variables[params.root_variable] != "real"):
+        raise UnsupportedMath("Root variable must be a distinct real auxiliary symbol")
+    if isinstance(params, RootRateCheck):
+        if facts.family == "sqrt_zero":
+            return verdict(rule, ValidityLabel.INVALID_STEP, "zero_state_rate_excluded",
+                           "The verified zero state makes u=sqrt(y)=0 at the initial time; dividing 2*u*u'=2*u by 2*u is invalid there.",
+                           remediation="Verify the candidate solutions directly against the original ODE and initial value instead of dividing by u.",
+                           repairable=repaired, repair_verified=repaired)
+        return verdict(rule, ValidityLabel.VALID, "positive_root_rate_verified",
+                       "The verified positive state keeps u=sqrt(y)>0, so dividing 2*u*u'=2*u by 2*u is valid.")
+    if isinstance(params, SqrtIntegrationCheck) and facts.family == "sqrt_zero":
+        return verdict(rule, ValidityLabel.INVALID_STEP, "zero_state_rate_excluded",
+                       "Integrating u'=1 to u=t+C depends on the same division that is invalid at the verified zero state.",
+                       remediation="Verify the candidate solutions directly against the original ODE and initial value instead.",
+                       repairable=repaired, repair_verified=repaired)
+    return verdict(rule, ValidityLabel.VALID, "positive_root_step_verified", facts.proof,
+                   output=MathExpression(latex="2"+sp.latex(u)+sp.latex(u)+r"'=2"+sp.latex(u))
+                   if isinstance(params, SqrtSubstitutionCheck)
+                   else MathExpression(latex=sp.latex(u)+"="+sp.latex(facts.t)+r"+C"))
+
+
 def _retained_constraints(rule: VerificationRule, step: Step, context: Context) -> StepCheck | None:
     params = rule.parameters
+    if isinstance(params, PrimitiveComponentsCheck):
+        spec, x, _ = simple_pole(context)
+        for predicate in step.domain_constraints:
+            if subset(context.domain(spec.integrand, x), context.constraint_set(predicate, x)) is not True:
+                raise UnsupportedMath("Retained component restriction is not established on every integrand component")
+        return None
+    if isinstance(context.problem.computation, FirstOrderIVPSpec):
+        facts = ivp_facts(context)
+        for predicate in step.domain_constraints:
+            relation = context.predicate(predicate).subs({facts.y: facts.reference})
+            if isinstance(params, (SqrtSubstitutionCheck, SqrtIntegrationCheck, RootRateCheck)):
+                relation = relation.subs(context.symbols[params.root_variable], facts.t+sp.sqrt(facts.initial))
+            established = truth(sp.simplify(relation.doit()))
+            if established is None and relation.free_symbols <= {facts.t}:
+                established = subset(facts.domain, relation.as_set())
+            if established is False:
+                return verdict(rule, ValidityLabel.INVALID_STEP, "domain_violation", "The verified IVP solution does not satisfy a retained step restriction.")
+            if established is not True:
+                raise UnsupportedMath("A retained IVP step restriction remains unresolved")
+        return None
     if isinstance(params, (EquationTransform, SolveCandidatesCheck, CandidateAcceptanceCheck, DerivativeIdentityCheck)):
         return None  # These checkers already enforce the retained step domain.
     interval = params.transformed if isinstance(params, SubstitutionCheck) else context.problem.computation
@@ -598,6 +806,11 @@ CHECKERS = {
     "stationary_point_check": _stationary_value, "second_derivative_value": _stationary_value,
     "claim_stationary_classification": _stationary_claim,
     "differentiate_limit_components": _limit_components, "lhopital_replacement": _lhopital, "evaluate_limit": _evaluate_limit,
+    "primitive_identity_on_components": _primitive_components, "proper_integral_endpoint_formula": _primitive_components,
+    "two_pole_ansatz": _two_pole, "two_pole_coefficients": _two_pole, "two_pole_primitive": _two_pole, "two_pole_endpoint_value": _two_pole,
+    "linear_ivp_division": _ivp, "linear_ivp_log_separation": _ivp, "linear_ivp_initial_constant": _ivp,
+    "ivp_candidate_substitution": _ivp, "sqrt_ivp_substitution": _ivp, "sqrt_ivp_root_integration": _ivp, "ivp_principal_initial_root": _ivp,
+    "sqrt_ivp_rate_division": _ivp,
 }
 
 

@@ -44,6 +44,14 @@ def comparison(original: ProblemEvaluation, changed: ProblemEvaluation) -> Concl
             different = True
         elif left.status == "classification":
             different = left.classification != right.classification
+        elif left.status == "symbolic_formula":
+            if left.solution_scope == right.solution_scope and left.variable == right.variable and left.time_domain == right.time_domain:
+                difference = sp.simplify((original.value-changed.value).doit())
+                # Compare formulas as identities. A nonzero polynomial may
+                # vanish at isolated times without being the zero function.
+                equal = (sp.Poly(difference, *sorted(difference.free_symbols, key=sp.default_sort_key)).is_zero
+                         if difference.free_symbols and difference.is_polynomial() else difference.is_zero)
+                different = None if equal is None else not equal
         elif original.value is not None and changed.value is not None:
             equal = equal_sets(original.value, changed.value) if left.status == "solution_set" else truth(sp.Eq(original.value, changed.value))
             if equal is None and left.status == "numeric_value":
@@ -51,7 +59,7 @@ def comparison(original: ProblemEvaluation, changed: ProblemEvaluation) -> Concl
             different = None if equal is None else not equal
     return ConclusionComparison(
         basis="classification" if "classification" in {left.status, right.status} else (
-            "symbolic_formula" if "solution_set" in {left.status, right.status} else "numeric_value"),
+            "symbolic_formula" if {"solution_set", "symbolic_formula"} & {left.status, right.status} else "numeric_value"),
         original=left.value or MathExpression(latex=r"\text{Unknown}"), perturbed=right.value,
         changed=different,
     )
@@ -63,7 +71,7 @@ def _conclusion(evaluation: ProblemEvaluation, compared: ConclusionComparison) -
     labels = {Label.UNKNOWN} if unresolved else {Label.VALID}
     if compared.changed is True:
         labels.add(Label.CHANGED_CONCLUSION)
-    evidence = [Evidence(rule_id="problem-evaluation", outcome=result.status,
+    evidence = [*evaluation.evidence, Evidence(rule_id="problem-evaluation", outcome=result.status,
                          summary=f"The new problem independently yields {result.status}: {result.value.latex if result.value else result.reason_if_unknown}.")]
     if compared.changed is not None:
         evidence.append(Evidence(rule_id="conclusion-comparison", outcome="changed" if compared.changed else "unchanged",
@@ -156,7 +164,9 @@ def analyze(template: Template, perturbation: Perturbation | None = None) -> Ana
     method = merge(list(steps.values()))
     invalid_checks = [item for item in checks if Label.INVALID_STEP in item.result.labels]
     unresolved = any(result.labels & {Label.UNKNOWN, Label.NEEDS_CHECKING} for result in steps.values())
-    if invalid_checks and all(item.repairable for item in invalid_checks) and not unresolved and changed.result.status in {"numeric_value", "divergent"}:
+    supported_repair = changed.result.status in {"numeric_value", "divergent"} or (
+        changed.result.status == "symbolic_formula" and all(item.repair_verified for item in invalid_checks))
+    if invalid_checks and all(item.repairable for item in invalid_checks) and not unresolved and supported_repair:
         method.labels = {Label.NEEDS_CHECKING}
     elif Label.VALID in method.labels and any(item.result.remediation for item in checks):
         method.labels = {Label.NEEDS_CHECKING}

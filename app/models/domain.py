@@ -172,8 +172,47 @@ class LimitSpec(Model):
     direction: Literal["both", "left", "right"] = "both"
 
 
+class TimeDomain(Model):
+    lower: MathExpression | None = None
+    upper: MathExpression | None = None
+    left_closed: bool = False
+    right_closed: bool = False
+
+    @model_validator(mode="after")
+    def infinity_is_open(self) -> Self:
+        if (self.lower is None and self.left_closed) or (self.upper is None and self.right_closed):
+            raise ValueError("An unbounded time endpoint cannot be closed")
+        return self
+
+
+class FirstOrderIVPSpec(Model):
+    kind: Literal["first_order_ivp"] = "first_order_ivp"
+    independent_variable: Identifier
+    dependent_variable: Identifier
+    rhs: MathExpression
+    initial_time: MathExpression
+    initial_value: MathExpression
+    time_domain: TimeDomain
+    state_domain: DomainSpec
+    question: Literal["solution"] = "solution"
+    solution_scope: Literal["unique_solution", "verified_witness", "nonuniqueness_witnesses"]
+    candidate_solutions: Annotated[list[MathExpression], Field(min_length=1, max_length=2)]
+
+    @model_validator(mode="after")
+    def nonuniqueness_needs_two_witnesses(self) -> Self:
+        if self.solution_scope == "nonuniqueness_witnesses" and len(self.candidate_solutions) != 2:
+            raise ValueError("Disproving uniqueness requires exactly two declared candidate witnesses")
+        return self
+
+    @model_validator(mode="after")
+    def distinct_variables(self) -> Self:
+        if self.independent_variable == self.dependent_variable:
+            raise ValueError("IVP time and state variables must differ")
+        return self
+
+
 ComputationSpec = Annotated[
-    EquationSpec | IntegralSpec | ScalarExpressionSpec | DerivativeAtPointSpec | StationaryPointSpec | LimitSpec,
+    EquationSpec | IntegralSpec | ScalarExpressionSpec | DerivativeAtPointSpec | StationaryPointSpec | LimitSpec | FirstOrderIVPSpec,
     Field(discriminator="kind"),
 ]
 
@@ -319,6 +358,86 @@ class EvaluateLimitCheck(Model):
     expression: MathExpression
 
 
+class PrimitiveComponentsCheck(Model):
+    operation: Literal["primitive_identity_on_components"] = "primitive_identity_on_components"
+    variable: Identifier
+    primitive: MathExpression
+
+
+class ProperEndpointCheck(Model):
+    operation: Literal["proper_integral_endpoint_formula"] = "proper_integral_endpoint_formula"
+    primitive: MathExpression
+
+
+class TwoPoleAnsatzCheck(Model):
+    operation: Literal["two_pole_ansatz"] = "two_pole_ansatz"
+    variable: Identifier
+    coefficient_names: tuple[Identifier, Identifier]
+    ansatz: MathExpression
+
+
+class TwoPoleCoefficientsCheck(Model):
+    operation: Literal["two_pole_coefficients"] = "two_pole_coefficients"
+    coefficient_values: dict[Literal["alpha", "beta"], MathExpression]
+
+    @model_validator(mode="after")
+    def both_coefficients(self) -> Self:
+        if set(self.coefficient_values) != {"alpha", "beta"}:
+            raise ValueError("Both reviewed coefficient values are required")
+        return self
+
+
+class TwoPolePrimitiveCheck(Model):
+    operation: Literal["two_pole_primitive"] = "two_pole_primitive"
+    primitive: MathExpression
+
+
+class TwoPoleEndpointCheck(Model):
+    operation: Literal["two_pole_endpoint_value"] = "two_pole_endpoint_value"
+    expression: MathExpression
+
+
+class LinearDivisionCheck(Model):
+    operation: Literal["linear_ivp_division"] = "linear_ivp_division"
+    divisor: MathExpression
+
+
+class LinearLogCheck(Model):
+    operation: Literal["linear_ivp_log_separation"] = "linear_ivp_log_separation"
+    state_expression: MathExpression
+
+
+class LinearInitialCheck(Model):
+    operation: Literal["linear_ivp_initial_constant"] = "linear_ivp_initial_constant"
+    expression: MathExpression
+    retain_initial_sign: Literal[True] = True
+
+
+class IVPCandidateCheck(Model):
+    operation: Literal["ivp_candidate_substitution"] = "ivp_candidate_substitution"
+    candidate: MathExpression
+
+
+class RootRateCheck(Model):
+    operation: Literal["sqrt_ivp_rate_division"] = "sqrt_ivp_rate_division"
+    root_variable: Identifier
+
+
+class SqrtSubstitutionCheck(Model):
+    operation: Literal["sqrt_ivp_substitution"] = "sqrt_ivp_substitution"
+    root_variable: Identifier
+
+
+class SqrtIntegrationCheck(Model):
+    operation: Literal["sqrt_ivp_root_integration"] = "sqrt_ivp_root_integration"
+    root_variable: Identifier
+
+
+class InitialRootCheck(Model):
+    operation: Literal["ivp_principal_initial_root"] = "ivp_principal_initial_root"
+    claimed_constant: MathExpression
+
+
 AssumptionCheck = Annotated[
     DomainPredicateCheck | CandidatePredicateCheck | PrincipalSineCoverageCheck | PointFormulaCheck | LHopitalPremiseCheck,
     Field(discriminator="operation"),
@@ -330,7 +449,10 @@ RuleParameters = Annotated[
     | ExpressionIdentityCheck | ScalarEvaluationCheck | SolveCandidatesCheck | CandidateAcceptanceCheck
     | PrincipalSineCheck | EvaluatePrincipalSineCheck | DerivativeIdentityCheck | DerivativePointSubstitutionCheck
     | StationaryValueCheck | ClaimStationaryClassificationCheck | DifferentiateLimitComponentsCheck
-    | LHopitalReplacementCheck | EvaluateLimitCheck,
+    | LHopitalReplacementCheck | EvaluateLimitCheck | RootRateCheck
+    | PrimitiveComponentsCheck | ProperEndpointCheck | TwoPoleAnsatzCheck | TwoPoleCoefficientsCheck
+    | TwoPolePrimitiveCheck | TwoPoleEndpointCheck | LinearDivisionCheck | LinearLogCheck
+    | LinearInitialCheck | IVPCandidateCheck | SqrtSubstitutionCheck | SqrtIntegrationCheck | InitialRootCheck,
     Field(discriminator="operation"),
 ]
 
@@ -463,11 +585,14 @@ class ConclusionComparison(Model):
 
 
 class ConclusionResult(Model):
-    status: Literal["numeric_value", "solution_set", "divergent", "undefined", "unknown", "classification"]
+    status: Literal["numeric_value", "solution_set", "divergent", "undefined", "unknown", "classification", "symbolic_formula"]
     value: MathExpression | None = None
     completeness: Literal["complete", "partial", "conditional"] | None = None
     reason_if_unknown: NonEmpty | None = None
     classification: StationaryClassification | None = None
+    solution_scope: Literal["unique_solution", "verified_witness", "nonuniqueness_witnesses"] | None = None
+    variable: Identifier | None = None
+    time_domain: TimeDomain | None = None
 
     @model_validator(mode="after")
     def consistent_result(self) -> Self:
@@ -479,6 +604,9 @@ class ConclusionResult(Model):
             raise ValueError("Classification requires its typed payload, which is forbidden for other statuses")
         if self.status == "solution_set" and self.completeness is None:
             raise ValueError("Solution set requires completeness")
+        symbolic = self.status == "symbolic_formula"
+        if symbolic != (self.solution_scope is not None) or symbolic != (self.variable is not None) or symbolic != (self.time_domain is not None):
+            raise ValueError("Symbolic IVP formulas require scope, variable and time domain exclusively")
         return self
 
 
@@ -630,6 +758,11 @@ class Template(Model):
         spec = self.original_problem.computation
         if isinstance(spec, (EquationSpec, IntegralSpec, DerivativeAtPointSpec, StationaryPointSpec, LimitSpec)):
             require_refs([spec.variable], set(self.original_problem.variables), "computation variable")
+        if isinstance(spec, FirstOrderIVPSpec):
+            variables = self.original_problem.variables
+            require_refs([spec.independent_variable, spec.dependent_variable], set(variables), "IVP variables")
+            if any(variables[name] != "real" for name in (spec.independent_variable, spec.dependent_variable)) or spec.state_domain.number_system != "real":
+                raise ValueError("IVP variables and state domain must be real")
         for assumption in self.assumptions:
             if assumption.interval is not None:
                 require_refs([assumption.interval.variable], set(self.original_problem.variables), assumption.id)
@@ -657,10 +790,18 @@ class Template(Model):
                 if params.equation != spec:
                     raise ValueError("Principal inverse must reference the actual problem equation")
             elif isinstance(params, (DerivativeIdentityCheck, DerivativePointSubstitutionCheck, StationaryValueCheck,
-                                     DifferentiateLimitComponentsCheck, EvaluateLimitCheck)):
+                                     DifferentiateLimitComponentsCheck, EvaluateLimitCheck, PrimitiveComponentsCheck, TwoPoleAnsatzCheck)):
                 require_refs([params.variable], set(self.original_problem.variables), rule.id)
                 if spec is not None and getattr(spec, "variable", None) != params.variable:
                     raise ValueError("Rule variable must match the actual computation variable")
+            if isinstance(params, TwoPoleAnsatzCheck):
+                if len(set(params.coefficient_names)) != 2 or params.variable in params.coefficient_names:
+                    raise ValueError("Two distinct constant coefficient names are required")
+                require_refs(list(params.coefficient_names), set(self.original_problem.variables), rule.id)
+            if isinstance(params, (SqrtSubstitutionCheck, SqrtIntegrationCheck, RootRateCheck)):
+                require_refs([params.root_variable], set(self.original_problem.variables), rule.id)
+                if not isinstance(spec, FirstOrderIVPSpec) or params.root_variable in {spec.independent_variable, spec.dependent_variable}:
+                    raise ValueError("Root substitution requires a distinct declared auxiliary variable")
         return self
 
 

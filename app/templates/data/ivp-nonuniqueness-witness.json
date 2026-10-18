@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "ivp-nonuniqueness-witness",
+  "title": "Losing a Lipschitz bound can mean losing uniqueness",
+  "tags": ["Differential Equations"],
+  "difficulty": "advanced",
+  "original_problem": {
+    "statement": "Solve y'=2*sqrt(y), y(0)=a for t>=0, initially a=1.",
+    "expression": {"source": null, "latex": "y'=2\\sqrt{y},\\quad y(0)=a,\\quad t\\ge0"},
+    "goal": "Solve y'=2*sqrt(y), y(0)=a for t>=0, initially a=1.",
+    "variables": {"t": "real", "y": "real", "u": "real"},
+    "parameters": [{"name": "a", "value": {"source": "1", "latex": "1"}, "domain": "real"}],
+    "conditions": [
+      {"id": "initial-state", "description": "The given real parameter a",
+       "predicate": {"left": {"source": "a", "latex": "a"}, "relation": "eq", "right": {"source": "1", "latex": "1"}},
+       "parameter_name": "a", "domain_binding": null}
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "first_order_ivp",
+      "independent_variable": "t", "dependent_variable": "y",
+      "rhs": {"source": "2*sqrt(y)", "latex": "2\\sqrt{y}"},
+      "initial_time": {"source": "0", "latex": "0"},
+      "initial_value": {"source": "a", "latex": "a"},
+      "time_domain": {"lower": {"source": "0", "latex": "0"}, "upper": null, "left_closed": true, "right_closed": false},
+      "state_domain": {"number_system": "real", "constraints": [
+        {"left": {"source": "y", "latex": "y"}, "relation": "ge", "right": {"source": "0", "latex": "0"}}
+      ]},
+      "question": "solution",
+      "solution_scope": "verified_witness",
+      "candidate_solutions": [
+        {"source": "(t+sqrt(a))**2", "latex": "\\left(t+\\sqrt a\\right)^{2}"},
+        {"source": "0", "latex": "0"}
+      ]
+    }
+  },
+  "assumptions": [
+    {"id": "positive-initial-state", "kind": "nonzero",
+     "description": "For this verified square-root family, a>0 keeps u=sqrt(y) strictly positive, so dividing 2*u*u'=2*u by 2*u is defined.",
+     "condition_ids": ["initial-state"],
+     "predicate": {"left": {"source": "a", "latex": "a"}, "relation": "gt", "right": {"source": "0", "latex": "0"}},
+     "state": "unchecked", "interval": null, "check": null}
+  ],
+  "methods": [
+    {"id": "root-substitution-method", "name": "Substitution u=sqrt(y)",
+     "description": "Substituting u=sqrt(y) and dividing the rate equation by u requires u, hence the initial state, to be nonzero.",
+     "assumption_ids": ["positive-initial-state"]}
+  ],
+  "correct_steps": [
+    {"id": "substitute-root", "number": 1,
+     "input": {"source": null, "latex": "y'=2\\sqrt y"},
+     "output": {"source": null, "latex": "u=\\sqrt y,\\quad 2uu'=2u"},
+     "method_id": "root-substitution-method", "assumption_ids": [],
+     "transformation_kind": "Equivalent", "domain_constraints": [],
+     "verification": null,
+     "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."},
+    {"id": "derive-root-rate", "number": 2,
+     "input": {"source": null, "latex": "2uu'=2u"},
+     "output": {"source": null, "latex": "u'=1"},
+     "method_id": "root-substitution-method", "assumption_ids": ["positive-initial-state"],
+     "transformation_kind": "Equivalent",
+     "domain_constraints": [{"left": {"source": "u", "latex": "u"}, "relation": "ne", "right": {"source": "0", "latex": "0"}}],
+     "verification": null,
+     "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."},
+    {"id": "integrate-and-match", "number": 3,
+     "input": {"source": null, "latex": "u'=1,\\quad u(0)=\\sqrt a"},
+     "output": {"source": null, "latex": "u=t+\\sqrt a,\\quad y=(t+\\sqrt a)^2"},
+     "method_id": "root-substitution-method", "assumption_ids": ["positive-initial-state"],
+     "transformation_kind": "Equivalent",
+     "domain_constraints": [{"left": {"source": "u", "latex": "u"}, "relation": "ne", "right": {"source": "0", "latex": "0"}}],
+     "verification": null,
+     "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."}
+  ],
+  "conclusion": {"source": "(t+1)**2", "latex": "(t+1)^2"},
+  "allowed_perturbations": [
+    {"id": "zero-initial-state", "condition_id": "initial-state", "type": "parameter_value",
+     "description": "Set the initial state to zero.",
+     "allowed_values": [{"source": "0", "latex": "0"}], "assumption_id": null, "domain_choices": []},
+    {"id": "positive-initial-state-control", "condition_id": "initial-state", "type": "parameter_value",
+     "description": "Set the initial state to two.",
+     "allowed_values": [{"source": "2", "latex": "2"}], "assumption_id": null, "domain_choices": []}
+  ],
+  "expected_failure_mechanisms": [
+    "Reviewed batch-03 finite mechanism; never runtime evidence."
+  ],
+  "verification_rules": [
+    {"id": "check-substitute-root", "kind": "sqrt_ivp_substitution",
+     "refs": [{"kind": "step", "id": "substitute-root"}],
+     "description": "Recompute this finite claim from the actual problem.",
+     "parameters": {"operation": "sqrt_ivp_substitution", "root_variable": "u"}},
+    {"id": "check-derive-root-rate", "kind": "sqrt_ivp_rate_division",
+     "refs": [{"kind": "step", "id": "derive-root-rate"}],
+     "description": "Recompute this finite claim from the actual problem.",
+     "parameters": {"operation": "sqrt_ivp_rate_division", "root_variable": "u"}},
+    {"id": "check-integrate-and-match", "kind": "sqrt_ivp_root_integration",
+     "refs": [{"kind": "step", "id": "integrate-and-match"}],
+     "description": "Recompute this finite claim from the actual problem.",
+     "parameters": {"operation": "sqrt_ivp_root_integration", "root_variable": "u"}}
+  ],
+  "explanation_fragments": [],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-18: hand calculations, source/contract review, and independent SymPy content tests; full backend regression independently rerun successfully. y=0 and y=t^2 are both verified against the original ODE and initial value at a=0; neither Lipschitz failure alone nor a single witness is used as the nonuniqueness proof, and no claim of an exhaustive solution family is made."
+  }
+}

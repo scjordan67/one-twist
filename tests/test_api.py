@@ -17,7 +17,10 @@ def test_lists_real_templates(client):
     assert {item["id"] for item in response.json()} == {"linear-degeneration", "integral-endpoint", "cancelled-factor-domain",
                                                       "squared-candidates-sign", "inverse-square-domain", "real-log-product",
                                                       "sine-principal-branch", "cosine-quadrant-sign", "derivative-cusp",
-                                                      "stationary-second-derivative", "lhopital-form"}
+                                                      "stationary-second-derivative", "lhopital-form",
+                                                      "integral-interior-pole", "integral-coalescing-poles",
+                                                      "ivp-zero-equilibrium", "ivp-principal-initial-root",
+                                                      "ivp-nonuniqueness-witness"}
 
 
 @pytest.mark.parametrize("template_id", ["linear-degeneration", "integral-endpoint"])

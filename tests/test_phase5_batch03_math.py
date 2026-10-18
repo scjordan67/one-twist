@@ -281,22 +281,19 @@ def test_proposed_ivp_contracts_have_separate_scopes_and_are_not_runtime_members
         assert domain["lower"]["source"] == "0" and domain["left_closed"] is True
         assert spec["question"] == "solution" and spec["solution_scope"] == "verified_witness"
         assert spec["state_domain"]["constraints"][0]["left"]["source"] == "y"
-    with pytest.raises(ValidationError):
-        TypeAdapter(ComputationSpec).validate_python(spec)
+    # Implemented after this draft's approval: now a real runtime member.
+    TypeAdapter(ComputationSpec).validate_python(spec)
 
 
-def test_drafts_do_not_publish_or_change_the_existing_integral(monkeypatch):
+def test_published_batch_matches_the_reviewed_inventory(monkeypatch):
     def forbidden(*args, **kwargs):
-        pytest.fail("Review preparation and public GET must not run a computation")
+        pytest.fail("Loading review packets/public lists must not invoke mathematical workers")
     monkeypatch.setattr("app.core.isolation.ComputationExecutor.run", forbidden)
     templates = load_templates()
-    assert len(templates) == 11
-    assert sum(template.review.status == "reviewed" for template in templates.values()) == 10
-    original = json.loads((DEFAULT_DIRECTORY / "integral-endpoint.json").read_text(encoding="utf-8"))
-    assert DRAFTS[11]["existing_template_snapshot"] == original
-    assert templates["integral-endpoint"].review.status == "draft"
-    assert all(DRAFTS[number]["id"] not in templates for number in range(12, 16))
+    approved = {DRAFTS[number]["id"] for number in (11, 12, 13, 14, 15)}
+    assert approved <= set(templates)
+    assert all(templates[id].review.status == "reviewed" for id in approved)
     with TestClient(create_app()) as client:
         assert {item["id"] for item in client.get("/api/templates").json()} == set(templates)
-        for number in range(12, 16):
-            assert client.get("/api/templates/"+DRAFTS[number]["id"]).status_code == 404
+        for number in (12, 13, 14, 15):
+            assert client.get("/api/templates/"+DRAFTS[number]["id"]).status_code == 200

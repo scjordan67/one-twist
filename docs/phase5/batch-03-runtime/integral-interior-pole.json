@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "id": "integral-interior-pole",
+  "title": "Opposing interior infinities do not cancel into an integral",
+  "tags": [
+    "Integration"
+  ],
+  "difficulty": "advanced",
+  "original_problem": {
+    "statement": "Evaluate the ordinary real integral on [-1,1], initially c=2; no principal value is requested.",
+    "expression": {
+      "source": null,
+      "latex": "\\int_{-1}^{1}\\frac{dx}{x-c}"
+    },
+    "goal": "Evaluate the ordinary real integral on [-1,1], initially c=2; no principal value is requested.",
+    "variables": {
+      "x": "real"
+    },
+    "parameters": [
+      {
+        "name": "c",
+        "value": {
+          "source": "2",
+          "latex": "2"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "pole-location",
+        "description": "The given real parameter c",
+        "predicate": {
+          "left": {
+            "source": "c",
+            "latex": "c"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "2",
+            "latex": "2"
+          }
+        },
+        "parameter_name": "c",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "c",
+          "latex": "c"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "variable": "x",
+      "lower": {
+        "source": "-1",
+        "latex": "-1"
+      },
+      "upper": {
+        "source": "1",
+        "latex": "1"
+      },
+      "kind": "integral",
+      "integrand": {
+        "source": "1/(x-c)",
+        "latex": "\\frac{1}{- c + x}"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "closed-interval-regularity",
+      "kind": "continuity_on_interval",
+      "description": "The original proper-integral endpoint formula requires continuity across the full closed interval.",
+      "condition_ids": [
+        "pole-location"
+      ],
+      "predicate": null,
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Single-interval endpoint evaluation",
+      "description": "Claim that one global F(upper)-F(lower) evaluates the ordinary integral without splitting. A componentwise primitive identity alone does not justify this claim.",
+      "assumption_ids": [
+        "closed-interval-regularity"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "primitive-on-components",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "f_c(x)=\\frac1{x-c}"
+      },
+      "output": {
+        "source": null,
+        "latex": "F_c(x)=\\log|x-c|,\\quad F'_c=f_c\\ (x\\ne c)"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "x",
+            "latex": "x"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "c",
+            "latex": "c"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "apply-endpoint-formula",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\int_{-1}^1 f_c(x)\\,dx"
+      },
+      "output": {
+        "source": null,
+        "latex": "F_c(1)-F_c(-1)"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "closed-interval-regularity"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "evaluate-endpoint-expression",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "\\log|1-c|-\\log|-1-c|"
+      },
+      "output": {
+        "source": null,
+        "latex": "-\\log3"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    }
+  ],
+  "conclusion": {
+    "source": "-log(3)",
+    "latex": "- \\log{\\left(3 \\right)}"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "move-pole-inside",
+      "condition_id": "pole-location",
+      "type": "parameter_value",
+      "description": "Move c=2 to c=0.",
+      "allowed_values": [
+        {
+          "source": "0",
+          "latex": "0"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "move-pole-outside",
+      "condition_id": "pole-location",
+      "type": "parameter_value",
+      "description": "Move c=2 to c=3.",
+      "allowed_values": [
+        {
+          "source": "3",
+          "latex": "3"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "Reviewed batch-03 finite mechanism; never runtime evidence."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-primitive-on-components",
+      "kind": "primitive_identity_on_components",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "primitive-on-components"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "primitive_identity_on_components",
+        "variable": "x",
+        "primitive": {
+          "source": "log(abs(x-c))",
+          "latex": "\\log{\\left(\\left|{c - x}\\right| \\right)}"
+        }
+      }
+    },
+    {
+      "id": "check-apply-endpoint-formula",
+      "kind": "proper_integral_endpoint_formula",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "apply-endpoint-formula"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "proper_integral_endpoint_formula",
+        "primitive": {
+          "source": "log(abs(x-c))",
+          "latex": "\\log{\\left(\\left|{c - x}\\right| \\right)}"
+        }
+      }
+    },
+    {
+      "id": "check-evaluate-endpoint-expression",
+      "kind": "evaluate_scalar",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "evaluate-endpoint-expression"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "evaluate_scalar",
+        "expression": {
+          "source": "log(abs(1-c))-log(abs(-1-c))",
+          "latex": "\\log{\\left(\\left|{c - 1}\\right| \\right)} - \\log{\\left(\\left|{c + 1}\\right| \\right)}"
+        },
+        "value_domain": "real"
+      }
+    }
+  ],
+  "explanation_fragments": [],
+  "review": {
+    "status": "draft",
+    "reviewer": null,
+    "basis": "Private detailed mathematics awaiting Claude Code review. No batch-03 checker, IVP model or publication is implemented."
+  }
+}

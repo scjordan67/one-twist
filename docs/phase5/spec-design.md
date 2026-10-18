@@ -11,6 +11,10 @@ The approved 06-10 subset is now also implemented and published; see
 [batch 02 implementation](batch-02-implementation.md). Later IVP/complex/vector
 and extended-integral proposals below remain design-only.
 
+The next private mathematical submission is
+[batch 03 (11–15)](batch-03-review.md). Its integral/IVP extensions are
+proposals awaiting independent mathematical review, not runtime capabilities.
+
 Prepared 2026-10-18. This is a design and authoring checkpoint, not a runtime
 implementation or content approval. No new checker, public template, API or
 frontend behavior is introduced. The first five review packets are in

@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "id": "ivp-principal-initial-root",
+  "title": "An initial square root cannot forget its sign",
+  "tags": [
+    "Differential Equations"
+  ],
+  "difficulty": "advanced",
+  "original_problem": {
+    "statement": "Find one C1 forward solution of y'=2sqrt(y), y(0)=a^2 for t>=0, initially a=1. Do not claim a complete solution family.",
+    "expression": {
+      "source": null,
+      "latex": "y'=2\\sqrt y,\\quad y(0)=a^2,\\quad t\\ge0,\\quad y\\ge0"
+    },
+    "goal": "Find one C1 forward solution of y'=2sqrt(y), y(0)=a^2 for t>=0, initially a=1. Do not claim a complete solution family.",
+    "variables": {
+      "t": "real",
+      "y": "real",
+      "u": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "initial-amplitude",
+        "description": "The given real parameter a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "a",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "first_order_ivp",
+      "independent_variable": "t",
+      "dependent_variable": "y",
+      "rhs": {
+        "source": "2*sqrt(y)",
+        "latex": "2 \\sqrt{y}"
+      },
+      "initial_time": {
+        "source": "0",
+        "latex": "0"
+      },
+      "initial_value": {
+        "source": "a*a",
+        "latex": "a^{2}"
+      },
+      "time_domain": {
+        "lower": {
+          "source": "0",
+          "latex": "0"
+        },
+        "upper": null,
+        "left_closed": true,
+        "right_closed": false
+      },
+      "state_domain": {
+        "number_system": "real",
+        "constraints": [
+          {
+            "left": {
+              "source": "y",
+              "latex": "y"
+            },
+            "relation": "ge",
+            "right": {
+              "source": "0",
+              "latex": "0"
+            }
+          }
+        ]
+      },
+      "question": "solution",
+      "solution_scope": "verified_witness",
+      "candidate_solutions": [
+        {
+          "source": "(t+abs(a))**2",
+          "latex": "\\left(t + \\left|{a}\\right|\\right)^{2}"
+        }
+      ]
+    }
+  },
+  "assumptions": [
+    {
+      "id": "positive-initial-state",
+      "kind": "parameter_range",
+      "description": "All listed initial states a^2 are positive. In this actual nonnegative-rhs family, a forward solution therefore stays positive.",
+      "condition_ids": [
+        "initial-amplitude"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a*a",
+          "latex": "a^{2}"
+        },
+        "relation": "gt",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    },
+    {
+      "id": "principal-initial-sign",
+      "kind": "parameter_range",
+      "description": "Replacing sqrt(a^2) by a in the initial constant requires a>=0.",
+      "condition_ids": [
+        "initial-amplitude"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ge",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Positive-root substitution",
+      "description": "Use u=sqrt(y) on positive forward trajectories; the displayed initial-constant choice assumes the given amplitude is nonnegative.",
+      "assumption_ids": [
+        "positive-initial-state",
+        "principal-initial-sign"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "positive-root-substitution",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "y'=2\\sqrt y,\\quad u=\\sqrt y>0"
+      },
+      "output": {
+        "source": null,
+        "latex": "2uu'=2u"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "positive-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "u",
+            "latex": "u"
+          },
+          "relation": "gt",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "integrate-root-state",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "2uu'=2u,\\quad u>0"
+      },
+      "output": {
+        "source": null,
+        "latex": "u'=1,\\quad u=t+C"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "positive-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "u",
+            "latex": "u"
+          },
+          "relation": "gt",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "choose-initial-root",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "C=u(0)=\\sqrt{a^2}"
+      },
+      "output": {
+        "source": null,
+        "latex": "C=a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "principal-initial-sign"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "verify-forward-candidate",
+      "number": 4,
+      "input": {
+        "source": null,
+        "latex": "y_a(t)=(t+a)^2,\\quad t\\ge0"
+      },
+      "output": {
+        "source": null,
+        "latex": "y'_a=2\\sqrt{y_a},\\quad y_a(0)=a^2"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "OneWayImplication",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    }
+  ],
+  "conclusion": {
+    "source": "(t+1)**2",
+    "latex": "\\left(t + 1\\right)^{2}"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "flip-amplitude-sign",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "description": "Flip only the given amplitude a from 1 to -1.",
+      "allowed_values": [
+        {
+          "source": "-1",
+          "latex": "-1"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "increase-amplitude",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "description": "Increase the positive amplitude from 1 to 2.",
+      "allowed_values": [
+        {
+          "source": "2",
+          "latex": "2"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "Reviewed batch-03 finite mechanism; never runtime evidence."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-positive-root-substitution",
+      "kind": "sqrt_ivp_substitution",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "positive-root-substitution"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "sqrt_ivp_substitution",
+        "root_variable": "u"
+      }
+    },
+    {
+      "id": "check-integrate-root-state",
+      "kind": "sqrt_ivp_root_integration",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "integrate-root-state"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "sqrt_ivp_root_integration",
+        "root_variable": "u"
+      }
+    },
+    {
+      "id": "check-choose-initial-root",
+      "kind": "ivp_principal_initial_root",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "choose-initial-root"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "ivp_principal_initial_root",
+        "claimed_constant": {
+          "source": "a",
+          "latex": "a"
+        }
+      }
+    },
+    {
+      "id": "check-verify-forward-candidate",
+      "kind": "ivp_candidate_substitution",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "verify-forward-candidate"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "ivp_candidate_substitution",
+        "candidate": {
+          "source": "(t+a)**2",
+          "latex": "\\left(a + t\\right)^{2}"
+        }
+      }
+    }
+  ],
+  "explanation_fragments": [],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-18: hand calculations, source/contract review, and independent SymPy content tests; full backend regression independently rerun successfully."
+  }
+}

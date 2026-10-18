@@ -69,10 +69,13 @@ export interface Step {
   domain_constraints: Predicate[]; verification: DimensionResult | null; explanation: string;
 }
 export interface ConclusionResult {
-  status: 'numeric_value' | 'solution_set' | 'divergent' | 'undefined' | 'unknown' | 'classification';
+  status: 'numeric_value' | 'solution_set' | 'divergent' | 'undefined' | 'unknown' | 'classification' | 'symbolic_formula';
   classification?: 'local_minimum' | 'local_maximum' | 'stationary_non_extremum' | null;
   value: MathExpression | null; completeness: 'complete' | 'partial' | 'conditional' | null;
   reason_if_unknown: string | null;
+  solution_scope?: 'unique_solution' | 'verified_witness' | 'nonuniqueness_witnesses' | null;
+  variable?: string | null;
+  time_domain?: { lower: MathExpression | null; upper: MathExpression | null; left_closed: boolean; right_closed: boolean } | null;
 }
 export interface ValidityReport {
   problem_well_formedness: Problem['well_formedness'];

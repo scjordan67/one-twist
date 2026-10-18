@@ -72,7 +72,7 @@ def test_independently_reviewed_content_and_all_four_sample_categories_are_prese
     assert all(item.review.status == "reviewed" and item.review.reviewer == "Claude Code" for item in [*bank.samples.values(), *bank.challenges.values()])
     assert len(bank.public_summaries()) == 10
     assert all(bank.public_detail(id) is not None for id in bank.challenges)
-    assert {id for id, item in bank.templates.items() if item.review.status == "draft"} == {"integral-endpoint"}
+    assert {id for id, item in bank.templates.items() if item.review.status == "draft"} == set()
     assert bank.public_detail("missing") is None
 
 

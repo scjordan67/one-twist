@@ -14,7 +14,10 @@ def test_loads_published_library():
     assert set(templates) == {"linear-degeneration", "integral-endpoint", "cancelled-factor-domain",
                               "squared-candidates-sign", "inverse-square-domain", "real-log-product",
                               "sine-principal-branch", "cosine-quadrant-sign", "derivative-cusp",
-                              "stationary-second-derivative", "lhopital-form"}
+                              "stationary-second-derivative", "lhopital-form",
+                              "integral-interior-pole", "integral-coalescing-poles",
+                              "ivp-zero-equilibrium", "ivp-principal-initial-root",
+                              "ivp-nonuniqueness-witness"}
     assert templates["integral-endpoint"].conclusion.source == "log(2)"
 
 

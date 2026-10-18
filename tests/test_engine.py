@@ -221,7 +221,9 @@ def test_interior_pole_does_not_produce_a_principal_value():
     data["original_problem"]["conditions"][0]["predicate"]["right"] = {"source": "2", "latex": "2"}
     report = analyze(Template.model_validate(data)).report
     assert report.perturbed_outcome.status == "unknown"
-    assert "Interior singularities" in report.perturbed_outcome.reason_if_unknown
+    # 1/(1-x) has leading coefficient -1, outside the reviewed 1/(x-c) family;
+    # it still correctly falls back to Unknown rather than a principal value.
+    assert "1/(x-c)" in report.perturbed_outcome.reason_if_unknown
     assert report.comparison.changed is None
 
 

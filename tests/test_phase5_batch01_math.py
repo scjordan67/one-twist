@@ -301,9 +301,13 @@ def test_loading_public_content_publishes_only_accepted_batch_and_does_not_compu
     templates = load_templates()
     approved = {draft["id"] for draft in DRAFTS.values()}
     assert set(templates) == approved | {"integral-endpoint", "sine-principal-branch", "cosine-quadrant-sign",
-                                        "derivative-cusp", "stationary-second-derivative", "lhopital-form"}
+                                        "derivative-cusp", "stationary-second-derivative", "lhopital-form",
+                                        "integral-interior-pole", "integral-coalescing-poles",
+                                        "ivp-zero-equilibrium", "ivp-principal-initial-root",
+                                        "ivp-nonuniqueness-witness"}
     assert all(templates[id].review.status == "reviewed" for id in approved)
-    assert templates["integral-endpoint"].review.status == "draft"
+    # integral-endpoint received its own formal re-review in batch 11-15.
+    assert templates["integral-endpoint"].review.status == "reviewed"
     with TestClient(create_app()) as client:
         assert {item["id"] for item in client.get("/api/templates").json()} == set(templates)
         assert len(client.get("/api/challenges").json()) == 10

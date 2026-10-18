@@ -59,11 +59,19 @@ export function ProblemCard({ title, problem, changedCondition }: { title: strin
   </article>;
 }
 export function Outcome({ title, result }: { title: string; result: ConclusionResult | null }) {
-  const names = { numeric_value: 'Numeric value', solution_set: 'Solution set', divergent: 'Divergent', undefined: 'Undefined', unknown: 'Unknown', classification: 'Classification' };
+  const names = { numeric_value: 'Numeric value', solution_set: 'Solution set', divergent: 'Divergent', undefined: 'Undefined', unknown: 'Unknown', classification: 'Classification', symbolic_formula: 'Solution formula' };
   return <section className="outcome" aria-label={title}><h3>{title}</h3>
     {!result ? <p>Outcome not established.</p> : <>
       <p>{names[result.status]}{result.completeness ? ` · ${result.completeness}` : ''}</p>
       {result.value && <Math latex={result.value.latex} display />}
+      {result.solution_scope && <p>{result.solution_scope === 'unique_solution'
+        ? 'Unique solution on the declared time domain.'
+        : result.solution_scope === 'verified_witness'
+        ? 'One verified solution; uniqueness and a complete solution family are not claimed.'
+        : 'Not unique: at least two distinct verified solutions exist. This does not claim they are the complete solution family.'}</p>}
+      {result.time_domain && <p>Time domain: <Math latex={result.variable + '\\in'
+        + (result.time_domain.left_closed ? '[' : '(') + (result.time_domain.lower?.latex ?? '-\\infty')
+        + ',' + (result.time_domain.upper?.latex ?? '\\infty') + (result.time_domain.right_closed ? ']' : ')')} /></p>}
       {result.reason_if_unknown && <p>{result.reason_if_unknown}</p>}
       {result.completeness && result.completeness !== 'complete' && <p>This is not an established complete solution set.</p>}
     </>}

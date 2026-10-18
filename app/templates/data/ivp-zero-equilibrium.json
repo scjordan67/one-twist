@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "id": "ivp-zero-equilibrium",
+  "title": "Separation can discard a zero equilibrium",
+  "tags": [
+    "Differential Equations"
+  ],
+  "difficulty": "advanced",
+  "original_problem": {
+    "statement": "Solve y'=y, y(0)=a on all real time, initially a=1.",
+    "expression": {
+      "source": null,
+      "latex": "y'=y,\\quad y(0)=a,\\quad t\\in\\mathbb R"
+    },
+    "goal": "Solve y'=y, y(0)=a on all real time, initially a=1.",
+    "variables": {
+      "t": "real",
+      "y": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "initial-amplitude",
+        "description": "The given real parameter a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "a",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [],
+    "well_formedness": null,
+    "computation": {
+      "kind": "first_order_ivp",
+      "independent_variable": "t",
+      "dependent_variable": "y",
+      "rhs": {
+        "source": "y",
+        "latex": "y"
+      },
+      "initial_time": {
+        "source": "0",
+        "latex": "0"
+      },
+      "initial_value": {
+        "source": "a",
+        "latex": "a"
+      },
+      "time_domain": {
+        "lower": null,
+        "upper": null,
+        "left_closed": false,
+        "right_closed": false
+      },
+      "state_domain": {
+        "number_system": "real",
+        "constraints": []
+      },
+      "question": "solution",
+      "solution_scope": "unique_solution",
+      "candidate_solutions": [
+        {
+          "source": "a*exp(t)",
+          "latex": "a e^{t}"
+        }
+      ]
+    }
+  },
+  "assumptions": [
+    {
+      "id": "nonzero-initial-state",
+      "kind": "nonzero",
+      "description": "For this verified linear family, a!=0 implies the trajectory never vanishes; division and log|y| are then defined.",
+      "condition_ids": [
+        "initial-amplitude"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Separation of variables",
+      "description": "The displayed logarithmic separation divides by y; a zero equilibrium requires a separately verified case.",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "divide-by-state",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "y'=y"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\frac{y'}y=1"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "y",
+            "latex": "y"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "integrate-log-state",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "\\frac{y'}y=1"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\log|y|=t+C"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [
+        {
+          "left": {
+            "source": "y",
+            "latex": "y"
+          },
+          "relation": "ne",
+          "right": {
+            "source": "0",
+            "latex": "0"
+          }
+        }
+      ],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "apply-log-initial-value",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "y(0)=a"
+      },
+      "output": {
+        "source": null,
+        "latex": "C=\\log|a|,\\quad \\operatorname{sgn}y=\\operatorname{sgn}a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "nonzero-initial-state"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "verify-original-ivp",
+      "number": 4,
+      "input": {
+        "source": null,
+        "latex": "y_a(t)=ae^t"
+      },
+      "output": {
+        "source": null,
+        "latex": "y'_a=y_a,\\quad y_a(0)=a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [],
+      "transformation_kind": "OneWayImplication",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    }
+  ],
+  "conclusion": {
+    "source": "1*exp(t)",
+    "latex": "e^{t}"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "zero-initial-state",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "description": "Set the initial state to zero.",
+      "allowed_values": [
+        {
+          "source": "0",
+          "latex": "0"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "positive-initial-state",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "description": "Set the initial state to two.",
+      "allowed_values": [
+        {
+          "source": "2",
+          "latex": "2"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "negative-initial-state",
+      "condition_id": "initial-amplitude",
+      "type": "parameter_value",
+      "description": "Set the initial state to minus one.",
+      "allowed_values": [
+        {
+          "source": "-1",
+          "latex": "-1"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "Reviewed batch-03 finite mechanism; never runtime evidence."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-divide-by-state",
+      "kind": "linear_ivp_division",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "divide-by-state"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "linear_ivp_division",
+        "divisor": {
+          "source": "y",
+          "latex": "y"
+        }
+      }
+    },
+    {
+      "id": "check-integrate-log-state",
+      "kind": "linear_ivp_log_separation",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "integrate-log-state"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "linear_ivp_log_separation",
+        "state_expression": {
+          "source": "log(abs(y))",
+          "latex": "\\log{\\left(\\left|{y}\\right| \\right)}"
+        }
+      }
+    },
+    {
+      "id": "check-apply-log-initial-value",
+      "kind": "linear_ivp_initial_constant",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "apply-log-initial-value"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "linear_ivp_initial_constant",
+        "expression": {
+          "source": "log(abs(a))",
+          "latex": "\\log{\\left(\\left|{a}\\right| \\right)}"
+        },
+        "retain_initial_sign": true
+      }
+    },
+    {
+      "id": "check-verify-original-ivp",
+      "kind": "ivp_candidate_substitution",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "verify-original-ivp"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "ivp_candidate_substitution",
+        "candidate": {
+          "source": "a*exp(t)",
+          "latex": "a e^{t}"
+        }
+      }
+    }
+  ],
+  "explanation_fragments": [],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-18: hand calculations, source/contract review, and independent SymPy content tests; full backend regression independently rerun successfully."
+  }
+}

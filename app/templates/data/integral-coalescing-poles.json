@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "id": "integral-coalescing-poles",
+  "title": "A repeated pole needs a different partial-fraction form",
+  "tags": [
+    "Integration"
+  ],
+  "difficulty": "advanced",
+  "original_problem": {
+    "statement": "Evaluate the proper real integral on [2,3], initially a=1. The poles lie outside this interval in every declared case.",
+    "expression": {
+      "source": null,
+      "latex": "\\int_2^3\\frac{dx}{x(x-a)}"
+    },
+    "goal": "Evaluate the proper real integral on [2,3], initially a=1. The poles lie outside this interval in every declared case.",
+    "variables": {
+      "x": "real",
+      "alpha": "real",
+      "beta": "real"
+    },
+    "parameters": [
+      {
+        "name": "a",
+        "value": {
+          "source": "1",
+          "latex": "1"
+        },
+        "domain": "real"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "pole-separation",
+        "description": "The given real parameter a",
+        "predicate": {
+          "left": {
+            "source": "a",
+            "latex": "a"
+          },
+          "relation": "eq",
+          "right": {
+            "source": "1",
+            "latex": "1"
+          }
+        },
+        "parameter_name": "a",
+        "domain_binding": null
+      }
+    ],
+    "domain_constraints": [
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      {
+        "left": {
+          "source": "x",
+          "latex": "x"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "a",
+          "latex": "a"
+        }
+      }
+    ],
+    "well_formedness": null,
+    "computation": {
+      "variable": "x",
+      "lower": {
+        "source": "2",
+        "latex": "2"
+      },
+      "upper": {
+        "source": "3",
+        "latex": "3"
+      },
+      "kind": "integral",
+      "integrand": {
+        "source": "1/(x*(x-a))",
+        "latex": "\\frac{1}{x \\left(- a + x\\right)}"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "id": "distinct-poles",
+      "kind": "nonzero",
+      "description": "The distinct-simple-pole ansatz and its 1/a coefficients require a!=0.",
+      "condition_ids": [
+        "pole-separation"
+      ],
+      "predicate": {
+        "left": {
+          "source": "a",
+          "latex": "a"
+        },
+        "relation": "ne",
+        "right": {
+          "source": "0",
+          "latex": "0"
+        }
+      },
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    },
+    {
+      "id": "closed-interval-regularity",
+      "kind": "continuity_on_interval",
+      "description": "The actual integrand must be continuous on [2,3] for proper endpoint evaluation.",
+      "condition_ids": [
+        "pole-separation"
+      ],
+      "predicate": null,
+      "state": "unchecked",
+      "interval": null,
+      "check": null
+    }
+  ],
+  "methods": [
+    {
+      "id": "original-method",
+      "name": "Partial fractions",
+      "description": "The displayed derivation uses distinct simple poles. A verified repeated-pole ansatz can repair the same partial-fraction technique.",
+      "assumption_ids": [
+        "distinct-poles",
+        "closed-interval-regularity"
+      ]
+    }
+  ],
+  "correct_steps": [
+    {
+      "id": "choose-distinct-pole-form",
+      "number": 1,
+      "input": {
+        "source": null,
+        "latex": "\\frac1{x(x-a)}"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\frac{\\alpha}{x}+\\frac{\\beta}{x-a}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "solve-distinct-coefficients",
+      "number": 2,
+      "input": {
+        "source": null,
+        "latex": "1=\\alpha(x-a)+\\beta x"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\alpha=-\\frac1a,\\quad\\beta=\\frac1a"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "integrate-distinct-terms",
+      "number": 3,
+      "input": {
+        "source": null,
+        "latex": "-\\frac1{ax}+\\frac1{a(x-a)}"
+      },
+      "output": {
+        "source": null,
+        "latex": "F_a(x)=\\frac{\\log|x-a|-\\log|x|}{a}"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    },
+    {
+      "id": "evaluate-distinct-form",
+      "number": 4,
+      "input": {
+        "source": null,
+        "latex": "F_a(3)-F_a(2)"
+      },
+      "output": {
+        "source": null,
+        "latex": "\\log\\frac43"
+      },
+      "method_id": "original-method",
+      "assumption_ids": [
+        "distinct-poles",
+        "closed-interval-regularity"
+      ],
+      "transformation_kind": "Equivalent",
+      "domain_constraints": [],
+      "verification": null,
+      "explanation": "Baseline derivation claim, subject to the explicit hypotheses and independent checking after a change."
+    }
+  ],
+  "conclusion": {
+    "source": "log(4/3)",
+    "latex": "\\log{\\left(\\frac{4}{3} \\right)}"
+  },
+  "allowed_perturbations": [
+    {
+      "id": "merge-poles",
+      "condition_id": "pole-separation",
+      "type": "parameter_value",
+      "description": "Merge the simple poles at zero.",
+      "allowed_values": [
+        {
+          "source": "0",
+          "latex": "0"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    },
+    {
+      "id": "negative-separation",
+      "condition_id": "pole-separation",
+      "type": "parameter_value",
+      "description": "Keep two distinct poles outside [2,3].",
+      "allowed_values": [
+        {
+          "source": "-1",
+          "latex": "-1"
+        }
+      ],
+      "assumption_id": null,
+      "domain_choices": []
+    }
+  ],
+  "expected_failure_mechanisms": [
+    "Reviewed batch-03 finite mechanism; never runtime evidence."
+  ],
+  "verification_rules": [
+    {
+      "id": "check-choose-distinct-pole-form",
+      "kind": "two_pole_ansatz",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "choose-distinct-pole-form"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "two_pole_ansatz",
+        "variable": "x",
+        "coefficient_names": [
+          "alpha",
+          "beta"
+        ],
+        "ansatz": {
+          "source": "alpha/x+beta/(x-a)",
+          "latex": "\\frac{\\alpha}{x} + \\frac{\\beta}{- a + x}"
+        }
+      }
+    },
+    {
+      "id": "check-solve-distinct-coefficients",
+      "kind": "two_pole_coefficients",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "solve-distinct-coefficients"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "two_pole_coefficients",
+        "coefficient_values": {
+          "alpha": {
+            "source": "-1/a",
+            "latex": "- \\frac{1}{a}"
+          },
+          "beta": {
+            "source": "1/a",
+            "latex": "\\frac{1}{a}"
+          }
+        }
+      }
+    },
+    {
+      "id": "check-integrate-distinct-terms",
+      "kind": "two_pole_primitive",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "integrate-distinct-terms"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "two_pole_primitive",
+        "primitive": {
+          "source": "(log(abs(x-a))-log(abs(x)))/a",
+          "latex": "\\frac{- \\log{\\left(\\left|{x}\\right| \\right)} + \\log{\\left(\\left|{a - x}\\right| \\right)}}{a}"
+        }
+      }
+    },
+    {
+      "id": "check-evaluate-distinct-form",
+      "kind": "two_pole_endpoint_value",
+      "refs": [
+        {
+          "kind": "step",
+          "id": "evaluate-distinct-form"
+        }
+      ],
+      "description": "Recompute this finite claim from the actual problem.",
+      "parameters": {
+        "operation": "two_pole_endpoint_value",
+        "expression": {
+          "source": "(log(abs(3-a))-log(3)-log(abs(2-a))+log(2))/a",
+          "latex": "\\frac{\\log{\\left(\\left|{a - 3}\\right| \\right)} - \\log{\\left(\\left|{a - 2}\\right| \\right)} - \\log{\\left(3 \\right)} + \\log{\\left(2 \\right)}}{a}"
+        }
+      }
+    }
+  ],
+  "explanation_fragments": [],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-18: hand calculations, source/contract review, and independent SymPy content tests; full backend regression independently rerun successfully."
+  }
+}
