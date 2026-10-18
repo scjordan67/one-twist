@@ -195,8 +195,8 @@
     "remediation": "Normalize the unwrapped argument by subtracting 2*pi and verify the result belongs to (-pi,pi] before calling it Arg."
   },
   "review": {
-    "status": "draft",
-    "reviewer": null,
-    "basis": "Phase 5 extra Mode C mathematical draft. Pending independent mathematical, rubric and regression review by Claude Code; not approved for publication."
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-18: hand calculations, independent SymPy residual/branch checks, rubric and public-contract review; 665 backend tests independently rerun successfully after publication."
   }
 }

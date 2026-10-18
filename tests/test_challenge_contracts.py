@@ -64,13 +64,13 @@ def answers(bank):
 
 
 def test_independently_reviewed_content_and_all_four_sample_categories_are_present(bank):
-    assert len(bank.challenges) == 10
-    assert Counter(item.mode for item in bank.challenges.values()) == {"A": 2, "B": 3, "C": 5}
+    assert len(bank.challenges) == 13
+    assert Counter(item.mode for item in bank.challenges.values()) == {"A": 2, "B": 3, "C": 8}
     assert Counter(item.category for item in bank.samples.values()) == {
-        "correct": 2, "missing_condition": 1, "wrong_derivation_right_answer": 1, "flawed": 1,
+        "correct": 2, "missing_condition": 2, "wrong_derivation_right_answer": 2, "flawed": 2,
     }
     assert all(item.review.status == "reviewed" and item.review.reviewer == "Claude Code" for item in [*bank.samples.values(), *bank.challenges.values()])
-    assert len(bank.public_summaries()) == 10
+    assert len(bank.public_summaries()) == 13
     assert all(bank.public_detail(id) is not None for id in bank.challenges)
     assert {id for id, item in bank.templates.items() if item.review.status == "draft"} == set()
     assert bank.public_detail("missing") is None
@@ -282,7 +282,7 @@ def test_public_projection_uses_allowlists_and_never_reveals_private_metadata(ba
         assert "well_formedness" not in public["problem"] and "computation" not in public["problem"]
         assert set(public["methods"][0]) == {"id", "name"}
         assert not set(public) & {"category", "rubric", "annotations", "review", "accepted_answers"}
-    assert len(bank.public_summaries()) == 10
+    assert len(bank.public_summaries()) == 13
 
 
 def test_mode_c_option_structure_does_not_encode_the_answer_category(bank):

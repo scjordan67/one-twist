@@ -1,4 +1,4 @@
-"""Independent mathematical checks of the five proposed, unreviewed derivations.
+"""Independent mathematical checks of the eight reviewed Judge-the-AI derivations.
 
 Display strings are pinned alongside the calculations: these tests do not parse
 LaTeX, judge arbitrary samples, or replace independent content review.
@@ -98,3 +98,88 @@ def test_sample_five_squaring_is_valid_forward_but_accepting_the_extra_root_is_n
     assert candidates & sp.Interval(2, sp.oo) == original
     assert sample.rubric.actual_conclusion.latex == r"\{4\}"
     assert {item[:3] for item in keys(sample)} == {("not_sound", "incorrect", "step-003")}
+
+
+def test_sample_six_principal_inverse_sine_loses_the_second_branch(samples):
+    sample = samples["sample-006"]
+    assert [step.output.latex for step in sample.steps] == [
+        r"\alpha=\frac{\pi}{6}",
+        r"\sin x=\sin\alpha\ \Longleftrightarrow\ x=\alpha=\frac{\pi}{6}",
+        r"S_{\mathrm{original}}=\left\{\frac{\pi}{6}\right\}",
+    ]
+    x = sp.Symbol("x", real=True)
+    spec = sample.problem.computation
+    raw_residual = parse_math(spec.left.source, symbols={"x": x}) - parse_math(spec.right.source, symbols={"x": x})
+    residual = sp.simplify(raw_residual.doit())
+    original = sp.solveset(residual, x, domain=sp.Interval.Ropen(0, 2 * sp.pi))
+    assert sp.asin(sp.Rational(1, 2)) == sp.pi / 6
+    assert original == sp.FiniteSet(sp.pi / 6, 5 * sp.pi / 6)
+    assert original - sp.FiniteSet(sp.pi / 6) == sp.FiniteSet(5 * sp.pi / 6)
+    assert sp.simplify(residual.subs(x, 5 * sp.pi / 6).doit()) == 0
+    assert sample.rubric.actual_conclusion.latex == r"S_{\mathrm{original}}=\left\{\frac{\pi}{6},\frac{5\pi}{6}\right\}"
+    assert keys(sample) == {("not_sound", "incorrect", "step-002", "premise-001", "lost_root")}
+
+
+@pytest.mark.parametrize("integer_period", [-1, 0, 1])
+def test_sample_six_periodic_families_are_exhausted_on_the_stated_interval(integer_period):
+    k = sp.Integer(integer_period)
+    interval = sp.Interval.Ropen(0, 2 * sp.pi)
+    for candidate in (sp.pi / 6 + 2 * k * sp.pi, 5 * sp.pi / 6 + 2 * k * sp.pi):
+        assert sp.sin(candidate) == sp.Rational(1, 2)
+        assert bool(interval.contains(candidate)) is (integer_period == 0)
+
+
+def test_sample_seven_unwrapped_argument_candidate_is_not_automatically_principal(samples):
+    sample = samples["sample-007"]
+    assert [step.output.latex for step in sample.steps] == [
+        r"\alpha=\operatorname{Arg}(i)=\frac{\pi}{2},\qquad \beta=\operatorname{Arg}(-1)=\pi",
+        r"\theta_0=\alpha+\beta=\frac{3\pi}{2},\qquad e^{i\theta_0}=-i",
+        r"\operatorname{Arg}(-i)=\theta_0=\frac{3\pi}{2}",
+    ]
+    unwrapped = sp.arg(sp.I) + sp.arg(-1)
+    principal_domain = sp.Interval.Lopen(-sp.pi, sp.pi)
+    actual = sp.arg(-sp.I)
+    assert unwrapped == 3 * sp.pi / 2
+    assert sp.exp(sp.I * unwrapped) == -sp.I
+    assert principal_domain.contains(unwrapped) is sp.S.false
+    assert actual == -sp.pi / 2 == unwrapped - 2 * sp.pi
+    assert principal_domain.contains(actual) is sp.S.true
+    assert sp.simplify(parse_math(sample.rubric.actual_conclusion.source).doit()) == actual
+    assert [item.finding for item in sample.annotations] == ["valid", "valid", "missing_condition"]
+    assert keys(sample) == {("not_sound", "incorrect", "step-003", "premise-001", "extraneous_root")}
+
+
+def test_sample_seven_principal_branch_has_a_unique_solution():
+    theta = sp.Symbol("theta", real=True)
+    branch = sp.Interval.Lopen(-sp.pi, sp.pi)
+    cosine_roots = sp.solveset(sp.cos(theta), theta, domain=branch)
+    sine_roots = sp.solveset(sp.sin(theta) + 1, theta, domain=branch)
+    assert cosine_roots & sine_roots == sp.FiniteSet(-sp.pi / 2)
+    assert branch.contains(-sp.pi) is sp.S.false and branch.contains(sp.pi) is sp.S.true
+
+
+def test_sample_eight_zero_norm_normalization_error_does_not_undo_the_correct_conclusion(samples):
+    sample = samples["sample-008"]
+    assert [step.output.latex for step in sample.steps] == [
+        r"\|u\|=0,\qquad \|v\|=\sqrt2",
+        r"\frac{u}{\|u\|}=\left(\frac00,\frac00,\frac00\right)=(0,0,0)",
+        r"\|u\|=0\ \Longrightarrow\ \angle(u,v)\text{ is undefined}",
+    ]
+    assert [item.finding for item in sample.annotations] == ["valid", "invalid", "valid"]
+    assert sample.claimed_conclusion.latex == sample.rubric.actual_conclusion.latex
+    u, v = (0, 0, 0), (1, 1, 0)
+    norm_u_sq, norm_v_sq = sum(c**2 for c in u), sum(c**2 for c in v)
+    assert (norm_u_sq, norm_v_sq) == (0, 2)
+    assert sp.sqrt(norm_u_sq) * sp.sqrt(norm_v_sq) == 0
+    zero_over_zero = sp.Mul(sp.Integer(0), sp.Pow(0, -1, evaluate=False), evaluate=False)
+    assert zero_over_zero.doit() is sp.nan != 0
+    assert keys(sample) == {("not_sound", "correct", "step-002", "premise-001", "zero_divisor")}
+
+
+def test_sample_eight_zero_dot_product_does_not_select_a_unique_angle():
+    theta = sp.Symbol("theta", real=True)
+    u, v = (0, 0, 0), (1, 1, 0)
+    dot = sum(a * b for a, b in zip(u, v, strict=True))
+    denominator = sp.sqrt(sum(a**2 for a in u)) * sp.sqrt(sum(b**2 for b in v))
+    assert dot == denominator == 0
+    assert sp.simplify((dot - denominator * sp.cos(theta)).doit()) == 0

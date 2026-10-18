@@ -225,14 +225,14 @@ def test_gets_never_compute_or_expose_private_fields_and_drafts_are_hidden(clien
         pytest.fail("Presentation must not compute")
     monkeypatch.setattr(client.app.state.computations, "run", forbidden)
     summaries = client.get("/api/challenges").json()
-    assert len(summaries) == 10
+    assert len(summaries) == 13
     for item in summaries:
         data = client.get(f"/api/challenges/{item['id']}").json()
         assert not set(data) & {"category", "rubric", "annotations", "review", "accepted_answers"}
         assert "well_formedness" not in data["problem"]
         assert all("verification" not in step for step in data["steps"])
     client.app.state.challenges.challenges["practice-001"].review.status = "draft"
-    assert len(client.get("/api/challenges").json()) == 9
+    assert len(client.get("/api/challenges").json()) == 12
     assert client.get("/api/challenges/practice-001").status_code == 404
     assert client.post("/api/challenges/check", json=a_answer(client.app.state.challenges)).status_code == 404
     assert client.get("/api/challenges/missing").status_code == 404

@@ -312,6 +312,6 @@ def test_loading_public_content_publishes_only_accepted_batch_and_does_not_compu
     assert templates["integral-endpoint"].review.status == "reviewed"
     with TestClient(create_app()) as client:
         assert {item["id"] for item in client.get("/api/templates").json()} == set(templates)
-        assert len(client.get("/api/challenges").json()) == 10
+        assert len(client.get("/api/challenges").json()) == 13
         for number in range(2, 6):
             assert client.get(f"/api/templates/{DRAFTS[number]['id']}").status_code == 200

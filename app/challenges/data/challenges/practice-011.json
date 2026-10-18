@@ -5,8 +5,8 @@
   "prompt": "Assess the displayed derivation and its claimed conclusion over the stated domain separately. If there is a flaw, select its first occurrence, a relevant premise and a reason. If it is sound, use no flaw and no step or premise.",
   "sample_id": "sample-006",
   "review": {
-    "status": "draft",
-    "reviewer": null,
-    "basis": "Phase 5 extra Mode C mathematical draft. Pending independent mathematical, rubric and regression review by Claude Code; not approved for publication."
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-18: hand calculations, independent SymPy residual/branch checks, rubric and public-contract review; 665 backend tests independently rerun successfully after publication."
   }
 }

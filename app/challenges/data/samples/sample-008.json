@@ -167,8 +167,8 @@
     "remediation": "After computing norm(u)=0, stop and report that the standard Euclidean angle is undefined. Do not attempt normalization."
   },
   "review": {
-    "status": "draft",
-    "reviewer": null,
-    "basis": "Phase 5 extra Mode C mathematical draft. Pending independent mathematical, rubric and regression review by Claude Code; not approved for publication."
+    "status": "reviewed",
+    "reviewer": "Claude Code",
+    "basis": "Independently approved by Claude Code on 2026-10-18: hand calculations, independent SymPy residual/branch checks, rubric and public-contract review; 665 backend tests independently rerun successfully after publication."
   }
 }

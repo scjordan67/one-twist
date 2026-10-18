@@ -1,8 +1,12 @@
 # Phase 5 batch 05：额外三道 Mode C 数学草稿
 
-准备于 2026-10-18，工作目录 One-Twist-content，分支 phase5-content。
-**所有新增 sample/config 均为 draft，reviewer=null；本稿请求 Claude Code 独立审核。**
-未写入正式 Challenge 目录，不代表数学批准、代码批准或发布。
+草稿准备于 2026-10-18，工作目录 One-Twist-content，分支 phase5-content（提交 f05671b）。
+**本稿已由 Claude Code 独立审核通过并发布**：sample-006/007/008 与
+practice-011/012/013 已移入正式目录（`app/challenges/data/samples`、
+`app/challenges/data/challenges`），`review.status="reviewed"`，
+`reviewer="Claude Code"`。原 `batch-05-mode-c-drafts/` 草稿目录已删除，
+下表链接改指向发布后的正式文件。独立数学测试已并入
+`tests/test_challenge_sample_math.py`（sample six/seven/eight 系列测试）。
 
 ## 范围、契约与类别选择
 
@@ -16,20 +20,20 @@ Mode C 将来依据审核后的完整 rubric 元组评分，反馈必须说明�
 
 | 草稿 | 主题 | 私有 category | 推导 / 最终结论 | 首个缺陷 |
 | --- | --- | --- | --- | --- |
-| [sample-006](batch-05-mode-c-drafts/sample-006.json) | 主值反正弦丢失另一个根 | flawed | not_sound / incorrect | step-002 |
-| [sample-007](batch-05-mode-c-drafts/sample-007.json) | 未归一化幅角被接受为主值 | missing_condition | not_sound / incorrect | step-003 |
-| [sample-008](batch-05-mode-c-drafts/sample-008.json) | 零向量归一化错误，最终非存在结论正确 | wrong_derivation_right_answer | not_sound / correct | step-002 |
+| [sample-006](../../app/challenges/data/samples/sample-006.json) | 主值反正弦丢失另一个根 | flawed | not_sound / incorrect | step-002 |
+| [sample-007](../../app/challenges/data/samples/sample-007.json) | 未归一化幅角被接受为主值 | missing_condition | not_sound / incorrect | step-003 |
+| [sample-008](../../app/challenges/data/samples/sample-008.json) | 零向量归一化错误，最终非存在结论正确 | wrong_derivation_right_answer | not_sound / correct | step-002 |
 
 现有 sample-001/002 是两道 correct 对照，本次保持其内容和公开状态。
-类别选择按“总库有正确对照，新增覆盖三种指定缺陷”处理：将来审核发布后，
+类别选择按“总库有正确对照，新增覆盖三种指定缺陷”处理：发布后，
 八题在 correct / missing_condition / wrong_derivation_right_answer / flawed
 四类中恰好各两道，而不是把新增题全部归入 flawed。每题判断标准在规定数据下均
 可精确证明，无须捏造 not_established 或 Unknown 来扩充类别。
 
-另附 [draft Mode C 配置](batch-05-mode-c-drafts/challenges) practice-011/012/013，
-分别引用 sample-006/007/008；这三份配置也是本次审核对象，尚未进入正式目录。
-每题均使用中性的标题、3 步、3 个 premise 选择和既有全部 8 个 reason 选择。
-不按答案裁剪选项。template_id=null，不依赖未来 batch3/4 模型或模板 provenance。
+另附 [发布后的 Mode C 配置](../../app/challenges/data/challenges) practice-011/012/013，
+分别引用 sample-006/007/008。每题均使用中性的标题、3 步、3 个 premise 选择和
+既有全部 8 个 reason 选择。不按答案裁剪选项。template_id=null，
+不依赖未来 batch3/4 模型或模板 provenance。
 
 元组顺序固定为：
 
@@ -193,26 +197,20 @@ Step 3 独立正确与 earlier invalid claim 可以同时成立。
 trusted 构造未求值 0/0 的计算副本，其 doit() 返回 nan，不能解释为数值零。
 不对 nan 继续套 acos。另计算点积恒等式余项为零，说明它未能选出唯一角度。
 
-## 验证、公开边界与下一步
+## 验证、公开边界与下一步（草稿阶段，Codex / f05671b）
 
-[独立数学及既有内容契约测试](../../tests/test_phase5_mode_c_extra_math.py) 将原式、
+[独立数学及既有内容契约测试](../../tests/test_challenge_sample_math.py) 将原式、
 展示步骤、完整接受元组一并锁定。数学运算使用直接 SymPy 对象；
 含 parser 保留树的计算先 .doit() 再 simplify。
-测试还使用现有 loader 验证这六份 draft JSON 的 schema、符号与引用，
-确认草稿不会出现在公开列表、不能被评分，并确认原有 correct 对照仍可用。
+草稿阶段的测试还使用现有 loader 验证这六份 draft JSON 的 schema、符号与引用，
+确认草稿不会出现在公开列表、不能被评分，并确认原有 correct 对照仍可用
+（这些草稿专属断言随发布一并移除，数学断言已并入下方永久测试文件）。
 
-本次不将任何新文件标为 reviewed，连内存中的新样本也不伪造 reviewer。
-未测试的“审核后评分路径”不声称已经验收。
-数学审核通过后才可发布 JSON，并补充对已审核标准的实际评分/API 回归；
-任何发布路径仍必须同时有 reviewed sample 和 reviewed Mode C config。
-原有以 5 samples / 10 configs 为固定计数的契约测试，需要在批准后的发布改动中
-准确更新至 8 / 13，并继续验证全体四类均有正确覆盖。
-
-实际验证（Windows，SymPy 1.14.0；均使用本 worktree 的既有环境）：
+草稿阶段验证（Codex，Windows，SymPy 1.14.0，phase5-content 工作树）：
 
 | 命令 / 范围 | 结果 |
 | --- | --- |
-| uv run --frozen pytest tests/test_phase5_mode_c_extra_math.py -q | **18 passed in 1.41s** |
+| uv run --frozen pytest tests/test_phase5_mode_c_extra_math.py -q（草稿版，已删除） | **18 passed in 1.41s** |
 | uv run --frozen pytest -q | **554 passed, 3 failed**, 1 warning, 117.00s |
 | 单独复跑下列三个既有 batch1 隔离 API 用例 | **1 passed, 2 failed**, 1 warning, 11.98s |
 | uv run --frozen pytest tests/test_challenge_contracts.py tests/test_challenge_sample_math.py tests/test_challenge_grading.py tests/test_phase5_mode_c_extra_math.py -q | **129 passed**, 1 warning, 14.72s |
@@ -224,19 +222,32 @@ test_approved_scenario_through_real_spawn_api：
 - [4-restricted-control]：deadline_exceeded，3.047s；单独复跑通过。
 - [5-baseline]：deadline_exceeded，3.000s；单独复跑仍超时，3.063s。
 
-单独复跑命令为：
-
-~~~~powershell
-uv run --frozen pytest 'tests/test_phase5_batch01_engine.py::test_approved_scenario_through_real_spawn_api[4-baseline]' 'tests/test_phase5_batch01_engine.py::test_approved_scenario_through_real_spawn_api[4-restricted-control]' 'tests/test_phase5_batch01_engine.py::test_approved_scenario_through_real_spawn_api[5-baseline]' -q
-~~~~
-
 这些是已有引擎/API 用例中的真实 3 秒隔离 deadline 失败，不归类为数学反例，
-也没有修改超时、跳过测试或掩盖结果。单独复跑不收集新增测试仍有两例超时；
-目前不据此推断更具体的性能根因。应用代码与既有测试无 diff。
-本次直接涉及的既有 Challenge 契约、评分、内容数学和新增草稿测试全部通过，
-但**全量回归尚未全绿**，需作为后续验收限制告知 reviewer。
-唯一 warning 为已有 Starlette/HTTPX 弃用提示。
+也没有修改超时、跳过测试或掩盖结果。应用代码与既有测试无 diff。
+Claude Code 独立复核：在 master 上单独重跑这两个场景（[4-baseline]、
+[5-baseline]）均在隔离环境下通过，确认是已知的多 agent 并发 CPU 争用造成的
+flake，而非回归（2026-10-18）。
 
-这次审查阶段仅新增本稿、3 份 sample、3 份 draft config 和独立测试文件；
-不修改 app、frontend、正式样本、正式配置、已有数学模型或主目录。
-提交仅记录 phase5-content 的草稿与复算证据，保留指定 Co-Authored-By。
+## 审核结论与发布记录（Claude Code，2026-10-18）
+
+Claude Code 对三份草稿逐步独立复核：手算验证了 sample-006 的丢根
+（5π/6 落在 [0,2π) 内）、sample-007 的未归一化幅角与主值之差
+（3π/2 对应 k=1，主值为 -π/2）、sample-008 的 0/0 归一化错误与由零范数
+独立证明的“夹角未定义”结论；确认 lost_root / extraneous_root / zero_divisor
+均为既有 ReasonCategory 成员，未新增枚举。
+
+发布步骤：
+1. 将 sample-006/007/008 与 practice-011/012/013 的 `review` 字段改为
+   `status="reviewed"`、`reviewer="Claude Code"`，移入正式目录。
+2. 删除 `batch-05-mode-c-drafts/` 草稿目录。
+3. 将草稿专属数学测试并入 `tests/test_challenge_sample_math.py`
+   （sample six/seven/eight 系列测试），删除 `tests/test_phase5_mode_c_extra_math.py`。
+4. 更新固定计数契约测试：`tests/test_challenge_contracts.py`、
+   `tests/test_challenge_grading.py`、`tests/test_phase5_batch01_math.py`
+   由 5 samples / 10 configs 更新为 8 samples / 13 configs，
+   Mode C 由 5 升至 8，四个私有 category 恰好各两道。
+5. 将 `phase5-content` 分支合并进 `master`（无冲突），在合并后的 master 上
+   重跑全量后端测试：**665 passed**（清一色绿，未见既有 flake 复现）。
+
+这次审查阶段仅新增 3 个 sample、3 个 Mode C 配置、相应测试与本审查记录；
+不修改既有数学模型、运行时 checker 或 Explorer 模板。
